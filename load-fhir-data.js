@@ -58,10 +58,10 @@ GC.get_data = function() {
       p.demographics.gender = (patient.gender.coding[0].code == 'M' ? 'male' : 'female');
 
       var units = fhirClient.units;
-      process(vitlalsByCode['3141-9'], units.kg, p.vitals.weightData);
-      process(vitlalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
-      process(vitlalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
-      process(vitlalsByCode['39156-5'], units.any, p.vitals.BMIData);
+      process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
+      process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
+      process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
+      process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
 
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
