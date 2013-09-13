@@ -1,0 +1,48 @@
+#pview1 {
+    position:relative;
+    top: -7px;
+    left: -20px;
+}
+
+#pview2 {
+    position:relative;
+    top: -1022px;
+    left: -20px;
+}
+
+#pview3 {
+    position:relative;
+    top: -2018px;
+    left: 570px;
+}
+
+#box1{
+	z-index: 2;
+	opacity:0.6;
+	margin-top: 2px;
+	height:10px;
+	width:200px;
+	background-color: #bfe3f4;
+}
+#box2{
+	opacity:0.9;
+	margin-top: 2px;
+	height:10px;
+	width:200px;
+	background-color: #bfe3f0;
+}
+#mother{
+	z-index: 0;
+	text-align: right;
+	font-size: 60%;
+	float:left;
+}
+
+#child{
+	float:left;
+}
+#father{
+	float:left;
+	text-align: left;
+	font-size: 60%;
+}

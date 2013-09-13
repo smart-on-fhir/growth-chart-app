@@ -1,0 +1,72 @@
+body {
+    background: white;
+    color: black;
+    font: 80% "Trebuchet MS", sans-serif;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+
+table {border-collapse:collapse; border-spacing: 0; border:none; margin:0; padding:0;}
+th, td, tr {margin: 0; padding: 0;}
+img {display:block; border:none; margin:0; padding:0;}
+
+#chart-length {
+    position:relative;
+    top: 0px;
+    left: 0px;
+}
+
+#chart-weight {
+    position:relative;
+    top: -20px;
+    left: 0px;
+}
+
+#chart-headc {
+    position:relative;
+    top: -570px;
+    left: 500px;
+}
+
+#mini-chart{
+    position:relative;
+    top: -1240px;
+    left: 500px;
+}
+
+#panel {
+    background: url('../img/mock/panel.png') no-repeat;
+    width: 988px;
+    height: 196px;
+}
+
+#patient-name {
+    font-size: 1.8em;
+    color: white;
+    position: relative;
+    left: 60px;
+    top: 50px;
+}
+
+#patient-age {
+    color: white;
+    position: relative;
+    left: 220px;
+    top: 66px;
+}
+
+#patient-birth {
+    color: white;
+    position: relative;
+    left: 220px;
+    top: 72px;
+}
+
+#patient-gender {
+    color: white;
+    position: relative;
+    left: 220px;
+    top: 78px;
+}

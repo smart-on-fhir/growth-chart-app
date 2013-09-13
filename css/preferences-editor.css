@@ -1,0 +1,284 @@
+#timeline-preview {
+	margin: 8px 0;
+	overflow: hidden;
+}
+#timeline-preview > div {
+	padding: 1px;
+	margin: 1px 0px 1px 54px;
+	position: relative;
+	background: #F3F3F3;
+	text-indent: -54px;
+	box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.3) inset;
+}
+#timeline-preview > div > div {
+	position: absolute;
+	height: 100%;
+	top: 0;
+	box-shadow: 0 0 1px 0 #000 inset, 0px -16px 10px -10px rgba(0, 0, 0, 0.2) inset;
+}
+
+#timeline-preview .days > div {
+	left: 0;
+	background: #BD6;
+}
+#timeline-preview .weeks > div {
+	background: #AC5;
+}
+#timeline-preview .months > div {
+	background: #9B4;
+}
+#timeline-preview .years > div {
+	background: #8A3;
+	right: 0;
+}
+#timeline-preview .days > div:after,
+#timeline-preview .weeks > div:after,
+#timeline-preview .weeks > div:before,
+#timeline-preview .months > div:after,
+#timeline-preview .months > div:after,
+#timeline-preview .years > div:after,
+#timeline-preview .years > div:before {
+	content: "";
+	position: absolute;
+	top: -100px;
+	height: 200px;
+	width: 1px;
+	border-left: 1px dashed #000;
+	/*border-right: 1px dotted #000;
+	margin-left: -1px;*/
+	z-index: 100;
+	opacity: 0.2;
+	left: 0;
+}
+#timeline-preview .days > div:after,
+#timeline-preview .weeks > div:after,
+#timeline-preview .months > div:after,
+#timeline-preview .months > div:after,
+#timeline-preview .years > div:after {
+	left: 100%;
+}
+
+#preferences-editor .timeline-spinner {
+	width: 130px;
+}
+
+#preferences-editor {
+	width: auto;
+	font-size: 12px;
+	font-family: Tahoma, sans-serif;
+	position: relative;
+}
+#preferences-editor a {
+	color: blue;
+	text-decoration: none;
+}
+#preferences-editor a:hover {
+	text-decoration: underline;
+}
+#preferences-editor .prefs-panel {
+	min-height: 300px;
+	/*overflow-y: auto;
+	overflow-x: hidden;*/
+	display: none;
+	min-width: 270px;
+}
+#preferences-editor .prefs-panel table {
+	width: 100%;
+}
+
+#preferences-editor label {
+	font-weight: normal;
+}
+#preferences-editor input, 
+#preferences-editor select {
+	padding: 4px;
+	border: 1px solid #728391 !important;
+	border-radius: 0 !important;
+	line-height: 14px !important;
+	height: auto;
+	font-size: 12px;
+	font-family: Tahoma, sans-serif;
+}
+#preferences-editor input.step-input {
+	line-height: 14px !important;
+	height : 26px;
+	padding: 5px 4px;
+}
+#preferences-editor input[type="button"] {
+	min-width: 80px;
+	width: auto;
+	border-radius: 3px !important;
+	border-color: #AAB !important;
+	color: #000;
+	text-shadow: 0 1px 0 #FFF;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.5) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.05) inset;
+}
+#preferences-editor input[type="button"]:hover {
+	background: #E6EBEF;
+	border-color: #728391 !important;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.95) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#preferences-editor input[type="button"]:active {
+	background: #D3DBDF;
+	border-color: #728391 !important;
+	box-shadow: -1px -1px 3px 0px rgba(255, 255, 255, 0.5) inset, 1px 1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#preferences-editor input[type="button"].ui-state-disabled {
+	background: #EEE;
+	border-color: #DDD !important;
+	box-shadow: none !important;
+	color: #999;
+	opacity: 1;
+}
+
+#preferences-editor .footer input {
+	margin-bottom: 0;
+}
+
+#preferences-editor .footer input:last-child {
+	margin-right: 0;
+}
+#preferences-editor .footer input:first-child {
+	margin-left: 0;
+}
+
+#preferences-editor .step-input-wrap .up,
+#preferences-editor .step-input-wrap .down {
+	border-radius: 0;
+	border-width: 1px;
+	border-color: #F6F6FC;
+	width: 2em;
+}
+#preferences-editor input[type="checkbox"],
+#preferences-editor input[type="radio"] {
+	width: auto;
+	vertical-align: middle;
+	margin-top: 0;
+}
+#preferences-editor #pref-view {
+	height: 100%;
+	min-height: 100%;
+	min-width:180px;
+	overflow: auto;
+	margin: 0;
+	padding: 2px;
+	font-family: Tahoma, sans-serif;
+	font-size: 1.1em;
+}
+#preferences-editor #panel-about h1 {
+	margin-bottom: 3px;
+}
+#preferences-editor .preview {
+	padding: 4px;
+	margin: 3px 0 3px 5px;
+	background: #FFC;
+	border:1px solid #EEB;
+	min-height: 1.4em;
+	line-height: 1.4em;
+	max-width: 170px;
+	white-space: normal;
+	color: #666;
+	font-weight: bold;
+}
+#preferences-editor td {
+	text-align: left;
+	vertical-align: middle;
+	padding: 0;
+	line-height: normal;
+}
+#preferences-editor h1 {
+	color : #728391;
+	border-bottom: 2px solid #728391;
+	/*font-weight: bold;*/
+	font-size: 18px;
+	line-height: 1.6em;
+	margin: 0 0 1ex;
+	font-family: Arial, sans-serif;
+}
+#preferences-editor .ui-slider-horizontal {
+	height: .3em;
+	margin: 12px 8px;
+	width: 200px;
+	background: #EEE;
+	border-radius: 2px;
+	border-color: #CCC;
+}
+#preferences-editor .ui-slider .ui-slider-handle {
+	top: -0.5em;
+	width: 0.6em;
+	margin-left: -0.3em;
+	border-radius: 2px;
+}
+
+#preferences-editor .round-precisions select {
+	width: 90px;
+}
+
+#preferences-editor #color-presets-list {
+	border: 1px solid #728391;
+	height: 144px;
+	padding: 1px;
+	overflow: auto;
+	cursor: default;
+	margin: 4px 0;
+}
+
+#preferences-editor #color-presets-list .option {
+	padding: 2px 2px 2px 6px; 
+}
+
+#preferences-editor #color-presets-list .option:hover {
+	background: #DDD;
+}
+
+#preferences-editor #color-presets-list .option.selected {
+	background: highlight;
+	color: highlightText;
+	text-shadow: 0 1px 0 #000;
+}
+#preferences-editor #color-presets-list .option .title {
+	float: left;
+	line-height: 18px;
+	font-weight: bold;
+}
+#preferences-editor #color-presets-list .option .colors {
+	text-align: right;
+}
+#preferences-editor #color-presets-list .option .color,
+#preferences-editor #preset-preview .color {
+	display: inline-block;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin: 1px;
+	border: 1px solid #000;
+	border-color: rgba(0, 0, 0 , 0.5);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+#preferences-editor #slider-saturation:after,
+#preferences-editor #slider-brightness:after { 
+	content: "";
+	position: absolute;
+	left:50%;
+	top: -10px;
+	bottom: -10px;
+	width: 2px;
+	margin-left: 0px;
+	background: #CCC;
+	border-top: 4px solid #999;
+	border-bottom: 4px solid #999;
+	z-index: -1;
+}
+#preferences-editor .slider-label {
+	background: #CCC;
+	color: #FFF;
+	border-radius: 50%;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 15px;
+	font-family: Verdana, sans-serif;
+}

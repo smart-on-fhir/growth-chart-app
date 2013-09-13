@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Tests</title>
+  <script src="../lib/jquery-1.8.2.js"></script>
+  <script src="../lib/raphael.js"></script>
+  <script src="../js/gc-chart.js"></script>
+  <script src="../js/gc-statistics.js"></script>
+  <script src="../js/util.js"></script>
+  <script src="../js/gc-pointset.js"></script>
+  <script src="../js/gc-dataset.js"></script>
+  <style>
+  #toolbar {
+	position: absolute;
+	top : 10px;
+	right: 10px;
+	z-index: 2
+  }
+  </style>
+  <script>
+	var paper, data, RS, rectSize = 55, pointsCount = 20;
+	
+	function generate() {
+		data = [];
+		for (var i = 0; i < pointsCount; i++) {
+			data.push({
+				x : Math.random() * 800,
+				y : Math.random() * 500
+			});
+		}
+	}
+	
+	function draw() {
+		
+		paper.clear();
+		
+		RS = new PointSet(data);
+		
+		var rectWidth  = paper.width * rectSize / 100;
+		var rectHeight = paper.height * rectSize / 100;
+		var rectLeft   = (paper.width - rectWidth) / 2;
+		var rectTop    = (paper.height - rectHeight) / 2;
+		
+		var l = data.length;
+		if (l) {
+			paper.circle(data[0].x, data[0].y, 5).attr({
+				fill: "orange",
+				stroke: "none"
+			});
+			
+			paper.text(data[0].x + 20, data[0].y, "Start");
+			
+			paper.circle(data[l-1].x, data[l-1].y, 5).attr({
+				fill: "green",
+				stroke: "none"
+			});
+			
+			paper.text(data[l-1].x - 16, data[l-1].y, "End");
+			
+			paper.path($.map(data, function(point) {
+				return (point.clipped ? "M" : "L") + point.x + "," + point.y;
+			}).join("").replace(/^(M|L)/, "M")).attr("stroke", "#9CF");
+		}
+		
+		paper.rect(rectLeft, rectTop, rectWidth, rectHeight).attr({
+			"stroke": "red",
+			"stroke-dasharray": "- "
+		});
+		
+		RS.clip(rectLeft, rectLeft + rectWidth, rectTop, rectTop + rectHeight);
+		
+		l = RS._data.length;
+		if (l) {
+			for ( var i = 0; i < l - 1; i += 2 ) {
+				//if (RS._data[i].virtual && RS._data[i + 1].virtual) continue;
+				paper.path(
+					"M" + RS._data[i  ].x + "," + RS._data[i  ].y + 
+					"L" + RS._data[i+1].x + "," + RS._data[i+1].y
+				).attr({
+					"stroke" : "#930",
+					"stroke-width" : 2
+				});
+			}
+		}
+	}
+	
+	Raphael(function() {
+		paper = Raphael( "paper", 800, 500 );
+		generate();
+		draw();
+	});
+  </script>
+</head>
+<body>
+	<div id="paper"></div>
+	<div id="toolbar">
+		<form action="#">
+		Points: <input type="number" min="2" max="100" value="20" onchange="pointsCount = this.value; generate(); draw();" />
+		<input type="button" onclick="generate();draw();" value="Generate Data" />
+		<br />
+		Rect:<br />
+		<input type="range" min="10" max="100" value="55" onchange="rectSize = this.value; draw();" style="width: 300px" />
+		</form>
+	</div>
+</body>
+</html>

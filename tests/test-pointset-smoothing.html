@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Tests</title>
+  <script src="../lib/jquery-1.8.2.js"></script>
+  <script src="../lib/jquery-ui-1.9.1.js"></script>
+  <script src="../lib/raphael.js"></script>
+  <script src="../js/gc-chart.js"></script>
+  <script src="../js/gc-statistics.js"></script>
+  <script src="../js/util.js"></script>
+  <script src="../js/gc-pointset.js"></script>
+  <script src="../js/gc-dataset.js"></script>
+  <style>
+  #toolbar {
+	position: absolute;
+	top : 10px;
+	right: 10px;
+	z-index: 2
+  }
+  svg {
+	outline: 1px solid #CCC;
+  }
+  </style>
+  <script>
+	var paper, data, RS, pointsCount = 50, smooth = 0;
+	
+	function generate() {
+		data = [];
+		for (var i = 0; i < pointsCount; i++) {
+			data.push({
+				x : 800/pointsCount * i,
+				y : 250 + Math.random() * 60 - 30
+			});
+		}
+	}
+	
+	function draw() {
+		
+		paper.clear();
+		
+		RS = new PointSet(data);
+		
+		var l = data.length;
+		if (l) {
+			paper.path("M" + $.map(data, function(point) {
+				return point.x + "," + point.y;
+			}).join("L")).attr("stroke", "#9CF");
+		}
+		
+		
+		
+		RS.smooth(smooth, 250);
+		
+		if (RS._length) {
+			paper.path("M" + $.map(RS._data, function(point) {
+				return point.x + "," + point.y;
+			}).join("L")).attr({
+				"stroke" : "#930",
+				"stroke-width" : 2
+			});
+		}
+	}
+	
+	Raphael(function() {
+		paper = Raphael( "paper", 800, 500 );
+		generate();
+		draw();
+	});
+  </script>
+</head>
+<body>
+	<div id="paper"></div>
+	<div id="toolbar">
+		<form action="#">
+		Points: <input type="number" min="2" max="100" value="50" onchange="pointsCount = this.value; generate(); draw();" />
+		<input type="button" onclick="generate();draw();" value="Generate Data" />
+		<br />
+		Smooth: <span id="smooth-value">0</span><br />
+		<input type="range" min="0" max="20" step="1" value="0" onchange="smooth = this.value;draw();$('#smooth-value').html(smooth)" style="width: 300px" />
+		</form>
+	</div>
+</body>
+</html>

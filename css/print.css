@@ -1,0 +1,575 @@
+html {
+	overflow: auto;
+	height: auto;
+}
+body {
+	background: #FFF;
+	min-width: 0;
+	margin: 8px;
+	font-family: sans-serif;
+	font-size: 14px;
+	text-align: center;
+}
+.gender-color  { color : #666 }
+.gender-bg     { background-color : #CCC }
+.gender-border { color : #666 }
+.gender-button { color: #666}
+
+#today {
+	color: #666;
+	float:right;
+	line-height: 1em;
+}
+
+#print-toolbar {
+	background: #CCC;
+	border-radius: 0 0 8px 8px;
+	position: fixed;
+	z-index: 100;
+	top: -1px;
+	right: 10%;
+	padding: 4px 8px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 1px 1px 7px rgba(0, 0, 0, 0.5), 0 0 0 1px #DDD inset; 
+	text-shadow: 0 1px 0 #DDD;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+#print-toolbar .print-link {
+	line-height: 16px;
+	text-decoration: none;
+	color: #666;
+	padding-right: 4px;
+}
+#print-toolbar .print-link:hover {
+	color : #000;
+	text-shadow: 0 1px 0 #EEE;
+}
+#print-toolbar .print-link img {
+	padding: 0 6px 0 0;
+	vertical-align: top;
+	border: none;
+}
+
+h1 {
+	font-family: Arial, sans-serif;
+	font-size: 1.6em;
+	color: #000;
+	margin: 0;
+}
+.frame {
+	border: 1px solid #666;
+	display: inline-block;
+	text-align: left;
+	width: 1000px;
+}
+#header {
+	background: transparent;
+	padding: 0 10px 10px;
+	text-align: left;
+	width: 1000px;
+	margin: auto;
+}
+
+#stage {
+	/*height: 650px;
+	min-height: 650px;*/
+	position: relative;
+	top: 0 !important;
+	bottom: 0;
+	margin: 0 !important;
+	height: auto !important;
+	overflow: hidden;
+}
+#view-clinical {
+	margin: auto;
+}
+.stage-1 {
+	margin: auto;
+}
+svg {
+	display: block;
+	background: #FFF;
+	margin: 0;
+}
+
+#view-clinical,
+#view-parental,
+#view-table,
+.timeline {
+	display: none;
+}
+
+.view-clinical #view-clinical,
+.view-clinical .timeline  {
+	display: block;
+}
+.view-parental #view-parental {
+	display: block;
+}
+.view-charts #view-clinical,
+.view-clinical .timeline {
+	display: block;
+}
+.view-table #view-table {
+	display: block;
+}
+
+
+
+@media print {
+	#print-toolbar {
+		display: none;
+	}
+}
+
+/* -------------------------------------------------------------------------- *
+ *                              print-table                                   *
+ * -------------------------------------------------------------------------- */
+.print-table {
+	min-width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	font-size: 12px;
+}
+.print-table tr.odd {
+	background: #F7F7F7;
+}
+.print-table th {
+	padding: 4px;
+	border: 1px solid #BBC6CE;
+	font-weight: bold;
+	vertical-align: middle;
+	text-align: center;
+	overflow: hidden;
+	background: #E1EBF1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 60px;
+	font-size: 12px;
+}
+
+.print-table td {
+	padding: 4px;
+	border: 1px solid #BBC6CE;
+	vertical-align: middle;
+	text-align: left;
+	overflow: hidden;
+	color: #7A909E;
+} 
+
+ 
+/* -------------------------------------------------------------------------- *
+ *                         SVG and VML Styles                                 *
+ * -------------------------------------------------------------------------- */
+.crispedges {
+	shape-rendering: crispedges;
+}
+
+.tooltip-point {
+	pointer-events: none;
+}
+
+path.grid-line-y {
+    shape-rendering: crispedges;
+    /*stroke: #999;
+	
+    stroke-opacity: 0.3;
+    stroke-width:  1;*/
+}
+path.grid-line-x {
+    shape-rendering: crispedges;
+    stroke: #666;
+	stroke-dasharray: 2,1;
+    stroke-opacity: 0.5;
+    stroke-width:  1;
+}
+
+.chart-title-curved {
+	spacing : auto;
+	kerning : 1;
+	letter-spacing : 1;
+}
+
+/* Raphael marker color fix */
+svg marker use {
+	fill : #000 !important;
+}
+svg path {
+	pointer-events: none;
+	
+}
+.pattern-fill {
+	/*fill: url("../img/problem-pattern-blue.png") !important;
+	color-interpolation: auto;
+	color-interpolation-filters: auto;
+	color-rendering: optimizeQuality;
+	shape-rendering:geometricPrecision;
+	image-rendering: optimizeQuality;
+	image-rendering: -webkit-optimize-contrast;*/
+}
+
+
+
+/* -------------------------------------------------------------------------- * 
+ *                                TIMELINES                                   *
+ * -------------------------------------------------------------------------- */
+
+.timeline {
+	position     : relative;
+	z-index      : 10;
+	font-family  : Tahoma, sans-serif;
+	font-size    : 0.8em;
+	line-height  : 16px;
+	line-height  : normal;
+	color        : #999;
+}
+
+.timeline .labels {
+	position    : absolute;
+	top         : 0;
+	height      : 100%;
+	overflow    : hidden;
+}
+
+.timeline .years,
+.timeline .months,
+.timeline .weeks,
+.timeline .days,
+.timeline .gest {
+	position : relative;
+	height   : 16px;
+	line-height  : 16px;
+	display  : none; /* initially hidden */
+	margin   : auto;
+	
+}
+
+.timeline > div {
+	border-bottom:1px solid #CCC;
+	border-top: none;
+}
+#timeline-bottom > div {
+	border-top:1px solid #CCC;
+	border-bottom: none;
+}
+.timeline .gest { 
+	border-top: none;
+	border-bottom: none;
+	background: rgba(255, 255, 255, 0.5) !important;
+	/*box-shadow: 0px 20px 16px -12px #FFF inset;*/
+}
+
+.timeline .years:before,
+.timeline .years:after,
+.timeline .months:before,
+.timeline .months:after,
+.timeline .weeks:before,
+.timeline .weeks:after,
+.timeline .days:before,
+.timeline .days:after { 
+	position: absolute;
+	top : 0;
+	z-index: 11;
+	vertical-align: middle;
+	line-height: inherit;
+}
+
+.timeline .years:before,
+.timeline .months:before,
+.timeline .weeks:before,
+.timeline .days:before { 
+	left : 2px;
+	text-align: left;
+}
+
+.timeline .gest .labels:before {
+	content: "Gest.";
+	position: absolute;
+	z-index: 2;
+	text-align: right;
+	left: 2px;
+	width: 42px;
+}
+
+.timeline .years:after,
+.timeline .months:after,
+.timeline .weeks:after,
+.timeline .days:after { 
+	right : 2px;
+	text-align: right;
+}
+
+.timeline .years:before { content : "Years"; } 
+.timeline .years:after { content : "Years"; }
+
+.timeline .months:before { content: "Months"; } 
+.timeline .months:after { content: "Months"; }
+
+.timeline .weeks:before { content: "Weeks"; } 
+.timeline .weeks:after { content: "Weeks"; }
+
+.timeline .days:before { content: "Days"; } 
+.timeline .days:after { content: "Days"; }
+
+
+.timeline .years .labels div,
+.timeline .months .labels div,
+.timeline .weeks .labels div,
+.timeline .days .labels div,
+.timeline .gest .labels div {
+	height   : 100%;
+	border : none;
+	border-left: 1px solid #CCC;
+	vertical-align: middle;
+	position   : absolute;
+	z-index    : 3;
+	top        : 0;
+	margin-left: -0.5px;
+	color      : #999;
+	text-align : left;
+	text-indent: 2px;
+	cursor     : default;
+}
+
+.timeline .gest .labels div {
+	background: transparent;
+}
+
+.timeline .months .labels div:before {
+	content: "";
+	position   : absolute;
+	bottom: 0;
+	left: 0;
+	height: 50%;
+	width: 50%;
+	border-right: 1px solid #CCC;
+}
+#timeline-bottom .months .labels div:before {
+	top: 0;
+	bottom: auto;	
+}
+
+.timeline .years .labels,
+.timeline .months .labels,
+.timeline .weeks .labels,
+.timeline .days .labels {
+	border-right: 1px solid #CCC;
+}
+
+
+.timeline .years .labels div.active,
+.timeline .months .labels div.active,
+.timeline .weeks .labels div.active,
+.timeline .days .labels div.active {
+	font-weight: bold;
+	color: #000;
+	background: #FFF;
+}
+.timeline .years .labels div.active:after { content : " y "; font-size: 10px; font-weight: normal; }
+.timeline .months .labels div.active:after { content: " m "; font-size: 10px; font-weight: normal; }
+.timeline .weeks .labels div.active:after { content: " w "; font-size: 10px; font-weight: normal; }
+.timeline .days .labels div.active:after { content: " d "; font-size: 10px; font-weight: normal; }
+
+.timeline > div {
+	display: none;
+}
+.timeline > div.visible {
+	display: block;
+}
+
+#timeline-bottom .gest { margin-top: -17px; }
+#timeline-top .gest { margin-bottom: -17px; border-bottom: 1px solid #CCC; }
+
+.timeline .years .labels div.active,
+.timeline .months .labels div.active,
+.timeline .weeks .labels div.active,
+.timeline .days .labels div.active {
+	background: #FFF !important;
+	border-color: #CCC !important;
+}
+
+/* Annotations -------------------------------------------------------------- */
+.annotations {
+	position: absolute;
+	top     : 0;
+	width   : 100%;
+}
+.multiple-timeline .annotations,
+.has-gestweeks .annotations {
+	top : 16px;
+}
+
+.annotations .annotation-button {
+	position      : absolute;
+	z-index       : 2;
+	top           : 2px;
+	width         : 20px;
+	height        : 20px;
+	line-height   : 20px;
+	border        : 1px solid transparent;
+	margin-left   : -11px;
+	background    : url('../img/icons.png') -34px -58px no-repeat scroll;
+	text-align    : center;
+	cursor        : pointer;
+	opacity       : 0.5;
+	border-radius : 3px;
+}
+.annotations .annotation-button:hover {
+	opacity     : 1; 
+}
+.annotations .annotation-button.active {
+	background-color: #FFF;
+	border-color: #666;
+	opacity     : 1; 
+	z-index     : 300;
+	box-shadow  : 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.annotations .annotation-button .details,
+#annotation-popup {
+	position  : absolute;
+	z-index   : 3;
+	top       : 100%;
+	margin    : -1px auto auto -1px;
+	border    : 1px solid #666;
+	padding   : 6px 10px;
+	background: #FFF;
+	min-width : 300px;
+	max-width : 500px;
+	width     : auto;
+	text-align: left;
+	display   : none;
+	cursor    : auto;
+	font-size : 0.9em;
+	line-height: normal;
+	box-shadow : 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+#annotation-popup {
+	top: 0;
+	margin   : -5px -5px auto -5px;
+	font-size: 1.1em;
+}
+#annotation-popup .close {
+  background: url("../img/icons.png") no-repeat scroll 0 -24px #BBB;
+  border: 2px solid #BBB;
+  border-radius: 7px 7px 7px 7px;
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  cursor: pointer;
+}
+#annotation-popup .close:hover {
+	background-color: #F60;
+	border-color: #F60;
+}
+
+.annotations .annotation-button .header,
+#annotation-popup .header {
+	padding: 0 0 4px;
+	border-bottom: 1px solid #CCC;
+	text-align: right;
+	color: #888;
+	font-weight: bold;
+	display: block;
+}
+
+.annotations .annotation-button .header .title,
+#annotation-popup .header .title {
+	float: left;
+}
+
+.annotations .annotation-button .header:after,
+#annotation-popup .header:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.annotations .annotation-button .content,
+#annotation-popup .content {
+	padding: 4px 0 0;
+	max-height: 350px;
+	overflow: auto;
+	display: block;
+}
+
+.annotations .annotation-button.active .details {
+	display: block;
+}
+.annotations .annotation-button.active .details:before {
+	content : "";
+	position: absolute;
+	top     : -1px;
+	left    : 0;
+	width   : 20px;
+	height  : 2px;
+	background : #FFF;
+}
+
+.range-highlight {
+	position: absolute;
+	z-index: 3;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.06);
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset,
+				-1px 0 0 rgba(255, 255, 255, 0.3),
+				1px 0 0 rgba(255, 255, 255, 0.3);
+	display: none;
+}
+
+.annotations .annotation-button.to-left .details {
+	right: -1px;
+	left: auto;
+	border-radius : 3px 0 3px 3px;
+}
+
+.annotations .annotation-button.to-right .details {
+	left: 0;
+	right: auto;
+	border-radius : 0 3px 3px 3px;
+}
+
+.annotations .annotation-button.to-left.active .details:before {
+	right: 0;
+	left: auto;
+}
+
+.annotations .annotation-button.to-right.active .details:before {
+	left: 0;
+	right: auto;
+}
+
+/* -------------------- Parental View Styles -------------------------------- */
+
+#PatientHeader, 
+#PredictedHeightHeader {
+	background: transparent;
+	overflow: visible;
+	color: #666;
+	font-weight: bold;
+	line-height: 50px;
+	border-bottom: 1px solid #999;
+	padding-bottom: 7px;
+	margin-bottom: 1px;
+}
+
+#PredictedHeightHeader:before,
+#PredictedHeightHeader:after {
+	display: none;
+}
+
+#PaperLeft {
+	font-size: 0.96em;
+}
+
+span.title {
+	margin-right: 16px;
+	color: #000;
+	font-weight: bold;
+}
+.patient-name.heading {
+	display: none;
+}

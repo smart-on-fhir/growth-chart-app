@@ -1,0 +1,508 @@
+#pview-wrapper {
+	max-width : 1200px;
+	/*background-color: #DDD;*/
+	min-width: 960px;
+	margin: auto;
+	padding: 8px;
+}
+
+#pview-wrapper:after {
+	content: "";
+	display: block;
+	clear : both;
+}
+
+#pview-wrapper .left-column,
+#pview-wrapper .right-column {
+	float:left;
+	width: 50%;
+	margin: 0;
+	padding: 0;
+}
+
+
+#PatientHeader, 
+#PredictedHeightHeader {
+	height: 50px;
+	background-color: #2a353e;
+	padding: 5px;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	color: #FFFFFF;
+}
+
+#PredictedHeightHeader {
+	padding-left: 10px;
+	margin-left: -5px;
+}
+
+#PredictedHeightHeader:before {
+	border-color: transparent transparent transparent #FFFFFF;
+    border-style: inset none inset solid;
+    border-width: 36px 0 36px 36px;
+    content: "";
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: -6px;
+    width: 0;
+    z-index: 0;
+}
+
+#PredictedHeightHeader:after {
+	border-color: transparent transparent transparent #2a353e;
+    border-style: inset none inset solid;
+    border-width: 30px 0 30px 30px;
+    content: "";
+    height: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    z-index: 1;
+}
+
+#picture{
+	float : left;
+	width : 70px;
+	height: 60px;
+	margin: -5px 0 auto -5px;
+}
+
+
+#PaperLeft {
+	width: 98%;
+	float:left;
+	height:100%;
+}
+
+#PatientHeader > div {
+	padding: 0 0 0 10px;
+}
+
+#PredictedHeightHeader .heading,
+#PatientHeader .heading {
+	font-size: 1.2em;
+	line-height: 50px;
+}
+
+
+#nameText{
+	float: left;
+}
+
+#nameSubtitle{
+	clear: left;
+	float: left;
+}
+
+
+
+#nameTextPredicted{
+	text-align: center;
+}
+
+#Paper{
+	float:left;
+	width: 100%;
+	height:250px;
+}
+
+#PaperPredictedHeight{
+	height: 502.5px;
+	overflow: hidden;
+}
+
+#RightPaper{
+	width: 100%;
+}
+
+#PredictedHeightFooter{
+	text-align: center;
+}
+
+#edit-parents {
+	margin: 10px auto;
+	text-align: center;
+	min-width: 40%;
+	height: 40px;
+	line-height: 40px;
+	color: #FFF;
+	font-size: 1.2em;
+	border: none;
+	background-color: #888;
+	cursor: pointer;
+}
+#EditMother:hover{
+	opacity: 0.5;
+}
+#EditFather:hover{
+	opacity: 0.5;
+}
+#EditPatient:hover{
+	opacity: 0.5;
+}
+#AddPhoto:hover{
+	opacity: 0.5;
+}
+
+#EditMother:active{
+	color: #000000;
+}
+
+#EditFather:active{
+	color: #000000;
+}
+
+#AddPhoto:active{
+	color: #000000;
+}
+
+#EditPatient:active{
+	color: #000000;
+}
+
+
+
+#EditFather{
+	margin-right: 5%;
+	margin-top: 1%;
+	text-align: center;
+	float:right;
+	width: 40%;
+	height: 80%;
+	color: #FFFFFF;
+	font-size: 100%;
+	font-weight: bold;
+	border: none;
+	background-color: #888;
+}
+
+#PatientHeadertexts{
+	float: left;
+	height: 50px;
+	padding:0px
+}
+
+
+
+#infobox{
+	float:left;
+	width: 100%;
+	height: 300px;
+}
+
+#gender{
+	opacity:0.6;
+	margin-top: 3px;
+	height:16%;
+	background-color: #bfe3f4;
+	
+}
+#age{
+	opacity:0.6;
+	margin-top: 2px;
+	height:16%;
+	background-color: #bfe3f4;
+}
+#DOB{
+	opacity:0.6;
+	margin-top: 2px;
+	height:16%;
+	background-color: #bfe3f4;
+}
+#Gestation{
+	opacity:0.6;
+	margin-top: 2px;
+	height:16%;
+	background-color: #bfe3f4;
+}
+#Allergies{
+	opacity:0.6;
+	margin-top: 2px;
+	height:16%;
+	background-color: #bfe3f4;
+}
+#Controls{
+	margin-top: 2px;
+	height:16%;
+	background-color: #bfe3f4;
+}
+
+#AddPhoto{
+	margin-top: 1%;
+	float:right;
+	width: auto;
+	height: 80%;
+	color: #FFFFFF;
+	font-size: 100%;
+	font-weight: bold;
+	border: none;
+	margin-right: 1%;
+}
+
+#EditPatient{
+	margin-top: 1%;
+	margin-right: 1%;
+	float:right;
+	width: auto;
+	height: 80%;
+	color: #FFFFFF;
+	font-size: 100%;
+	font-weight: bold;
+	border: none;
+}
+
+#genderText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+#genderData{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+	color: #666666;
+}
+
+#ageData{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+	color: #666666;
+}
+
+#DOBData{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+	color: #666666;
+}
+
+#GestationData{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+	color: #666666;
+}
+
+#AllergiesData{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+	color: #666666;
+}
+	
+#ageText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+#DOBText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+#GestationText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+#AllergiesText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+#ControlsText{
+	float: left;
+	width: auto;
+	height: 90%;
+	margin-left: 10px;
+	line-height: 200%;
+	font-size:25px;
+}
+
+/* -------------------------------------------------------------------------- */
+#vitals {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	margin: 0 0 10px 0;
+}
+#vitals td {
+	padding: 10px 10px 10px 0;
+	vertical-align: top;
+	text-align: left;
+	border-bottom: 1px solid #CCC;
+	white-space: normal;
+}
+#vitals .second-row td {
+	border-bottom: 1px solid #ADADAD;
+}
+#vitals .label {
+	font-size  : 1.4em;
+	line-height: 36px;
+}
+#vitals .value {
+	margin: 0.2em 0;
+	font-size: 0.9em;
+}
+#vitals .value.metric,
+#vitals .value.pct {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+#vitals .value.pct:before {
+	content: "";
+	width: 0;
+	margin: 0 0.75ex;
+	border-left: 1px solid;
+	display: inline-block;
+	height: 1em;
+	vertical-align: bottom;
+}
+#vitals img {
+	float: left;
+	margin-right: 0.4em;
+}
+.vitals-height {
+	color: #25B3DF;
+}
+.vitals-weight {
+	color: #F09C17;
+}
+.vitals-headc {
+	color: #85AF3C;
+}
+.vitals-bmi {
+	color: #D062B7;
+}
+
+#vitals-message {
+	line-height: normal;
+	font-size: 1.1em;
+	padding: 10px 0;
+	margin: 0;
+}
+#vitals-message * {
+	line-height: normal;
+	font-size: 1em;
+	vertical-align: baseline;
+}
+#vitals-message .weight-status {
+	font-size: 1.1em;
+	line-height: 1.5em;
+}
+#vitals-message .weight-range {
+	font-size: 0.8em;
+	color: #888;
+}
+#vitals-message .custom-notes {
+	min-height: 1.4em;
+	margin-top: 0.4em;
+}
+
+
+
+
+
+.vitals-chart:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.vitals-chart .fat-cell {
+	float: left;
+	text-align: center;
+	padding: 4px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.vitals-chart.two-cols .fat-cell {
+	width: 50%;
+}
+
+.vitals-chart.three-cols .fat-cell {
+	width: 33.3333%;
+}
+
+.vitals-chart.four-cols .fat-cell {
+	width: 25%;
+}
+
+.vitals-chart.images .fat-cell {
+	padding: 0;
+}
+.vitals-chart .fat-cell img {
+	max-width: 80%;
+	margin: 0 10%;
+}
+
+.labels .fat-cell {
+	line-height: 2em;
+	border-bottom: 1px solid #666F76;
+	color: #CFCFCF;
+	font-size: 1.3em;
+	padding: 0;
+}
+.labels .fat-cell.active {
+	color: #666F76;
+	font-weight: bold;
+}
+
+.values .fat-cell {
+	min-height: 1.9em;
+	background-color: #CFCFCF;
+	border-left: 1px solid #FFF;
+	text-align: right;
+	color: #FFF;
+	line-height: 1.66em;
+	padding: 0.1em 0.2em;
+}
+.values .fat-cell:first-child {
+	border-left: none;
+}
+
+.values .fat-cell.active {
+	background-color: #F39E17;
+	font-weight: bold;
+}

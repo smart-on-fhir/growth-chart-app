@@ -1,0 +1,755 @@
+<script src="js/charts/mini_charts.js"></script>
+<table id="add-edit-entry-dialog">
+	
+	<tr>
+		<td colspan="2"><label>Date of measurement/note </label></td>
+		<td colspan="2">
+			<div class="input-wrap today">
+				<input type="text" name="agemos" />
+				<b class="button light btn-down" onclick="$(this).parent().find('input').trigger('focus')"></b>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="separator"></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><label style="color:#888">Patient's age on above date </label></td>
+		<td colspan="2" class="age"></td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="separator"></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><label>Entered by user/department </label></td>
+		<td colspan="2">
+			<div class="input-wrap">
+				<input type="text" name="med-service" />
+				<b class="button light btn-down" onclick="$(this).parent().find('input').trigger('focus')"></b>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="separator"></div>
+		</td>
+	</tr>
+	<tr class="length">
+		<td><div class="label">Length</div></td>
+		<td><div class="chart"></div></td>
+		<td class="pct">N/A</td>
+		<td><input type="text" name="length-and-stature" class="step-input" placeholder="+ Add new entry" /></td>
+	</tr>
+	<tr class="weight">
+		<td><div class="label">Weight</div></td>
+		<td><div class="chart"></div></td>
+		<td class="pct">N/A</td>
+		<td><input type="text" name="weight" class="step-input" /></td>
+	</tr>
+	<tr class="headc">
+		<td><div class="label">Head C</div></td>
+		<td><div class="chart"></div></td>
+		<td class="pct">N/A</td>
+		<td><input type="text" name="headc" class="step-input" /></td>
+	</tr>
+	<tr class="bmi">
+		<td><div class="label">BMI</div></td>
+		<td><div class="chart"></div></td>
+		<td class="pct">N/A</td>
+		<td><input type="text" name="bmi" class="step-input" /></td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="separator"></div>
+		</td>
+	</tr>
+	<tr class="boneage">
+		<td><div class="label">Bone Age</div></td>
+		<td><div class="chart"></div></td>
+		<td class="pct">&nbsp;</td>
+		<td><input type="text" name="boneage" class="time-interval-input" /></td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="annotation">
+				<b class="title">Annotation</b>
+				<div class="separator"></div>
+				<textarea name="annotation-content" placeholder="+ Add Annotation"></textarea>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div class="separator"></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="javascript:void 0;" id="del-rec-btn" style="color:red;">Delete record</a>
+		</td>
+		<td colspan="2">
+			<!--b class="error-message">Possible Error in recording</b-->
+			<a class="button save" href="javascript:void 0;">Save</a>
+			<a class="button cancel" href="javascript:void 0;" onclick="$(this).closest('#dialog').dialog('close');">Cancel</a>
+		</td>
+	</tr>
+</table>
+<script>
+(function() {
+	var root         = $("#add-edit-entry-dialog");
+	var args         = root.closest("#dialog").data("dialogProxy").arguments;
+	var patient      = GC.App.getPatient();
+	var age          = (new GC.TimeInterval()).setStartDate(patient.DOB);
+	var lastEntry    = patient.getLastModelEntry();
+	var record       = args[0] || createRecord();
+	var dayMS        = 1000 * 60 * 60 * 24;
+	var weekMS       = dayMS * 7;
+	var monthMS      = weekMS * 4.348214285714286;
+	var mode         = !!args[0] ? "edit" : "add";
+	var addMissingValuesOnUpdate = false;
+	
+	var state        = $.extend(true, { 
+		lengthAndStature : getPointValue(record, "lengthAndStature", 0),
+		weight           : getPointValue(record, "weight", 0),
+		headc            : getPointValue(record, "headc", 0),
+		bmi              : getPointValue(record, "bmi", 0),
+		boneAge          : record.agemos,
+		medService       : "",
+		annotation       : { txt : "" }		
+	}, record);
+	
+	var lengthChart  = new LengthMiniChart (root.find('.length .chart' ), {}, state);
+	var weightChart  = new WeightMiniChart (root.find('.weight .chart' ), {}, state);
+	var headcChart   = new HeadcMiniChart  (root.find('.headc .chart'  ), {}, state);
+	var bmiChart     = new BMIMiniChart    (root.find('.bmi .chart'    ), {}, state);
+	var boneAgeChart = new BoneAgeMiniChart(root.find('.boneage .chart'), {}, state);
+	
+	/**
+	 * Finds the closest (to the given "before" ageMos) model entry, having the 
+	 * "having" property and returns that property value. In case such record cannot
+	 * be found, the function will return the "defaultValue" as provided (could be 
+	 * undefined).
+	 * @param {Number} before Age in months (unsigned float) 
+	 * @param {String} having The name of the property to search for 
+	 * @param {*} defaultValue What to return in case failure
+	 */
+	function getPrevValue(before, having, defaultValue) {
+		var rec = patient.getLastModelEntry(function(entry) {
+			return entry.agemos < before && having in entry;
+		});
+		return rec ? rec[having] : defaultValue;
+	}
+	
+	/**
+	 * If the dialog has been opened in edit mode, the editted point may not have 
+	 * all the properties. In this case the missing ones should be computed using 
+	 * interpolation if possible. 
+	 * @param {Object} entry The current entry 
+	 * @param {String} prop The name of the property to search for 
+	 * @param {*} defaultValue What to return in case failure
+	 */
+	function getComputedValue(entry, prop, defaultValue) {
+		var prev = patient.getPrevModelEntry(entry.agemos, function(rec) {
+			return prop in rec;
+		});
+		var next = patient.getNextModelEntry(entry.agemos, function(rec) {
+			return prop in rec;
+		});
+		
+		if (!prev && next) {
+			return next[prop];
+		}
+		
+		if (!next && prev) {
+			return prev[prop];
+		}
+		
+		var x1 = prev ? prev.agemos : entry.agemos;
+		var x2 = next ? next.agemos : entry.agemos;
+		var y1 = prev ? prev[prop]  : entry[prop];
+		var y2 = next ? next[prop]  : entry[prop];
+		
+		return y = y1 + (y2 - y1) * (entry.agemos - x1) / (x2 - x1);
+	}
+	
+	/**
+	 * Get the initial value for state properies. In "add" mode uses the value from the 
+	 * last enry if available. In "edit" mode attempts interpolation... 
+	 */
+	function getPointValue(entry, prop, defaultValue) {
+		if (mode == "add") {
+			return getPrevValue(entry.agemos, prop, defaultValue);
+		}
+		return getComputedValue(entry, prop, defaultValue);
+	}
+	
+	function createRecord() {
+		var agemos = ((new Date()).getTime() - patient.DOB.getTime()) / GC.Constants.TIME.MONTH;
+		
+		// If for some reason there is data entered in the future, then instead 
+		// of using today's date for adding, use the last date plus 10% increase
+		if (lastEntry && lastEntry.agemos > agemos) {
+			agemos = lastEntry.agemos === 0 ? 1 : lastEntry.agemos + 1;
+		}
+		
+		var rec = {
+			agemos : agemos,
+			annotation : { txt : "" }
+		};
+		
+		// boneAge defaults to the same value as the current age
+		rec.boneAge = rec.agemos;
+		
+		// These are populated from the lest entered values
+		$.each({
+			"lengthAndStature" : 0, 
+			"weight" : 0, 
+			"headc" : 0, 
+			"bmi" : 0,
+			medService : ""
+		}, function(name, defaultValue) {
+			var lastEntry = patient.getLastModelEntry(function(entry) {
+				return name in entry;
+			});
+			rec[name] = lastEntry ? lastEntry[name] : defaultValue;
+		});
+		
+		return rec;
+	}
+	
+	/**
+	 * Updates the model object to match the state of the dialog UI, i.e. 
+	 * SAVE CHANGES.
+	 */
+	function updateModel() {
+		
+		if ( addMissingValuesOnUpdate ) {
+			$.extend(true, record, state);
+			return;
+		}
+		
+		record.agemos = state.agemos;
+		
+		// length-and-stature
+		var length = root.find('[name="length-and-stature"]').stepInput("value");
+		if (root.find('[name="length-and-stature"]').val() && (length || length === 0)) {
+			record.lengthAndStature = length;
+		} else if ( record.hasOwnProperty("lengthAndStature") ) {
+			delete record.lengthAndStature;
+		}
+		
+		// weight
+		var weight = root.find('[name="weight"]').stepInput("value");
+		if (root.find('[name="weight"]').val() && (weight || weight === 0)) {
+			record.weight = weight;
+		} else if ( record.hasOwnProperty("weight") ) {
+			delete record.weight;
+		}
+		
+		// headc
+		var headc = root.find('[name="headc"]').stepInput("value");
+		if (root.find('[name="headc"]').val() && (headc || headc === 0)) {
+			record.headc = headc;
+		} else if ( record.hasOwnProperty("headc") ) {
+			delete record.headc;
+		}
+		
+		// BMI
+		var bmi = root.find('[name="bmi"]').stepInput("value");
+		if (root.find('[name="bmi"]').val() && (bmi || bmi === 0)) {
+			record.bmi = bmi;
+		} else if ( record.hasOwnProperty("bmi") ) {
+			delete record.bmi;
+		}
+		
+		// boneAge
+		var boneAge = root.find('[name="boneage"]').timeIntervalInput("value") / monthMS;
+		if (root.find('[name="boneage"]').val() && (boneAge || boneAge === 0)) {
+			record.boneAge = boneAge;
+		} else if ( record.hasOwnProperty("boneAge") ) {
+			delete record.boneAge;
+		}
+		
+		// annotation
+		var annotation = root.find('[name="annotation-content"]').val();
+		if (annotation) {
+			record.annotation = { txt : annotation };
+		} else if ( record.hasOwnProperty("annotation") ) {
+			delete record.annotation;
+		}
+	}
+	
+	function getVelocity( entry, prop ) {
+		if ( prop in entry ) {
+			var prev = GC.App.getPatient().getPrevModelEntry(entry.agemos, function(o) {
+				return prop in o;
+			});
+			if ( prev ) {
+				var t = entry.agemos - prev.agemos;
+				var x = entry[prop] - prev[prop];
+				return x / t;
+			}
+		}
+		return 0;
+	}
+	
+	function isPossibleError(type) {
+		var velocity = getVelocity( state, type );
+		
+		switch (type) {
+			
+			case "lengthAndStature":
+				return velocity > 50 || velocity < -10;
+				
+			case "weight":
+				return velocity > 4 || velocity < -3;
+				
+			case "headc":
+				return velocity > 12 || velocity < -10;
+				
+			case "bmi":
+				return velocity > 7 || velocity < -7;
+				
+			case "any":
+				return  isPossibleError("lengthAndStature") ||
+						isPossibleError("weight") ||
+						isPossibleError("headc") ||
+						isPossibleError("bmi");
+		}
+		return false;
+	}
+	
+	function checkDialogEmpty() {
+		var isEmpty = !(
+			root.find('[name="length-and-stature"]').val() ||
+			root.find('[name="weight"]').val() ||
+			root.find('[name="headc"]').val() ||
+			root.find('[name="bmi"]').val() ||
+			root.find('[name="boneage"]').val() || 
+			root.find('[name="annotation-content"]').val() || 
+			root.find('[name="med-service"]').val() !== record.medService
+		);
+		
+		root.toggleClass("no-value", isEmpty)
+			.find(".button.save").toggleClass("ui-state-disabled", isEmpty);
+	}
+	
+	function updateUI() {
+		//console.log(state);
+		var inputAgemos     = root.find('[name="agemos"]'),
+			inputLength     = root.find('[name="length-and-stature"]'),
+			inputWeight     = root.find('[name="weight"]'),
+			inputHeadc      = root.find('[name="headc"]'),
+			inputBMI        = root.find('[name="bmi"]'),
+			inputBoneage    = root.find('[name="boneage"]'),
+			inputAnnotation = root.find('[name="annotation-content"]'),
+			date            = patient.DOB.clone().toDate();
+		
+		date.setTime(date.getTime() + state.agemos * GC.Constants.TIME.MONTH);
+		
+		inputAgemos.datepicker("setDate", date);
+		
+		// lengthAndStature ----------------------------------------------------
+		inputLength.stepInput("value", state.lengthAndStature);
+		if (mode == "add" || (!record.lengthAndStature && record.lengthAndStature !== 0)) {
+			inputLength.attr(
+				"placeholder",
+				inputLength.stepInput("option", "format")(state.lengthAndStature)
+			).val("");
+		}
+		
+		// weight --------------------------------------------------------------
+		inputWeight.stepInput("value", state.weight);
+		if (mode == "add" || (!record.weight && record.weight !== 0)) {
+			inputWeight.attr(
+				"placeholder",
+				inputWeight.stepInput("option", "format")(state.weight)
+			).val("");
+		}
+		
+		// headc ---------------------------------------------------------------
+		inputHeadc.stepInput("value", state.headc);
+		if (mode == "add" || (!record.headc && record.headc !== 0)) {
+			inputHeadc.attr(
+				"placeholder",
+				inputHeadc.stepInput("option", "format")(state.headc)
+			).val("");
+		}
+		
+		// BMI -----------------------------------------------------------------
+		inputBMI.stepInput("value", state.bmi);
+		if (mode == "add" || (!record.bmi && record.bmi !== 0)) {
+			inputBMI.attr(
+				"placeholder",
+				inputBMI.stepInput("option", "format")(state.bmi)
+			).val("");
+		}
+		
+		// boneage -------------------------------------------------------------
+		inputBoneage.timeIntervalInput("value", state.boneAge * monthMS);
+		if (mode == "add" || (!record.boneAge && record.boneAge !== 0)) {
+			inputBoneage.attr(
+				"placeholder",
+				inputBoneage.timeIntervalInput("format", state.agemos * monthMS)
+			).val("");
+		}
+		
+		// annotation ----------------------------------------------------------
+		inputAnnotation.val(state.annotation ? state.annotation.txt : "");
+		if (mode == "add" || (!record.annotation && record.annotation !== "")) {
+			inputAnnotation.val("");
+		}
+		
+		lengthChart.draw();
+		weightChart.draw();
+		headcChart.draw();
+		bmiChart.draw();
+		boneAgeChart.draw();
+		
+		age.setMonths(state.agemos);
+		root.find(".age").html(age.toString({
+			"Years"  : "y",
+			"Year"   : "y",
+			"Months" : "m",
+			"Month"  : "m",
+			"Weeks"  : "w",
+			"Week"   : "w",
+			"Days"   : "d",
+			"Day"    : "d",
+			separator : " "
+		}));
+		
+		inputAgemos.closest(".input-wrap").toggleClass(
+			"today", 
+			(new XDate(inputAgemos.datepicker("getDate"))).toString("ddMMMyyyy") == (new XDate()).toString("ddMMMyyyy")
+		);
+	}
+	
+	function save() {
+		
+		updateModel();
+		
+		if (mode == "add") {
+			patient.getModel().push(record);
+		}
+			
+		$.when(patient.writeRecord(record)).then(function() {
+			
+			//$("html").trigger("changepatientdata");
+			root.closest("#dialog").dialog("close");
+			GC.App.refresh();
+			GC.App.selectRangeForAge(record.agemos * monthMS);
+			GC.TableView.noScroll = true;
+			GC.App.setSelectedRecord(record);
+			GC.TableView.noScroll = false;
+			//if (GC.App.ChartsView) {
+			//	setTimeout(function() {
+			//		GC.App.ChartsView.selectAge(record.agemos * 4.348214285714286);
+			//	}, 100);
+			//}
+		});
+	}
+	
+	function initUI(entry) {
+		
+		// length-and-stature stepInput ----------------------------------------
+		root.find('[name="length-and-stature"]').stepInput({
+			min : 0,
+			max : 300,
+			step: 0.1,
+			precision : 1,
+			format : function( value ) {
+				return Number(value).toFixed(1) + " cm";
+			},
+			change : function(e, d) {
+				state.lengthAndStature = d.value;
+				lengthChart.draw();
+				
+				var pct = GC.findPercentileFromX(
+					d.value, 
+					GC.DATA_SETS.CDC_STATURE, 
+					patient.gender, 
+					state.agemos
+				); 
+				
+				if ( !isNaN(pct) && isFinite(pct) ) {
+					root.find(".length .pct")
+						.text(GC.Util.round(pct * 100) + "%")
+						.removeAttr("title");
+				} else {
+					root.find(".length .pct")
+						.text("N/A")
+						.attr("title", "Not enough statistics data to calculate the percentile");
+				}
+				
+				root.find('[name="length-and-stature"]').toggleClass("error", isPossibleError("lengthAndStature"));
+				root.toggleClass("error", isPossibleError("any"));
+				checkDialogEmpty();
+			}
+		}).bind("click", function() {
+			if (this.value === "") {
+				this.value = this.getAttribute("placeholder") || "";
+				checkDialogEmpty();
+			}
+		});
+		
+		// weight stepInput ----------------------------------------------------
+		root.find('[name="weight"]').stepInput({
+			min : 0,
+			max : 300,
+			step: 0.1,
+			precision : 1,
+			format : function( value ) {
+				return Number(value).toFixed(1) + " kg";
+			},
+			change : function(e, d) {
+				state.weight = d.value;
+				weightChart.draw();
+				
+				var pct = GC.findPercentileFromX(
+					d.value, 
+					GC.DATA_SETS.CDC_WEIGHT, 
+					patient.gender, 
+					state.agemos
+				); 
+				
+				if ( !isNaN(pct) && isFinite(pct) ) {
+					root.find(".weight .pct").text(GC.Util.round(pct * 100) + "%")
+						.removeAttr("Title");
+				} else {
+					root.find(".weight .pct").text("N/A")
+						.attr("title", "Not enough statistics data to calculate the percentile");
+				}
+				
+				root.find('[name="weight"]').toggleClass("error", isPossibleError("weight"));
+				root.toggleClass("error", isPossibleError("any"));
+				checkDialogEmpty();
+			}
+		}).bind("click", function() {
+			if (this.value === "") {
+				this.value = this.getAttribute("placeholder") || "";
+				checkDialogEmpty();
+			}
+		});
+		
+		// headc stepInput -----------------------------------------------------
+		root.find('[name="headc"]').stepInput({
+			min : 0,
+			max : 100,
+			step: 0.1,
+			precision : 1,
+			format : function( value ) {
+				return Number(value).toFixed(1) + " cm";
+			},
+			change : function(e, d) {
+				state.headc = d.value;
+				headcChart.draw();
+				
+				var pct = GC.findPercentileFromX(
+					d.value, 
+					GC.DATA_SETS.CDC_HEAD_CIRCUMFERENCE_INF, 
+					patient.gender, 
+					state.agemos
+				); 
+				
+				if ( !isNaN(pct) && isFinite(pct) ) {
+					root.find(".headc .pct").text(GC.Util.round(pct * 100) + "%")
+						.removeAttr("Title");
+				} else {
+					root.find(".headc .pct").text("N/A")
+						.attr("title", "Not enough statistics data to calculate the percentile");
+				}
+				
+				root.find('[name="headc"]').toggleClass("error", isPossibleError("headc"));
+				root.toggleClass("error", isPossibleError("any"));
+				checkDialogEmpty();
+			}
+		}).bind("click", function() {
+			if (this.value === "") {
+				this.value = this.getAttribute("placeholder") || "";
+				checkDialogEmpty();
+			}
+		});
+		
+		// bmi stepInput -------------------------------------------------------
+		root.find('[name="bmi"]').stepInput({
+			min : 0,
+			max : 100,
+			step: 0.1,
+			precision : 1,
+			format : function( value ) {
+				return Number(value).toFixed(1) + " kg/m2";
+			},
+			change : function(e, d) {
+				state.bmi = d.value;
+				bmiChart.draw();
+				
+				var pct = GC.findPercentileFromX(
+					d.value, 
+					GC.DATA_SETS.CDC_BMI, 
+					patient.gender, 
+					state.agemos
+				); 
+				
+				if ( !isNaN(pct) && isFinite(pct) ) {
+					root.find(".bmi .pct").text(GC.Util.round(pct * 100) + "%")
+						.removeAttr("Title");
+				} else {
+					root.find(".bmi .pct").text("N/A")
+						.attr("title", "Not enough statistics data to calculate the percentile");
+				}
+				
+				root.find('[name="bmi"]').toggleClass("error", isPossibleError("bmi"));
+				root.toggleClass("error", isPossibleError("any"));
+				checkDialogEmpty();
+			}
+		}).bind("click", function() {
+			if (this.value === "") {
+				this.value = this.getAttribute("placeholder") || "";
+				checkDialogEmpty();
+			}
+		});
+		
+		// boneage stepInput ---------------------------------------------------
+		root.find('[name="boneage"]').timeIntervalInput({
+			speed     : 20,
+			max       : (state.boneAge || 1) * 2 * monthMS + monthMS * 2,
+			min       : 0,
+			step      : monthMS,
+			showDays  : false,
+			showWeeks : false,
+			change    : function(e, data) {
+				//console.log($(this).timeIntervalInput("getMilliseconds"));
+				state.boneAge = data.value / monthMS;
+				boneAgeChart.draw();
+				checkDialogEmpty();
+			}
+		}).bind("click", function() {
+			if (this.value === "") {
+				this.value = this.getAttribute("placeholder") || "";
+				checkDialogEmpty();
+			}
+		});
+		
+		// agemos Calendar -----------------------------------------------------
+		root.find('[name="agemos"]').datepicker({ 
+			dateFormat: GC.Util.cDateFormatToJqFormat(GC.chartSettings.dateFormat), //"dd/mm/y",
+			minDate : patient.DOB.toDate()
+		}).change(function() {
+			var date    = $(this).datepicker("getDate"),
+				agemos  = patient.DOB.diffMonths(date.getTime()),
+				ageDays = Math.round(agemos * GC.Constants.TIME_INTERVAL.DAYS_IN_MONTH),
+				other   = patient.getLastModelEntry(function(rec) {
+					return Math.round(rec.agemos * GC.Constants.TIME_INTERVAL.DAYS_IN_MONTH) === ageDays;
+				});
+			
+			if (other && confirm("There is another record existing at the selected day.\nDo you want to edit it instead?")) {
+				return GC.App.editEntry(other);
+			} else {
+					
+				state.agemos = agemos;
+				
+				age.setMonths(agemos);
+				root.find(".age").html(age.toString());
+				
+				lengthChart.draw();
+				weightChart.draw();
+				headcChart.draw();
+				bmiChart.draw();
+				boneAgeChart.draw();
+				
+				$(this).closest(".input-wrap").toggleClass(
+					"today", 
+					(new XDate()).toString("ddMMMyyyy") == (new XDate(date)).toString("ddMMMyyyy")
+				);
+			}
+		});
+		
+		// service AutoComplete ------------------------------------------------
+		(function() {
+			var dataSet = GC.Scratchpad.prop("medService"),
+				widget;
+			
+			function onChange() {
+				if (widget._list && widget._list.is(":visible")) {
+					widget.enable()._showList();
+				}
+			}
+			
+			widget = root.find('[name="med-service"]').autoComplete({
+				dataSet : dataSet,
+				change : function(e, d) {
+					record.medService = d.value;
+					checkDialogEmpty();
+				},
+				add : function(e, data) {
+					$.when(GC.Scratchpad.save()).then(function() {
+						onChange();
+					});
+				},
+				edit : function(e, data) {
+					$.when(GC.Scratchpad.save()).then(function() {
+						onChange();
+					});
+				},
+				remove : function(e, data) {
+					$.when(GC.Scratchpad.save()).then(function() {
+						onChange();
+					});
+				}
+			}).data("autoComplete");
+			
+			GC.Scratchpad.bind("set", function(e) {
+				if (e.data.path.indexOf("medService") === 0) {
+					widget.disable();
+				}
+			});
+			
+			widget.value(record.medService || "");
+			
+		})();
+		
+		updateUI();
+		
+		root.width(root.width());
+		
+		root.closest("#dialog").dialog("option", {
+			title : entry ? "Edit Data" : "Add Data",
+			minWidth : root.width() + 40,
+			modal : false
+		}).dialog("option", {
+			position : "center"
+		});
+		
+		root.find(".button.save").unbind().bind("click", function() {
+			if ( !$(this).is(".ui-state-disabled")) {
+				save();
+			}
+		}).text(mode == "edit" ? " Submit " : " Submit ");
+		
+		root.find("#del-rec-btn").click(function() {
+			var prev = patient.getPrevModelEntry(record.agemos, function() {
+				return true;
+			});
+		    $.when(patient.deleteRecord(record)).then(function() {
+		        root.closest("#dialog").dialog("close");
+		        GC.App.refresh();
+				if (prev) {
+				    GC.TableView.noScroll = true;
+					GC.App.setSelectedRecord(prev);
+					GC.TableView.noScroll = false;
+				}
+		    });
+		})[patient.canDeleteRecord(record) ? "show" : "hide"]();
+		
+		checkDialogEmpty();
+	}
+	
+	initUI.apply({}, args);
+	
+})();
+</script>

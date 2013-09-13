@@ -1,0 +1,176 @@
+{
+  "demographics": {
+    "name": "Steve Richey",
+    "birthday": "09/16/2011",
+    "EDD": "12/07/2011",
+    "gender": "male"
+  },
+  "vitals": {
+    "lengthData": [
+      {
+        "agemos": 2.2,
+        "value": 45
+      },
+      {
+        "agemos": 2.5,
+        "value": 46.2
+      },
+      {
+        "agemos": 3,
+        "value": 48.5
+      },
+      {
+        "agemos": 5.8,
+        "value": 58.5
+      },
+      {
+        "agemos": 6.1,
+        "value": 58.7
+      },
+      {
+        "agemos": 6.8,
+        "value": 61.7
+      },
+      {
+        "agemos": 7.8,
+        "value": 62.8
+      },
+      {
+        "agemos": 8,
+        "value": 64.2
+      },
+      {
+        "agemos": 9.6,
+        "value": 66
+      },
+      {
+        "agemos": 11.7,
+        "value": 70.4
+      },
+      {
+        "agemos": 13.2,
+        "value": 71.2
+      },
+      {
+        "agemos": 16.4,
+        "value": 73.8
+      }
+    ],
+    "weightData": [
+      {
+        "agemos": 0,
+        "value": 0.977
+      },
+      {
+        "agemos": 2.2,
+        "value": 2.382
+      },
+      {
+        "agemos": 2.5,
+        "value": 2.636
+      },
+      {
+        "agemos": 3,
+        "value": 3
+      },
+      {
+        "agemos": 3.8,
+        "value": 4.1
+      },
+      {
+        "agemos": 4.6,
+        "value": 4.6
+      },
+      {
+        "agemos": 4.8,
+        "value": 4.7
+      },
+      {
+        "agemos": 5.8,
+        "value": 5.4
+      },
+      {
+        "agemos": 6.1,
+        "value": 5.5
+      },
+      {
+        "agemos": 6.8,
+        "value": 5.9
+      },
+      {
+        "agemos": 7.8,
+        "value": 6.4
+      },
+      {
+        "agemos": 8,
+        "value": 6.5
+      },
+      {
+        "agemos": 9.6,
+        "value": 7.2
+      },
+      {
+        "agemos": 11.2,
+        "value": 7.7
+      },
+      {
+        "agemos": 11.7,
+        "value": 7.7
+      },
+      {
+        "agemos": 13.2,
+        "value": 8
+      },
+      {
+        "agemos": 16.4,
+        "value": 8.6
+      }
+    ],
+    "headCData": [
+      {
+        "agemos": 2.2,
+        "value": 32.6
+      },
+      {
+        "agemos": 2.5,
+        "value": 33.5
+      },
+      {
+        "agemos": 3,
+        "value": 35.4
+      },
+      {
+        "agemos": 5.8,
+        "value": 40
+      },
+      {
+        "agemos": 6.8,
+        "value": 42
+      },
+      {
+        "agemos": 7.8,
+        "value": 42.8
+      },
+      {
+        "agemos": 8,
+        "value": 42.5
+      },
+      {
+        "agemos": 9.6,
+        "value": 44.4
+      },
+      {
+        "agemos": 11.7,
+        "value": 45.1
+      },
+      {
+        "agemos": 13.2,
+        "value": 45.5
+      },
+      {
+        "agemos": 16.4,
+        "value": 46.3
+      }
+    ]
+  }
+}

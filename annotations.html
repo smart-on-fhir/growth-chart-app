@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Annotations</title>
+		<style type="text/css">
+		#print-toolbar {
+			font-family: Tahoma, sans-serif;
+			background: #CCC;
+			border-radius: 0 0 8px 8px;
+			position: fixed;
+			z-index: 100;
+			top: -1px;
+			right: 10%;
+			padding: 4px 8px;
+			box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 1px 1px 7px rgba(0, 0, 0, 0.5), 0 0 0 1px #DDD inset; 
+			text-shadow: 0 1px 0 #DDD;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+		}
+		#print-toolbar .print-link {
+			line-height: 16px;
+			text-decoration: none;
+			color: #666;
+			padding-right: 4px;
+		}
+		#print-toolbar .print-link:hover {
+			color : #000;
+			text-shadow: 0 1px 0 #EEE;
+		}
+		#print-toolbar .print-link img {
+			padding: 0 6px 0 0;
+			vertical-align: top;
+			border: none;
+		}
+		#annotations-list .annotation-container {
+			margin: 16px 0 0;
+			font-family: Tahoma, sans-serif;
+			font-size: 0.9em;
+		}
+		#annotations-list .annotation-header {
+			border-bottom: 1px dotted #999;
+			padding: 0.3em;
+			margin-bottom: 1px;
+			color: #323E47;
+			font-weight: bold;
+		}
+		#annotations-list .annotation-header:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+		#annotations-list .annotation-content {
+			line-height: normal;
+			color : #323E47;
+			padding: 0.3em;
+			font-family: Arial,sans-serif;
+		}
+		#annotations-list h2 {
+			font-size: 1.5em;
+			font-family: Arial,sans-serif;
+			border-bottom: 2px solid #DDD;
+			margin-bottom: 1.5em;
+		}
+		
+		@media print {
+			#print-toolbar {
+				display: none;
+			}
+		}
+		</style>
+		<script type="text/javascript" src="lib/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="lib/xdate.js"></script>
+	</head>
+	<body>
+		<div id="print-toolbar">
+			<a href="javascript:window.print();" class="print-link">
+				<img src="img/print.png" alt="" />
+				Print
+			</a>
+		</div>
+		<div id="annotations-list"></div>
+		<br />
+		<br />
+		<script>
+		var tpl = '<div class="annotation-container"><div class="annotation-header">#date#</div><div class="annotation-content">#content#</div><div>';
+		
+		function parseTemplate(tpl, data) {
+			if (!data || $.isEmptyObject(data)) {
+				return tpl;
+			}
+			var out = tpl, reg;
+			$.each(data, function(i, o) {
+				var reg = new RegExp("#" + i + "#", "g");
+				out = out.replace(reg, o);
+			});
+			return out.replace(/#.*?#/g, "");
+		}
+		$(function() {
+			
+			var GC      = opener.GC,
+				patient = GC.App.getPatient(),
+				list    = $("#annotations-list");
+				
+			if (!patient.annotations.length) {
+				$("#print-toolbar").hide();
+				list.html('<h2>This patient has no annotations.</h2>');
+			} else {
+				$("#print-toolbar").show();
+				list.html('<h2>' + patient.name + ' - Annotations</h2>');
+				document.title = patient.name + ' - Annotations ' + (new XDate().toString("ddMMMyyyy HH-MMTT"));
+				$.each(patient.annotations, function(i, o) {
+					
+					try {
+						list.append(
+							parseTemplate(
+								tpl, 
+								{
+									date   : (new GC.TimeInterval(patient.DOB))
+										.setMonths(o.agemos)
+										.toString(GC.chartSettings.timeInterval),
+									content: o.annotation.txt
+								}
+							)
+						);
+					} catch (ex) {
+						//console.log(ex.message);
+					}
+				});
+			}
+			
+		});
+		</script>
+	</body>
+</html>

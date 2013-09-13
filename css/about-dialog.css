@@ -1,0 +1,125 @@
+#about-dialog {
+	width: auto;
+	font-size: 12px;
+	font-family: Tahoma, sans-serif;
+	position: relative;
+}
+#about-dialog a {
+	color: blue;
+	text-decoration: none;
+}
+#about-dialog a:hover {
+	text-decoration: underline;
+}
+#about-dialog .about-panel {
+	min-height: 300px;
+	/*overflow-y: auto;
+	overflow-x: hidden;*/
+	display: none;
+	min-width: 270px;
+}
+#about-dialog .about-panel table {
+	width: 100%;
+}
+
+#about-dialog label {
+	font-weight: normal;
+}
+#about-dialog input, 
+#about-dialog select {
+	padding: 4px;
+	border: 1px solid #728391 !important;
+	border-radius: 0 !important;
+	line-height: 14px !important;
+	height: auto;
+	font-size: 12px;
+	font-family: Tahoma, sans-serif;
+}
+#about-dialog input.step-input {
+	line-height: 14px !important;
+	height : 26px;
+	padding: 5px 4px;
+}
+#about-dialog input[type="button"] {
+	min-width: 80px;
+	width: auto;
+	border-radius: 3px !important;
+	border-color: #AAB !important;
+	color: #000;
+	text-shadow: 0 1px 0 #FFF;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.5) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.05) inset;
+}
+#about-dialog input[type="button"]:hover {
+	background: #E6EBEF;
+	border-color: #728391 !important;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.95) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#about-dialog input[type="button"]:active {
+	background: #D3DBDF;
+	border-color: #728391 !important;
+	box-shadow: -1px -1px 3px 0px rgba(255, 255, 255, 0.5) inset, 1px 1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#about-dialog input[type="button"].ui-state-disabled {
+	background: #EEE;
+	border-color: #DDD !important;
+	box-shadow: none !important;
+	color: #999;
+	opacity: 1;
+}
+
+#about-dialog .footer input {
+	margin-bottom: 0;
+}
+
+#about-dialog .footer input:last-child {
+	margin-right: 0;
+}
+#about-dialog .footer input:first-child {
+	margin-left: 0;
+}
+
+#about-dialog .step-input-wrap .up,
+#about-dialog .step-input-wrap .down {
+	border-radius: 0;
+	border-width: 1px;
+	border-color: #F6F6FC;
+	width: 2em;
+}
+#about-dialog #about-view {
+	height: 100%;
+	min-height: 100%;
+	min-width:180px;
+	overflow: auto;
+	margin: 0;
+	padding: 2px;
+	font-family: Tahoma, sans-serif;
+	font-size: 1.1em;
+}
+#about-dialog #panel-about h1 {
+	margin-bottom: 3px;
+}
+#about-dialog td {
+	text-align: left;
+	vertical-align: middle;
+	padding: 0;
+	line-height: normal;
+}
+#about-dialog h1 {
+	color : #728391;
+	border-bottom: 2px solid #728391;
+	/*font-weight: bold;*/
+	font-size: 18px;
+	line-height: 1.6em;
+	margin: 0 0 1ex;
+	font-family: Arial, sans-serif;
+}
+
+#about-dialog h2 {
+	font-weight: bold;
+	font-size: 14px;
+	font-family: Arial, sans-serif;
+}
+
+#about-dialog p {
+	margin: 1em;
+}

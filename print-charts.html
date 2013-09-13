@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="before-print">
+	<head>
+		<meta charset="UTF-8">
+		<title>Growth Charts Application</title>
+		
+		<!--link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		
+		<link rel="stylesheet" type="text/css" href="themes/custom-theme/jquery-ui-1.8.18.custom.css" /-->
+		<link rel="stylesheet" type="text/css" href="css/gc-pview.css" />
+		<link rel="stylesheet" type="text/css" href="css/print.css" />
+		<link rel="stylesheet/less" type="text/css" href="css/style.less" />
+		
+		<!-- Standard JS Libraries -->
+        <script src="lib/smart-api-client-0.6-dev.js"></script>
+        <script src="lib/jquery-1.8.2.js"></script>
+		<script src="lib/jquery-ui-1.9.1.js"></script>
+        <script src="lib/raphael.js"></script>
+        <script src="lib/xdate.js"></script>
+		
+		<!-- GC Modules -->
+		<script src="js/util.js"></script>
+		<script src="js/gc-smart-data.js"></script>
+		<script src="js/gc-sample-patients.js"></script>
+		<script src="js/gc-model.js"></script>
+		<script src="js/gc-chart-config.js"></script>
+		<script src="js/gc-translations.js"></script>
+		<script src="js/gc-pointset.js"></script>
+        <script src="js/gc-charts-data.js"></script>
+        <script src="js/gc-statistics.js"></script>
+        <script src="js/gc-chart.js"></script>
+        <script src="js/gc-parental-view.js"></script>
+        
+		<script src="js/print2.js"></script>
+		<script src="js/chart-pane.js"></script>
+		<script src="js/charts/chart.js"></script>
+		<script src="js/charts/weight-chart.js"></script>
+		<script src="js/charts/head-chart.js"></script>
+        <script src="js/charts/length-chart.js"></script>
+		<script src="js/charts/percentile-chart.js"></script>
+		<script src="js/charts/body-mass-index-chart.js"></script>
+		<script src="js/charts/chart-stack.js"></script>
+		<script src="js/gc-data-model.js"></script>
+		<script src="js/gc-grid-view.js"></script>
+		<script src="js/gc-boneage-calculator.js"></script>
+        
+		<script type="text/javascript">
+			var lessCfg = {
+				color: "#F00",
+				hue : 36,
+				saturation : 50,
+				lightness : 50
+			};
+			
+			less = {
+				env: "production",
+				//async: false,       // load imports async
+				//fileAsync: false,   // load imports async when in a page under 
+									// a file protocol
+				//poll: 1000,         // when in watch mode, time in ms between polls
+				functions: {// user functions, keyed by name
+					"main-color"     : function() { return { toCSS : function() { return "hsl(" + lessCfg.hue + "," + lessCfg.saturation + "%," + lessCfg.lightness + "%)"; } } },
+					"app-hue"        : function() { return lessCfg.hue; },
+					"app-saturation" : function() { return lessCfg.saturation; },
+					"app-lightness"  : function() { return lessCfg.lightness; },
+					"pref"           : function(path) { 
+						//console.log(this, arguments);
+						//var str = color; 
+						var value = GC.Preferences.prop(path.value);
+						return new(less.tree.Quoted)('"' + value + '"', value,true,1);
+					},
+					readableColor : function(c, treshold, contrast) {
+						var value = GC.Util.readableColor(c.value, treshold.value, contrast.value);
+						return new(less.tree.Quoted)('"' + value + '"', value,true,1);
+					}
+				},      
+				dumpLineNumbers: "comments", // or "mediaQuery" or "all"
+				//relativeUrls: false,// whether to adjust url's to be relative
+									// if false, url's are already relative to the
+									// entry less file
+				//rootpath: ":/a.com/"// a path to add on to the start of every url 
+									//resource
+				
+			};
+		</script>
+		<script src="lib/less-1.3.3.min.js"></script>
+		
+		
+		
+	</head>
+	<body>
+	<div id="print-toolbar">
+		<a href="javascript:window.print();" class="print-link">
+		<img src="img/print.png" alt="" />
+		Print Now
+		</a>
+	</div>
+	<div id="header">
+		<h1 class="patient-name">Patient's Name</h1>
+		<label class="gender-color" data-translatecontent="STR_155"></label> <span class="patient-gender title"></span>
+		<label class="gender-color" data-translatecontent="STR_157"></label> <span class="patient-birth title"></span>
+		<label class="gender-color" data-translatecontent="STR_156"></label> <span class="patient-age title"></span>
+		<span class="weeker" style="display:none;"> 
+			<label class="gender-color">{</label>
+			<span class="value title" style="margin-right: 0"></span>
+			<label class="gender-color">}</label>&nbsp;&nbsp;
+		</span>
+		<span style="display: none;">
+			<label class="gender-color">corrected age</label>
+			<span id="corrected-age" class="title"></span>
+		</span>
+		<span id="today"></span>
+	</div>
+	<div class="frame">
+		<div id="timeline-top" class="timeline">
+			<div class="years"></div>
+			<div class="months"></div>
+			<div class="weeks"></div>
+			<div class="days"></div>
+			<div class="gest"></div>
+		</div>
+		<div id="stage">
+			<div id="view-clinical" class="tab-panel">
+				<div class="stage-1"></div>
+			</div>
+			
+			<!-- Parental View --------------------------------------------- -->
+			<div id="view-parental" class="tab-panel">
+				<div id="pview-wrapper">
+
+					<!-- left-column -->
+					<div class="left-column">
+						<div id="PatientHeader">
+							<img id="picture" src="img/transparent.gif" width="119" height="92" />
+							<div id="PatientHeadertexts" class="heading" data-translatecontent="STR_177">&nbsp;</div>
+						</div>
+
+						<div id="PaperLeft">
+							<table id="vitals" border="0" cellspacing="0">
+								<tr>
+									<td class="vitals-height">
+										<img src="img/pview/LengthIcon.png" />
+										<div class="label" data-translatecontent="STR_152"></div>
+										<span class="value date"></span>
+									</td>
+									<td class="vitals-weight">
+										<img src="img/pview/WeightIcon.png" />
+										<div class="label" data-translatecontent="STR_6"></div>
+										<span class="value date"></span>
+									</td>
+									<td class="vitals-headc">
+										<img src="img/pview/HeadCircumferenceIcon.png" />
+										<div class="label" data-translatecontent="STR_13"></div>
+										<span class="value date"></span>
+									</td>
+									<td class="vitals-bmi">
+										<img src="img/pview/bmi-icon.png" />
+										<div class="label" data-translatecontent="STR_14"></div>
+										<span class="value date"></span>
+									</td>
+								</tr>
+								<tr class="second-row">
+									<td class="vitals-height">
+										<span class="value metric"></span><span class="value pct"></span>
+										<div class="value imperial"></div>
+									</td>
+									<td class="vitals-weight">
+										<span class="value metric"></span><span class="value pct"></span>
+										<div class="value imperial"></div>
+									</td>
+									<td class="vitals-headc">
+										<span class="value metric"></span><span class="value pct"></span>
+										<div class="value imperial"></div>
+									</td>
+									<td class="vitals-bmi">
+										<span class="value metric"></span><span class="value pct"></span>
+										<div class="value imperial"></div>
+									</td>	
+								</tr>
+							</table>
+							<div class="vitals-chart four-cols images">
+								<div class="fat-cell">
+									<img src="img/transparent.gif" width="120" height="229" alt="Underweight" />
+								</div>
+								<div class="fat-cell">
+									<img src="img/transparent.gif" width="120" height="229" alt="Healthy"/>
+								</div>
+								<div class="fat-cell">
+									<img src="img/transparent.gif" width="120" height="229" alt="Overweight"/>
+								</div>
+								<div class="fat-cell">
+									<img src="img/transparent.gif" width="120" height="229" alt="Obese"/>
+								</div>
+							</div>
+							<div class="vitals-chart four-cols labels">
+								<div class="fat-cell" data-translatecontent="STR_173"></div>
+								<div class="fat-cell" data-translatecontent="STR_174"></div>
+								<div class="fat-cell" data-translatecontent="STR_175"></div>
+								<div class="fat-cell" data-translatecontent="STR_176"></div>
+							</div>
+							<div class="vitals-chart four-cols values">
+								<div class="fat-cell"></div>
+								<div class="fat-cell"></div>
+								<div class="fat-cell"></div>
+								<div class="fat-cell"></div>
+							</div>
+							<div id="vitals-message">
+								<div class="weight-status"></div>
+								<div class="weight-trend"></div>
+								<div class="weight-range"></div>
+								<div class="custom-notes" contenteditable="true"></div>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- right-column -->
+					<div class="right-column">
+						<div id="PredictedHeightHeader">
+							<div id="nameTextPredicted" class="heading" data-translatecontent="STR_153"></div>
+						</div>
+
+						<div id="RightPaper">
+							<div id="PaperPredictedHeight"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="view-table" class="tab-panel"></div>
+		</div>
+		<div id="timeline-bottom" class="timeline">
+			<div class="gest"></div>
+			<div class="days"></div>
+			<div class="weeks"></div>
+			<div class="months"></div>
+			<div class="years"></div>
+		</div>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,152 @@
+
+@color-length    : presetColor("Length");
+@color-weight    : presetColor("Weight");
+@color-headc     : presetColor("Head C");
+@color-bmi       : presetColor("BMI"   );
+@color-selection : presetColor("Primary selection");
+
+@color-contrast-length : readableColor(@color-length, 0.95, 1);
+@color-contrast-weight : readableColor(@color-weight, 0.90, 1);
+@color-contrast-headc  : readableColor(@color-headc , 0.85, 1);
+@color-contrast-bmi    : readableColor(@color-bmi   , 0.85, 1);
+
+
+
+/* Datatable colors --------------------------------------------------------- */
+
+/* length */
+.datatable tr.length td.active {
+	color : @color-length;
+	border-bottom-color: @color-length !important;
+	border-right-color: @color-length !important;
+	box-shadow: -2px 1px 0 -1px @color-length;
+}
+.datatable tr.length.velocity td {
+	color : @color-length;
+	border-right-color: @color-length !important;
+	box-shadow: -2px 1px 0 -1px @color-length;
+}
+.datatable tr.heading.length td.active {
+	background-color: @color-length !important;
+	border-top-color: @color-length !important;
+	color: @color-contrast-length;
+	box-shadow: -1px 0 0 0 @color-length;
+}
+
+/* weight */
+.datatable tr.weight td.active {
+	color: @color-weight;
+	border-bottom-color: @color-weight !important;
+	border-right-color: @color-weight !important;
+	box-shadow: -2px 1px 0 -1px @color-weight;
+}
+.datatable tr.weight.velocity td {
+	color: @color-weight;
+	border-right-color: @color-weight !important;
+	box-shadow: -2px 1px 0 -1px @color-weight;
+}
+.datatable tr.heading.weight td.active {
+	background-color: @color-weight !important;
+	border-top-color: @color-weight !important;
+	color: @color-contrast-weight;
+	box-shadow: -1px 0 0 0 @color-weight;
+}
+
+/* headc */
+.datatable tr.headc td.active {
+	color: @color-headc;
+	border-bottom-color: @color-headc !important;
+	border-right-color: @color-headc !important;
+	box-shadow: -2px 1px 0 -1px @color-headc;
+}
+.datatable tr.headc.velocity td {
+	color: @color-headc;
+	border-right-color: @color-headc !important;
+	box-shadow: -2px 1px 0 -1px @color-headc;
+}
+.datatable tr.heading.headc td.active {
+	background-color: @color-headc !important;
+	border-top-color: @color-headc !important;
+	color: @color-contrast-headc !important;
+	box-shadow: -1px 0 0 0 @color-headc;
+}
+
+/* bmi */
+.datatable tr.bmi td.active {
+	border-bottom-color: @color-bmi !important;
+	border-right-color: @color-bmi !important;
+	box-shadow: -2px 1px 0 -1px @color-bmi;
+}
+.datatable tr.heading.bmi td.active {
+	border-bottom-color: #FFF !important;
+	background-color: @color-bmi !important;
+	border-top-color: @color-bmi !important;
+	color: @color-contrast-bmi;
+	box-shadow: -1px 0 0 0 @color-bmi;
+}
+
+
+
+
+
+
+
+
+/* length */
+.datatable-headers .length td + td {
+	color: @color-length;
+}
+
+.datatable-headers .heading.length td + td {
+	background-color: @color-length;
+	border-right: 1px solid @color-length;
+	color: @color-contrast-length;
+}
+
+/* weight */
+.datatable-headers .weight td + td {
+	color: @color-weight;
+}
+
+.datatable-headers .weight.heading td + td {
+	background-color: @color-weight;
+	border-right-color: @color-weight;
+	color: @color-contrast-weight;
+}
+
+/* headc */
+.datatable-headers .headc td + td {
+	color: @color-headc;
+}
+
+.datatable-headers .heading.headc td + td {
+	background-color: @color-headc;
+	border-right-color: @color-headc;
+	color: @color-contrast-headc;
+}
+
+/* bmi */
+.datatable-headers .bmi td + td {
+	color: @color-bmi;
+}
+
+.datatable-headers .heading.bmi td + td {
+	background-color: @color-bmi;
+	border-right-color: @color-bmi;
+	color: @color-contrast-bmi;
+}
+
+#dialog .length .pct { color: @color-length; }
+#dialog .weight .pct { color: @color-weight; }
+#dialog .headc  .pct { color: @color-headc;  }
+#dialog .bmi    .pct { color: @color-bmi;    }
+
+
+/* Timeline ----------------------------------------------------------------- */
+.timeline .years .labels div.active,
+.timeline .months .labels div.active,
+.timeline .weeks .labels div.active,
+.timeline .days .labels div.active {
+	background: @color-selection;
+	border-color: @color-selection;
+}

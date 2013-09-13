@@ -1,0 +1,125 @@
+<style>
+#birth-selector {
+	font-family: Tahoma, sans-serif;
+	font-size: 12px;
+}
+#birth-selector input {
+	width: auto;
+	height: auto;
+	background: transparent;
+	line-height: normal;
+}
+#birth-selector label {
+	white-space: nowrap;
+	display: block;
+	padding: 8px 2px;
+	border: 1px solid transparent;
+}
+#birth-selector label:hover {
+	background: #EEE;
+	border-color: #DDD;
+}
+#birth-selector #patients-list {
+	max-height: 250px;
+	overflow: auto;
+}
+#birth-selector input[type="button"] {
+	padding: 4px;
+	border: 1px solid;
+	line-height: 20px !important;
+	height: auto;
+	font-size: 12px;
+	font-family: Tahoma, sans-serif;
+	min-width: 80px;
+	width: auto;
+	border-radius: 3px !important;
+	border-color: #AAB !important;
+	color: #000;
+	text-shadow: 0 1px 0 #FFF;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.5) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.05) inset;
+}
+#birth-selector input[type="button"]:hover {
+	background: #E6EBEF;
+	border-color: #728391 !important;
+	box-shadow: 1px 1px 0px 0px rgba(255, 255, 255, 0.95) inset, -1px -1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#birth-selector input[type="button"]:active {
+	background: #D3DBDF;
+	border-color: #728391 !important;
+	box-shadow: -1px -1px 3px 0px rgba(255, 255, 255, 0.5) inset, 1px 1px 3px 0px rgba(0, 0, 0, 0.2) inset;
+}
+#birth-selector input[type="button"].ui-state-disabled {
+	background: #EEE;
+	border-color: #DDD !important;
+	box-shadow: none !important;
+	color: #999;
+	opacity: 1;
+}
+</style>
+<div id="birth-selector">
+	<p>The GC application was launched outside a SMART container.We loaded some demo data for you.</p>
+	<br />
+	<p>Please select Demo Patient to use:</p>
+	<br />
+	<div class="separator"></div>
+	<div id="patients-list"></div>
+	<div class="separator"></div>
+	<p style="text-align: center">
+		<input type="button" value="  Continue  " id="continue-button" class="ui-state-disabled" />
+	</p>
+</div>
+<script>
+(function($, GC) {
+	
+	var root     = $("#birth-selector"),
+		list     = root.find("#patients-list"),
+		args     = root.closest("#dialog").data("dialogProxy").arguments,
+		callBack = args[0],
+		hasSelection;
+	
+	$.each(GC.availableSamplePatients, function(i, patient) {
+		var html = [], j = 0;
+		html[j++] = '<label class="' + patient.gender + '">';
+		html[j++] = '<input type="radio" name="patient-index" value="' + i + '" />';
+		html[j++] = '&nbsp;' + patient.name + " (";
+		html[j++] = '&nbsp;<span class="gender-bg" style="padding:1px 6px;border-radius:50px">' + patient.gender + "</span>";
+		html[j++] = ',&nbsp;DOB: ' + patient.DOB.toString(GC.chartSettings.dateFormat);
+		if (patient.weeker) {
+			html[j++] = ',&nbsp;' + patient.weeker + " Weeker";
+		}
+		html[j++] = ' ) </label>';
+		list.append(html.join(""));
+	});
+	
+	root.closest("#dialog").dialog("option", {
+		beforeClose: function( event, ui ) {
+			return !!hasSelection;
+		},
+		position : "center"
+	});
+	
+	list.find("input").click(function(e) {
+		root.find("#continue-button").removeClass("ui-state-disabled");
+		this.checked = true;
+		e.stopPropagation();
+		return true;
+	});
+	list.find("label").click(function() {
+		$(this).find("input").triggerHandler("click");
+	});
+	
+	root.find("#continue-button").click(function() {
+		if ( !$(this).is(".ui-state-disabled") ) {
+			root.find("*").css("cursor", "wait");
+			var idx = parseFloat(list.find("input:checked").val());
+			setTimeout(function() {
+				hasSelection = true;
+				GC.samplePatient = GC.availableSamplePatients[idx];
+				callBack();
+				root.closest("#dialog").dialog("close");
+			}, 2);
+		}
+	});
+	
+})(jQuery, window.GC);
+</script>
