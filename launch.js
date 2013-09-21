@@ -35,7 +35,7 @@ BBClient.providers(["https://bbplus-static-registry.aws.af.cm/"], function(provi
 });
 
 function relative(url){
-  return (window.location.protocol + "//" + window.location.hostname + window.location.pathname).match(/(.*\/)[^\/]*/)[1] + url;
+  return (window.location.protocol + "//" + window.location.host + window.location.pathname).match(/(.*\/)[^\/]*/)[1] + url;
 }
 
 function getParameterByName(name) {
