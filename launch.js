@@ -12,7 +12,7 @@ var client = {
   "scope":  "summary search"
 };
 
-BBClient.providers(["https://bbplus-static-registry.aws.af.cm/"], function(providers){
+BBClient.providers(["https://pilots.fhir.me"], function(providers){
   var matched;
   var matching = providers.filter(function(p){
     return (p.bb_api.fhir_service_uri === fhirServiceUrl);
