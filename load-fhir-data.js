@@ -7,15 +7,15 @@ GC.get_data = function() {
 
     var vitals = $.Deferred();
     var pt = fhirClient.get({
-      resource: 'patient',
+      resource: 'Patient',
       id: fhirClient.patientId
     });
 
     fhirClient.search({
-      resource: 'observation',
+      resource: 'Observation',
       searchTerms: {
-        'subject': 'patient/@'+fhirClient.patientId,
-        'name:anyns' : ['3141-9', '8302-2', '8287-5', '39156-5'].join(',')
+        'subject:Patient':fhirClient.patientId,
+        'name' : ['3141-9', '8302-2', '8287-5', '39156-5'].join(',')
       }
     }).done(drainVitals);
 
