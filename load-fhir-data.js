@@ -66,8 +66,8 @@ GC.get_data = function() {
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
           arr.push({
-            agemos: months(v.observation.appliesDateTime, patient.birthDate),
-            value: toUnit(v.component.valueQuantity)
+            agemos: months(v.appliesDateTime, patient.birthDate),
+            value: toUnit(v.valueQuantity)
           })
         });
       };
