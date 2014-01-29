@@ -1304,7 +1304,7 @@
 				done();
 			})
 			.add("Render SVG Graphics...", render)
-			.add("All tasks compleeted!", function(done) {
+			.add("All tasks completed!", function(done) {
 				done();
 			});
 		
