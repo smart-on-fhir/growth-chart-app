@@ -85,6 +85,14 @@ These charts are created bt the Chart classes at “smartapp/js/charts/”. They
 inherit the base class at “smartapp/js/chart/chart.js”, which actually handles 
 most of the drawing tasks.
 
+Important
+--------------------------------------------------------------------------------
+
+The XDate library instance used in the app contains a custom fix related to
+the date use in windows opened by the app.
+(https://github.com/medapptech/smart_growth_charts/commit/56270b92f646484539ca272e4508daaec450c6d7)
+In the event that the library needs to be upgraded with a new version,
+this fix may need to be reapplied.
 
 System requirements
 --------------------------------------------------------------------------------

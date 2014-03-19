@@ -11,7 +11,7 @@
   "index" :  "http://sample-apps.smartplatforms.org/framework/growth_charts/index.html",
   "icon" :  "http://sample-apps.smartplatforms.org/framework/growth_charts/img/icon.png",
 
-  "smart_version": "0.6",
+  "smart_version": "1.0",
 
   "requires" : {
        "http://smartplatforms.org/terms#Demographics": {

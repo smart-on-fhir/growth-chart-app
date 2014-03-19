@@ -57,18 +57,18 @@
 }
 </style>
 <div id="birth-selector">
-	<p>The GC application was launched outside a SMART container.We loaded some demo data for you.</p>
+	<p data-translatecontent="STR_6030"></p>
 	<br />
-	<p>Please select Demo Patient to use:</p>
+	<p data-translatecontent="STR_6031"></p>
 	<br />
 	<div class="separator"></div>
 	<div id="patients-list"></div>
 	<div class="separator"></div>
 	<p style="text-align: center">
-		<input type="button" value="  Continue  " id="continue-button" class="ui-state-disabled" />
+		<input type="button" data-translateattr="value=STR_6042" value="  Continue  " id="continue-button" class="ui-state-disabled" />
 	</p>
 </div>
-<script>
+<script type="text/javascript">
 (function($, GC) {
 	
 	var root     = $("#birth-selector"),
@@ -122,4 +122,6 @@
 	});
 	
 })(jQuery, window.GC);
+
+
 </script>

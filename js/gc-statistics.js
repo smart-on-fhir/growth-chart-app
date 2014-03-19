@@ -104,17 +104,17 @@ window.GC = window.GC || {};
         return 0.5 * (1.0 + Math.erf(z/Math.sqrt(2)));
     };
     
-	function mean (a,b,weight) {
-		return b * weight + a * (1-weight);
-	}
-	
+    function mean (a,b,weight) {
+        return b * weight + a * (1-weight);
+    }
+    
     var findLMSParameters = function (dataSet, gender, ageMonths) {
     
         var data = dataSet.data[gender],
-        	len = data.length,
+            len = data.length,
             weight, i;
-			
-		ageMonths = GC.Util.floatVal(ageMonths);
+            
+        ageMonths = GC.Util.floatVal(ageMonths);
         
         for (i = 0; i < len; i++) {
             if (ageMonths === data[i].Agemos) {
@@ -133,7 +133,7 @@ window.GC = window.GC || {};
                     M:   mean(data[i].M, data[i+1].M, weight),
                     S:   mean(data[i].S, data[i+1].S, weight)
                 };
-			}
+            }
         }
         
         return null;
@@ -198,7 +198,7 @@ window.GC = window.GC || {};
     };
     
     GC.findPercentileFromX = function(X, dataSet, gender, ageMonths) {
-		var Z = GC.findZFromX(X, dataSet, gender, ageMonths);
+        var Z = GC.findZFromX(X, dataSet, gender, ageMonths);
         return Math.normsdist(Z);
     };
 

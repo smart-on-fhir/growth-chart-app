@@ -30,7 +30,8 @@ BBClient.providers(["https://pilots.fhir.me"], function(providers){
   BBClient.authorize({
     client: client, 
     provider: matched,
-    patientId: getParameterByName("patientId")
+    patientId: getParameterByName("patientId"),
+    preferences: getParameterByName("preferences")
   });
 });
 

@@ -5,6 +5,9 @@ GC.get_data = function() {
 
   BBClient.ready(function(fhirClient){
 
+    var hidePatientHeader = (BBClient.state.preferences === 'hidePatientHeader');
+    GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
+
     var vitals = $.Deferred();
     var pt = fhirClient.get({
       resource: 'Patient',

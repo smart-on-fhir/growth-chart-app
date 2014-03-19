@@ -154,11 +154,20 @@ b, strong {
 	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.75) inset, 0 1px 1px 0 rgba(255,255,255,0.35);
 }
 
+.last-recording > * {
+	white-space: nowrap;
+	padding-right: 1em;
+}
+
 .header-inner {
 	background: #4D5B66;
-	border-radius: 5px 5px 0 0;
+	border-radius: 10px 10px 0 0;
 	padding: 0;
 	position: relative;
+}
+
+.has-patient-header .header-inner {
+	border-radius: 5px 5px 0 0;
 }
 
 .header-inner:after {
@@ -184,11 +193,12 @@ ul.bullet-list li {
 table.header-table {
 	width: 100%;
 	max-width: 100%;
+	margin-bottom: 5px;
 }
 /*table.header-table td { box-shadow: 0 0 1px 1px red inset; }*/
 table.header-table tr {}
 table.header-table th {
-	padding: 4px 4px;
+	padding: 0.4em 4px;
 	vertical-align: middle;
 	border-bottom: 1px solid #384550;
 	border-bottom-color: rgba(0, 0, 0, 0.1);
@@ -200,25 +210,18 @@ table.header-table th {
 	line-height: normal;
 }
 table.header-table > tbody > tr > td {
-	padding: 4px 4px;
+	padding: 0.4em 4px;
 	vertical-align: middle;
 	color: #AAA;
 	border-bottom: 1px solid #384550;
 	border-bottom-color: rgba(0, 0, 0, 0.1);
 	/*box-shadow: 0 0 -2px 1px red inset;*/
 	line-height: normal;
+	white-space: nowrap;
 }
-table.header-table .patient-row td {
-	padding-top: 10px;
-	padding-bottom: 10px;
-	min-height: 40px;
-	vertical-align: top;
-	line-height: 2em;
-}
-table.header-table .patient-name-cell {
-	padding-top: 10px;
-	vertical-align: top;
-	line-height: 2em;
+table.header-table .patient-row td,
+table.header-table .patient-row th {
+	line-height: 2.2em;
 }
 table.header-table .empty-row td {
 	background: #728391 !important;
@@ -239,10 +242,14 @@ table.header-table tr.last td {
 }*/
 
 .header-table-wrap {
-	overflow: hidden;
-	height  : 2.9em;
-	min-height: 36px;
+	overflow  : hidden;
+	height    : 0;
+	min-height: 0;
 }
+.has-patient-header .header-table-wrap {
+	height  : 2.8em;
+}
+
 
 .settings-expanded .header-table-wrap {
 	height: auto;
@@ -255,17 +262,23 @@ table.header-table tr.last td {
 table.header-table .icon {
 	width  : 27px;
 	height : 28px;
-	left   : -4px;
+	left   : -2px;
 	top    : 0;
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
+	margin-right: 2px;
 }
 #system-settings-icon {
 	background: url(../img/icons.png) -57px 0 no-repeat;
 }
+.icon-user {
+	background: url(../img/icons.png) -30px 0 no-repeat #EEE;
+	margin-top: -2px;
+}
 .header-inner .step-input-wrap,
-.header-inner select {
+.header-inner select,
+select.styled {
 	vertical-align: middle;
 	margin: 0;
 }
@@ -419,29 +432,40 @@ table.header-table .icon {
 	background: #CCC;
 	background-color: rgba(0, 0, 0, 0.3);
 	margin: 0.2em 0.5em;
+	box-shadow: 1px 0px 0px 0px rgba(255, 255, 255, 0.1);
 }
 
-.settings-toggle {
-	display   : inline-block;
-	vertical-align: middle;
-	margin    : -4px 0px 0px -2px;
+.toolbar-btn {
+	margin    : 5px 0px 0px 7px;
 	height    : 28px;
 	width     : 27px;
 	cursor    : pointer;
-	background: url(../img/icons.png) -84px 0 no-repeat #384653;
+	background: transparent;
 	border-radius: 3px;
+	position: relative;
+	z-index : 20;
+	float : left;
 }
-.settings-toggle:hover {
-	background-color: #1E242B;
+.toolbar-btn.settings-toggle {
+	background: url(../img/icons.png) -84px 0 no-repeat;
+}
+.toolbar-btn.print {
+	background: url(../img/icons.png) -84px -98px no-repeat;
+}
+.toolbar-btn:hover,
+.settings-expanded .toolbar-btn.settings-toggle {
+	background-color: #384653;
+	box-shadow: 0 0 3px -1px #FFF;
 }
 
 #view-mode {
 	padding: 0;
-	margin: 5px 10px 0px 10px;
+	margin: 0;
 	border-radius: 8px 8px 0 0;
 	position: relative;
 	z-index: 4;
 	background: url(../img/mode-bg.png) 0 0 repeat-x scroll #88939D;
+	border: 1px solid #4F5F6B;
 	border-bottom: 1px solid #4F5F6B;
 }
 #view-mode:after {
@@ -520,12 +544,17 @@ select {
 	line-height: 1.4em;
 }
 
-.header-inner select {
+.header-inner select,
+select.styled {
 	padding       : 3px;
 	margin        : 0;
 	border        : 1px solid #384653;
 	border-radius : 3px;
 	vertical-align: baseline;
+}
+
+select.language-select {
+	background: #88939D;
 }
 
 .header-inner input[type="text"],
@@ -573,7 +602,8 @@ input[type="button"] {
 
 .header-inner input[type="text"],
 .header-inner input[type="number"], 
-.header-inner select {
+.header-inner select,
+select.styled {
 	width: 10em;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -811,23 +841,24 @@ table.toggle-button {
 		}
 		
 		.checkbox-button .btn-wrap:before {
-			content    : "";
+			content    : attr(data-content) !important;
 			font-size  : 12px;
 			line-height: 21px;
 			padding    : 0 10px;
 			position   : absolute;
 			text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+			text-align : center; 
 		}
 		.checkbox-button.off .btn-wrap:before {
-			content : "OFF";
-			right   : auto;
+			content : "OFF"; /* if CSS attr() is not supported */
+			right   : 13px;
 			left    : 0;
 			color   : #BBB;
 		}
 		.checkbox-button.on .btn-wrap:before {
-			content : "ON";
+			content : "ON"; /* if CSS attr() is not supported */
 			right   : 0;
-			left    : auto;
+			left    : 13px;
 			color   : #FFF;
 		}
 
@@ -1069,6 +1100,7 @@ table.toggle-button {
 	margin: 0 -10px;
 	height: 35px;
 	line-height: 35px;
+	box-shadow: inset 0px -6px 6px -6px rgba(0, 0, 0, 0.5);
 }
 
 #info-bar .add-entry {
@@ -1201,9 +1233,15 @@ table.toggle-button {
 	border-top-color: #AAA;
 }
 
-input[disabled] {
+input[disabled], 
+select[disabled],
+input.disabled, 
+select.disabled,
+input.ui-state-disabled, 
+select.ui-state-disabled {
 	color: #333;
 	background-color: #DDD;
+	opacity: 1;
 }
 input[type="checkbox"][disabled],
 input[type="radio"][disabled] {
@@ -1278,6 +1316,7 @@ span.title {
 
 #time-ranges .cell {
 	display: table-cell;
+	vertical-align: middle;
 }
 
 #time-ranges .cell input {
@@ -1395,7 +1434,7 @@ span.title {
 	border-bottom   : none;
 	padding         : 11px 18px 1px 0;
 	bottom          : 0;
-	left            : 19px;
+	left            : 90px;
 	position        : absolute;
 	z-index         : 5;
 	height          : 29px;
@@ -1490,10 +1529,10 @@ span.title {
 * .input-wrap > .button {
 	position: absolute;
 	z-index: 2;
-	top: 0;
-	right: 0;
+	top: 1px;
+	right: 1px;
 	bottom: 0;
-	height: 26px;
+	height: 27px;
 	width: 26px;
 	line-height: 1;
 	margin: 0;
@@ -1730,18 +1769,21 @@ span.title {
 	text-align: right;
 }
 
-.timeline .years:before { content : "Years"; } 
-.timeline .years:after { content : "Years"; }
+.timeline .years:before,  .timeline .years:after { content : "Years"; }
+.timeline .months:before, .timeline .months:after { content: "Months"; }
+.timeline .weeks:before,  .timeline .weeks:after { content: "Weeks"; }
+.timeline .days:before,   .timeline .days:after { content: "Days"; }
 
-.timeline .months:before { content: "Months"; } 
-.timeline .months:after { content: "Months"; }
-
-.timeline .weeks:before { content: "Weeks"; } 
-.timeline .weeks:after { content: "Weeks"; }
-
-.timeline .days:before { content: "Days"; } 
-.timeline .days:after { content: "Days"; }
-
+.timeline .years:before,
+.timeline .years:after,
+.timeline .months:before,
+.timeline .months:after,
+.timeline .weeks:before, 
+.timeline .weeks:after,
+.timeline .days:before, 
+.timeline .days:after {
+	content: attr(data-content) !important;
+}
 
 .timeline .years .labels div,
 .timeline .months .labels div,
@@ -2582,7 +2624,8 @@ svg {
 	border-bottom-left-radius: 0 !important;
 	box-shadow: 0 -40px 20px -20px rgba(0, 0, 0, 0.2) inset;
 	line-height: 10px;
-	height: 22px;
+	min-height: 22px;
+	height: auto;
 	font-size: 18px;
 	font-family: Arial, sans-serif;
 	font-weight: normal !important;
@@ -2606,9 +2649,6 @@ svg {
 	width: 23px;
 	height: 23px;
 	margin: 0;
-}
-.ui-datepicker-title {
-	line-height: normal !important;
 }
 
 #dialog {
@@ -2639,7 +2679,7 @@ svg {
 }
 #dialog .age {
 	color : #888;
-	padding: 4px 28px 4px 10px;
+	padding: 4px 28px 4px 4px;
 }
 #dialog .chart {
 	background: #C8CFD2;
@@ -2675,6 +2715,7 @@ svg {
 	border-radius: 3px 3px 3px 3px;
 	color: #FFFFFF;
 	content: "Today";
+	content: attr(data-content);
 	font-size: 12px;
 	height: 14px;
 	line-height: 14px;
@@ -2684,6 +2725,9 @@ svg {
 	left: 4px;
 	top: 50%;
 	z-index: -1;
+}
+#dialog .today input {
+	border-left-width: 52px !important;
 }
 
 #ui-datepicker-div {
@@ -2705,7 +2749,7 @@ svg {
 	padding: 0.15em;
 	height: 1.9em;
 	background: transparent;
-	border-width: 2px 28px 2px 52px;
+	border-width: 2px 28px 2px 2px;
 	box-sizing: border-box;
 	border-style: solid;
 	display: block;

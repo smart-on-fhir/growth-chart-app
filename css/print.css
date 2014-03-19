@@ -312,6 +312,17 @@ svg path {
 .timeline .days:before { content: "Days"; } 
 .timeline .days:after { content: "Days"; }
 
+.timeline .years:before,
+.timeline .years:after,
+.timeline .months:before,
+.timeline .months:after,
+.timeline .weeks:before, 
+.timeline .weeks:after,
+.timeline .days:before, 
+.timeline .days:after {
+	content: attr(data-content) !important;
+}
+
 
 .timeline .years .labels div,
 .timeline .months .labels div,

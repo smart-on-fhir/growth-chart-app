@@ -11,114 +11,114 @@ if (!GC) {
 
 (function ($) {
     "use strict";
-	
-	var FENTON_WEIGHT_DATA_ORIGINAL = [
-		{Agemos:22/4.348214285714286, L:1, M:0.481, S:0.156},
-		{Agemos:23/4.348214285714286, L:1, M:0.575, S:0.17 },
-		{Agemos:24/4.348214285714286, L:1, M:0.67 , S:0.183},
-		{Agemos:25/4.348214285714286, L:1, M:0.77 , S:0.198},
-		{Agemos:26/4.348214285714286, L:1, M:0.877, S:0.212},
-		{Agemos:27/4.348214285714286, L:1, M:0.995, S:0.222},
-		{Agemos:28/4.348214285714286, L:1, M:1.128, S:0.228},
-		{Agemos:29/4.348214285714286, L:1, M:1.277, S:0.23 },
-		{Agemos:30/4.348214285714286, L:1, M:1.446, S:0.228},
-		{Agemos:31/4.348214285714286, L:1, M:1.635, S:0.222},
-		{Agemos:32/4.348214285714286, L:1, M:1.846, S:0.211},
-		{Agemos:33/4.348214285714286, L:1, M:2.073, S:0.199},
-		{Agemos:34/4.348214285714286, L:1, M:2.309, S:0.186},
-		{Agemos:35/4.348214285714286, L:1, M:2.553, S:0.174},
-		{Agemos:36/4.348214285714286, L:1, M:2.796, S:0.162},
-		{Agemos:37/4.348214285714286, L:1, M:2.992, S:0.157},
-		{Agemos:38/4.348214285714286, L:1, M:3.188, S:0.153},
-		{Agemos:39/4.348214285714286, L:1, M:3.384, S:0.149},
-		{Agemos:40/4.348214285714286, L:1, M:3.581, S:0.146},
-		{Agemos:41/4.348214285714286, L:1, M:3.757, S:0.145},
-		{Agemos:42/4.348214285714286, L:1, M:3.927, S:0.144},
-		{Agemos:43/4.348214285714286, L:1, M:4.099, S:0.142},
-		{Agemos:44/4.348214285714286, L:1, M:4.271, S:0.14 },
-		{Agemos:45/4.348214285714286, L:1, M:4.453, S:0.138},
-		{Agemos:46/4.348214285714286, L:1, M:4.618, S:0.137},
-		{Agemos:47/4.348214285714286, L:1, M:4.799, S:0.135},
-		{Agemos:48/4.348214285714286, L:1, M:4.976, S:0.133},
-		{Agemos:49/4.348214285714286, L:1, M:5.147, S:0.131},
-		{Agemos:50/4.348214285714286, L:1, M:5.305, S:0.132}
-	];
-	
-	var FENTON_LENGHT_DATA_ORIGINAL = [
-		{Agemos:22/4.348214285714286, L:1, M:28.72 , S:	0.079},
-		{Agemos:23/4.348214285714286, L:1, M:30.303, S:	0.076},
-		{Agemos:24/4.348214285714286, L:1, M:31.893, S:	0.073},
-		{Agemos:25/4.348214285714286, L:1, M:33.372, S:	0.071},
-		{Agemos:26/4.348214285714286, L:1, M:34.851, S:	0.069},
-		{Agemos:27/4.348214285714286, L:1, M:36.33 , S:	0.067},
-		{Agemos:28/4.348214285714286, L:1, M:37.809, S:	0.065},
-		{Agemos:29/4.348214285714286, L:1, M:39.103, S:	0.063},
-		{Agemos:30/4.348214285714286, L:1, M:40.398, S:	0.06 },
-		{Agemos:31/4.348214285714286, L:1, M:41.693, S:	0.058},
-		{Agemos:32/4.348214285714286, L:1, M:42.987, S:	0.056},
-		{Agemos:33/4.348214285714286, L:1, M:44.042, S:	0.054},
-		{Agemos:34/4.348214285714286, L:1, M:45.098, S:	0.051},
-		{Agemos:35/4.348214285714286, L:1, M:46.155, S:	0.049},
-		{Agemos:36/4.348214285714286, L:1, M:47.212, S:	0.047},
-		{Agemos:37/4.348214285714286, L:1, M:48.19 , S:	0.046},
-		{Agemos:38/4.348214285714286, L:1, M:49.168, S:	0.045},
-		{Agemos:39/4.348214285714286, L:1, M:50.146, S:	0.044},
-		{Agemos:40/4.348214285714286, L:1, M:51.114, S:	0.043},
-		{Agemos:41/4.348214285714286, L:1, M:51.859, S:	0.043},
-		{Agemos:42/4.348214285714286, L:1, M:52.693, S:	0.043},
-		{Agemos:43/4.348214285714286, L:1, M:53.469, S:	0.043},
-		{Agemos:44/4.348214285714286, L:1, M:54.238, S:	0.042},
-		{Agemos:45/4.348214285714286, L:1, M:54.96 , S:	0.042},
-		{Agemos:46/4.348214285714286, L:1, M:55.681, S:	0.042},
-		{Agemos:47/4.348214285714286, L:1, M:56.437, S:	0.041},
-		{Agemos:48/4.348214285714286, L:1, M:57.103, S:	0.041},
-		{Agemos:49/4.348214285714286, L:1, M:57.679, S:	0.042},
-		{Agemos:50/4.348214285714286, L:1, M:58.301, S:	0.041}
-	];
-	
-	var FENTON_HEADC_DATA_ORIGINAL = [
-		{Agemos:22/4.348214285714286, L:1.5, M:19.734, S:0.071},
-		{Agemos:23/4.348214285714286, L:1.5, M:20.875, S:0.069},
-		{Agemos:24/4.348214285714286, L:1.5, M:22.017, S:0.067},
-		{Agemos:25/4.348214285714286, L:1.5, M:23.094, S:0.065},
-		{Agemos:26/4.348214285714286, L:1.5, M:24.172, S:0.063},
-		{Agemos:27/4.348214285714286, L:1.5, M:25.249, S:0.061},
-		{Agemos:28/4.348214285714286, L:1.5, M:26.327, S:0.06 },
-		{Agemos:29/4.348214285714286, L:1.5, M:27.2  , S:0.058},
-		{Agemos:30/4.348214285714286, L:1.5, M:28.074, S:0.056},
-		{Agemos:31/4.348214285714286, L:1.5, M:28.947, S:0.055},
-		{Agemos:32/4.348214285714286, L:1.5, M:29.821, S:0.053},
-		{Agemos:33/4.348214285714286, L:1.5, M:30.569, S:0.052},
-		{Agemos:34/4.348214285714286, L:1.5, M:31.317, S:0.051},
-		{Agemos:35/4.348214285714286, L:1.5, M:32.065, S:0.05 },
-		{Agemos:36/4.348214285714286, L:1.5, M:32.812, S:0.049},
-		{Agemos:37/4.348214285714286, L:1.5, M:33.421, S:0.049},
-		{Agemos:38/4.348214285714286, L:1.5, M:34.031, S:0.049},
-		{Agemos:39/4.348214285714286, L:1.5, M:34.64 , S:0.049},
-		{Agemos:40/4.348214285714286, L:1.5, M:35.232, S:0.048},
-		{Agemos:41/4.348214285714286, L:1.5, M:35.842, S:0.047},
-		{Agemos:42/4.348214285714286, L:1.5, M:36.421, S:0.045},
-		{Agemos:43/4.348214285714286, L:1.5, M:37.023, S:0.044},
-		{Agemos:44/4.348214285714286, L:1.5, M:37.578, S:0.043},
-		{Agemos:45/4.348214285714286, L:1.5, M:38.027, S:0.041},
-		{Agemos:46/4.348214285714286, L:1.5, M:38.45 , S:0.04 },
-		{Agemos:47/4.348214285714286, L:1.5, M:38.833, S:0.039},
-		{Agemos:48/4.348214285714286, L:1.5, M:39.188, S:0.039},
-		{Agemos:49/4.348214285714286, L:1.5, M:39.547, S:0.039},
-		{Agemos:50/4.348214285714286, L:1.5, M:39.805, S:0.038}
-	];
-	
-	var FENTON_WEIGHT_DATA = { male : FENTON_WEIGHT_DATA_ORIGINAL.slice() }; 
-	var FENTON_LENGHT_DATA = { male : FENTON_LENGHT_DATA_ORIGINAL.slice() };
-	var FENTON_HEADC_DATA  = { male : FENTON_HEADC_DATA_ORIGINAL .slice() };
-	
-	FENTON_WEIGHT_DATA.female = FENTON_WEIGHT_DATA.male.slice();
-	FENTON_LENGHT_DATA.female = FENTON_LENGHT_DATA.male.slice();
-	FENTON_HEADC_DATA .female = FENTON_HEADC_DATA .male.slice();
-	// =========================================================================
     
-	
-	
+    var FENTON_WEIGHT_DATA_ORIGINAL = [
+        {Agemos:22/4.348214285714286, L:1, M:0.481, S:0.156},
+        {Agemos:23/4.348214285714286, L:1, M:0.575, S:0.17 },
+        {Agemos:24/4.348214285714286, L:1, M:0.67 , S:0.183},
+        {Agemos:25/4.348214285714286, L:1, M:0.77 , S:0.198},
+        {Agemos:26/4.348214285714286, L:1, M:0.877, S:0.212},
+        {Agemos:27/4.348214285714286, L:1, M:0.995, S:0.222},
+        {Agemos:28/4.348214285714286, L:1, M:1.128, S:0.228},
+        {Agemos:29/4.348214285714286, L:1, M:1.277, S:0.23 },
+        {Agemos:30/4.348214285714286, L:1, M:1.446, S:0.228},
+        {Agemos:31/4.348214285714286, L:1, M:1.635, S:0.222},
+        {Agemos:32/4.348214285714286, L:1, M:1.846, S:0.211},
+        {Agemos:33/4.348214285714286, L:1, M:2.073, S:0.199},
+        {Agemos:34/4.348214285714286, L:1, M:2.309, S:0.186},
+        {Agemos:35/4.348214285714286, L:1, M:2.553, S:0.174},
+        {Agemos:36/4.348214285714286, L:1, M:2.796, S:0.162},
+        {Agemos:37/4.348214285714286, L:1, M:2.992, S:0.157},
+        {Agemos:38/4.348214285714286, L:1, M:3.188, S:0.153},
+        {Agemos:39/4.348214285714286, L:1, M:3.384, S:0.149},
+        {Agemos:40/4.348214285714286, L:1, M:3.581, S:0.146},
+        {Agemos:41/4.348214285714286, L:1, M:3.757, S:0.145},
+        {Agemos:42/4.348214285714286, L:1, M:3.927, S:0.144},
+        {Agemos:43/4.348214285714286, L:1, M:4.099, S:0.142},
+        {Agemos:44/4.348214285714286, L:1, M:4.271, S:0.14 },
+        {Agemos:45/4.348214285714286, L:1, M:4.453, S:0.138},
+        {Agemos:46/4.348214285714286, L:1, M:4.618, S:0.137},
+        {Agemos:47/4.348214285714286, L:1, M:4.799, S:0.135},
+        {Agemos:48/4.348214285714286, L:1, M:4.976, S:0.133},
+        {Agemos:49/4.348214285714286, L:1, M:5.147, S:0.131},
+        {Agemos:50/4.348214285714286, L:1, M:5.305, S:0.132}
+    ];
+    
+    var FENTON_LENGHT_DATA_ORIGINAL = [
+        {Agemos:22/4.348214285714286, L:1, M:28.72 , S: 0.079},
+        {Agemos:23/4.348214285714286, L:1, M:30.303, S: 0.076},
+        {Agemos:24/4.348214285714286, L:1, M:31.893, S: 0.073},
+        {Agemos:25/4.348214285714286, L:1, M:33.372, S: 0.071},
+        {Agemos:26/4.348214285714286, L:1, M:34.851, S: 0.069},
+        {Agemos:27/4.348214285714286, L:1, M:36.33 , S: 0.067},
+        {Agemos:28/4.348214285714286, L:1, M:37.809, S: 0.065},
+        {Agemos:29/4.348214285714286, L:1, M:39.103, S: 0.063},
+        {Agemos:30/4.348214285714286, L:1, M:40.398, S: 0.06 },
+        {Agemos:31/4.348214285714286, L:1, M:41.693, S: 0.058},
+        {Agemos:32/4.348214285714286, L:1, M:42.987, S: 0.056},
+        {Agemos:33/4.348214285714286, L:1, M:44.042, S: 0.054},
+        {Agemos:34/4.348214285714286, L:1, M:45.098, S: 0.051},
+        {Agemos:35/4.348214285714286, L:1, M:46.155, S: 0.049},
+        {Agemos:36/4.348214285714286, L:1, M:47.212, S: 0.047},
+        {Agemos:37/4.348214285714286, L:1, M:48.19 , S: 0.046},
+        {Agemos:38/4.348214285714286, L:1, M:49.168, S: 0.045},
+        {Agemos:39/4.348214285714286, L:1, M:50.146, S: 0.044},
+        {Agemos:40/4.348214285714286, L:1, M:51.114, S: 0.043},
+        {Agemos:41/4.348214285714286, L:1, M:51.859, S: 0.043},
+        {Agemos:42/4.348214285714286, L:1, M:52.693, S: 0.043},
+        {Agemos:43/4.348214285714286, L:1, M:53.469, S: 0.043},
+        {Agemos:44/4.348214285714286, L:1, M:54.238, S: 0.042},
+        {Agemos:45/4.348214285714286, L:1, M:54.96 , S: 0.042},
+        {Agemos:46/4.348214285714286, L:1, M:55.681, S: 0.042},
+        {Agemos:47/4.348214285714286, L:1, M:56.437, S: 0.041},
+        {Agemos:48/4.348214285714286, L:1, M:57.103, S: 0.041},
+        {Agemos:49/4.348214285714286, L:1, M:57.679, S: 0.042},
+        {Agemos:50/4.348214285714286, L:1, M:58.301, S: 0.041}
+    ];
+    
+    var FENTON_HEADC_DATA_ORIGINAL = [
+        {Agemos:22/4.348214285714286, L:1.5, M:19.734, S:0.071},
+        {Agemos:23/4.348214285714286, L:1.5, M:20.875, S:0.069},
+        {Agemos:24/4.348214285714286, L:1.5, M:22.017, S:0.067},
+        {Agemos:25/4.348214285714286, L:1.5, M:23.094, S:0.065},
+        {Agemos:26/4.348214285714286, L:1.5, M:24.172, S:0.063},
+        {Agemos:27/4.348214285714286, L:1.5, M:25.249, S:0.061},
+        {Agemos:28/4.348214285714286, L:1.5, M:26.327, S:0.06 },
+        {Agemos:29/4.348214285714286, L:1.5, M:27.2  , S:0.058},
+        {Agemos:30/4.348214285714286, L:1.5, M:28.074, S:0.056},
+        {Agemos:31/4.348214285714286, L:1.5, M:28.947, S:0.055},
+        {Agemos:32/4.348214285714286, L:1.5, M:29.821, S:0.053},
+        {Agemos:33/4.348214285714286, L:1.5, M:30.569, S:0.052},
+        {Agemos:34/4.348214285714286, L:1.5, M:31.317, S:0.051},
+        {Agemos:35/4.348214285714286, L:1.5, M:32.065, S:0.05 },
+        {Agemos:36/4.348214285714286, L:1.5, M:32.812, S:0.049},
+        {Agemos:37/4.348214285714286, L:1.5, M:33.421, S:0.049},
+        {Agemos:38/4.348214285714286, L:1.5, M:34.031, S:0.049},
+        {Agemos:39/4.348214285714286, L:1.5, M:34.64 , S:0.049},
+        {Agemos:40/4.348214285714286, L:1.5, M:35.232, S:0.048},
+        {Agemos:41/4.348214285714286, L:1.5, M:35.842, S:0.047},
+        {Agemos:42/4.348214285714286, L:1.5, M:36.421, S:0.045},
+        {Agemos:43/4.348214285714286, L:1.5, M:37.023, S:0.044},
+        {Agemos:44/4.348214285714286, L:1.5, M:37.578, S:0.043},
+        {Agemos:45/4.348214285714286, L:1.5, M:38.027, S:0.041},
+        {Agemos:46/4.348214285714286, L:1.5, M:38.45 , S:0.04 },
+        {Agemos:47/4.348214285714286, L:1.5, M:38.833, S:0.039},
+        {Agemos:48/4.348214285714286, L:1.5, M:39.188, S:0.039},
+        {Agemos:49/4.348214285714286, L:1.5, M:39.547, S:0.039},
+        {Agemos:50/4.348214285714286, L:1.5, M:39.805, S:0.038}
+    ];
+    
+    var FENTON_WEIGHT_DATA = { male : FENTON_WEIGHT_DATA_ORIGINAL.slice() }; 
+    var FENTON_LENGHT_DATA = { male : FENTON_LENGHT_DATA_ORIGINAL.slice() };
+    var FENTON_HEADC_DATA  = { male : FENTON_HEADC_DATA_ORIGINAL .slice() };
+    
+    FENTON_WEIGHT_DATA.female = FENTON_WEIGHT_DATA.male.slice();
+    FENTON_LENGHT_DATA.female = FENTON_LENGHT_DATA.male.slice();
+    FENTON_HEADC_DATA .female = FENTON_HEADC_DATA .male.slice();
+    // =========================================================================
+    
+    
+    
     var CDC_WEIGHT = {
         "male": [
             {Agemos:0, "L": 1.815151075, "M": 3.530203168, "S": 0.152385273},
@@ -363,7 +363,7 @@ if (!GC) {
             {Agemos:238.5, "L": -0.927059784, "M": 70.45546105, "S": 0.160818788},
             {Agemos:239.5, "L": -0.919718461, "M": 70.55252127, "S": 0.161229617},
             {Agemos:240, "L": -0.91648762, "M": 70.59761453, "S": 0.161476792}
-		],
+        ],
         "female": [
             {Agemos:0, "L": 1.509187507, "M": 3.39918645, "S": 0.142106724},
             {Agemos:0.5, "L": 1.357944315, "M": 3.79752846, "S": 0.138075916},
@@ -607,8 +607,8 @@ if (!GC) {
             {Agemos:238.5, "L": -1.530642461, "M": 58.15103575, "S": 0.166260109},
             {Agemos:239.5, "L": -1.518754013, "M": 58.1987714, "S": 0.16652037},
             {Agemos:240, "L": -1.51336185, "M": 58.21897289, "S": 0.166644749}
-		]
-	};
+        ]
+    };
     
     var CDC_HEAD_CIRCUMFERENCE_INF_DATA = {
         "male": [
@@ -935,7 +935,7 @@ if (!GC) {
             {Agemos:238.5, "L": 1.171643828, "M": 176.8254895, "S": 0.04036585},
             {Agemos:239.5, "L": 1.16863827, "M": 176.8414914, "S": 0.04036818},
             {Agemos:240, "L": 1.167279219, "M": 176.8492322, "S": 0.040369574}
-		],
+        ],
         "female": [
             {Agemos:0, "L": -1.295960857, "M": 49.28639612, "S": 0.05008556},
             {Agemos:0.5, "L": -0.809249882, "M": 51.68358057, "S": 0.046818545},
@@ -1788,396 +1788,396 @@ if (!GC) {
             {Agemos:23, "L": 1, "M": 47.0391, "S": 0.02962},
             {Agemos:24, "L": 1, "M": 47.1822, "S": 0.02957}
     ]};
-	
-	// Placeholder for data sets that are not provided
-	var NODATA = {male:{}, female:{}};
-	
+    
+    // Placeholder for data sets that are not provided
+    var NODATA = {male:{}, female:{}};
+    
     GC.DATA_SETS = {
         "CDC_WEIGHT": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "CDC",
             "description" : "Weight, birth to 20 years",
             "units"       : "kg",
             "type"        : "LMS",
             "data"        : CDC_WEIGHT,
-			"name"        : "CDC_WEIGHT"
+            "name"        : "CDC_WEIGHT"
         },
         "CDC_HEAD_CIRCUMFERENCE_INF": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "CDC",
             "description" : "Head circumference, birth to 36 months",
             "units"       : "cm",
             "type"        : "LMS",
             "data"        : CDC_HEAD_CIRCUMFERENCE_INF_DATA,
-			"name"        : "CDC_HEAD_CIRCUMFERENCE_INF"
+            "name"        : "CDC_HEAD_CIRCUMFERENCE_INF"
         },
         "CDC_STATURE": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "CDC",
             "description" : "Stature, birth to 20 years",
             "units"       : "cm",
             "type"        : "LMS",
             "data"        : CDC_LENGTH,
-			"name"        : "CDC_STATURE"
+            "name"        : "CDC_STATURE"
         },
         "CDC_BMI": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "CDC",
             "description" : "BMI, 2 to 20 years",
             "units"       : "kg/m2",
             "type"        : "LMS",
             "data"        : CDC_BMI_DATA,
-			"name"        : "CDC_BMI"
+            "name"        : "CDC_BMI"
         },
         "WHO_WEIGHT": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "WHO",
             "description" : "Weight, birth to 24 months",
             "units"       : "kg",
             "type"        : "LMS",
             "data"        : WHO_WEIGHT_DATA,
-			"name"        : "WHO_WEIGHT"
+            "name"        : "WHO_WEIGHT"
         },
         "WHO_LENGTH": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "WHO",
             "description" : "Length, birth to 24 months",
             "units"       : "cm",
             "type"        : "LMS",
             "data"        : WHO_LENGTH_DATA,
-			"name"        : "WHO_LENGTH"
+            "name"        : "WHO_LENGTH"
         },
         "WHO_HEAD_CIRCUMFERENCE": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "source"      : "WHO",
             "description" : "Head circumference, birth to 24 months",
             "units"       : "cm",
             "type"        : "LMS",
             "data"        : WHO_HEAD_CIRCUMFERENCE_DATA,
-			"name"        : "WHO_HEAD_CIRCUMFERENCE"
+            "name"        : "WHO_HEAD_CIRCUMFERENCE"
         },
         
         "BB_WEIGHT": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units"       : "kg",
             "source"      : "Bayer Bayley",
             "updated"     : "2001-04-20",
             "type"        : "points",
             "data"        : NODATA,
             "description" : "Weight, 2 to 21 years",
-			"name"        : "BB_WEIGHT"
+            "name"        : "BB_WEIGHT"
         },
         "DS_LENGTH_INF": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units": "cm",
             "source": "Down Syndrome",
             "updated": "2008-01-22",
             "type": "points",
             "data": NODATA,
             "description": "Length, birth to 36 months",
-			"name" : "DS_LENGTH_INF"
+            "name" : "DS_LENGTH_INF"
         },
         "DS_WEIGHT_INF": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units": "kg",
             "source": "Down Syndrome",
             "updated": "2008-01-23",
             "type": "points",
             "data": NODATA,
             "description": "Weight, birth to 36 months",
-			"name" : "DS_WEIGHT_INF"
+            "name" : "DS_WEIGHT_INF"
         },
         "DS_HEAD_CIRCUMFERENCE_INF": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units": "cm",
             "source": "Down Syndrome",
             "updated": "2008-01-17",
             "type": "points",
             "data": NODATA,
             "description": "Head circumference, birth to 36 months",
-			"name" : "DS_HEAD_CIRCUMFERENCE_INF"
+            "name" : "DS_HEAD_CIRCUMFERENCE_INF"
         },
         
         "DS_WEIGHT": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units": "kg",
             "source": "Down Syndrome",
             "updated": "2008-01-23",
             "type": "points",
             "data": NODATA,
             "description": "Weight, 2 to 18 years",
-			"name" : "DS_WEIGHT"
+            "name" : "DS_WEIGHT"
         },
         "DS_STATURE": {
-			"measurement" : "metric",
+            "measurement" : "metric",
             "units": "cm",
             "source": "Down Syndrome",
             "updated": "2008-01-22",
             "type": "points",
             "data": NODATA,
             "description": "Height, 2 to 18 years",
-			"name" : "DS_STATURE"
+            "name" : "DS_STATURE"
         },
         "BB_STATURE": {
             "measurement" : "metric",
-			"units": "cm",
+            "units": "cm",
             "source": "Bayer Bayley",
             "updated": "2001-04-20",
             "type": "points",
             "data": NODATA,
             "description": "Height, 2 to 21 years",
-			"name" : "BB_STATURE"
+            "name" : "BB_STATURE"
         },
         
-		"FENTON_WEIGHT" : {
-			"measurement" : "metric",
+        "FENTON_WEIGHT" : {
+            "measurement" : "metric",
             "source"      : "FENTON",
             "description" : "Weight of premature children",
             "units"       : "kg",
             "type"        : "LMS",
-			"data"        : FENTON_WEIGHT_DATA,
-			"name"        : "FENTON_WEIGHT"
-		},
-		
-		"FENTON_LENGHT" : {
-			"measurement" : "metric",
+            "data"        : FENTON_WEIGHT_DATA,
+            "name"        : "FENTON_WEIGHT"
+        },
+        
+        "FENTON_LENGHT" : {
+            "measurement" : "metric",
             "source"      : "FENTON",
             "description" : "Length of premature children",
             "units"       : "cm",
             "type"        : "LMS",
-			"data"        : FENTON_LENGHT_DATA,
-			"name"        : "FENTON_LENGHT"
-		},
-		
-		"FENTON_HEADC" : {
-			"measurement" : "metric",
+            "data"        : FENTON_LENGHT_DATA,
+            "name"        : "FENTON_LENGHT"
+        },
+        
+        "FENTON_HEADC" : {
+            "measurement" : "metric",
             "source"      : "FENTON",
             "description" : "Head Circumference of premature children",
             "units"       : "cm",
             "type"        : "LMS",
-			"data"        : FENTON_HEADC_DATA,
-			"name"        : "FENTON_HEADC"
-		}
+            "data"        : FENTON_HEADC_DATA,
+            "name"        : "FENTON_HEADC"
+        }
     };
-	
-	GC.DATA_SETS_MAP = {
-		CDC : {
-			LENGTH : GC.DATA_SETS.CDC_STATURE,
-			WEIGHT : GC.DATA_SETS.CDC_WEIGHT,
-			HEADC  : GC.DATA_SETS.CDC_HEAD_CIRCUMFERENCE_INF,
-			BMI    : GC.DATA_SETS.CDC_BMI
-		},
-		WHO : {
-			WEIGHT : GC.DATA_SETS.WHO_WEIGHT,
-			LENGTH : GC.DATA_SETS.WHO_LENGTH,
-			HEADC  : GC.DATA_SETS.WHO_HEAD_CIRCUMFERENCE,
-			BMI    : null
-		},
-		BB : {
-			WEIGHT : GC.DATA_SETS.BB_WEIGHT,
-			LENGTH : GC.DATA_SETS.BB_STATURE,
-			HEADC  : null,
-			BMI    : null
-		},
-		DS : {
-			WEIGHT : [ GC.DATA_SETS.DS_WEIGHT_INF, GC.DATA_SETS.DS_WEIGHT ],
-			LENGTH : [ GC.DATA_SETS.DS_LENGTH_INF, GC.DATA_SETS.DS_STATURE ],
-			HEADC  : GC.DATA_SETS.DS_HEAD_CIRCUMFERENCE_INF,
-			BMI    : null
-		},
-		FENTON : {
-			WEIGHT : GC.DATA_SETS.FENTON_WEIGHT,
-			LENGTH : GC.DATA_SETS.FENTON_LENGHT,
-			HEADC  : GC.DATA_SETS.FENTON_HEADC,
-			BMI    : null
-		}
-	};
-	
-	// =========================================================================
-	// Preprocess the data (sort by age, remove dublicates, etc.)
-	(function() {
-		
-		function sortByAge(a, b) {
-			return a.Agemos - b.Agemos;
-		}
-		
-		function cleanUp( data ) {
-			var len = data.length, i, prev, cur;
-			for ( i = 1; i < len; i++ ) {
-				prev = data[ i - 1 ];
-				cur  = data[ i ];
-				
-				// smooth for data interval under 1 month
-				if ( Math.abs(prev.Agemos - cur.Agemos) < 1 ) {
-					//console.log("handle" + cur.Agemos, [cur.value, prev.value]);
-					prev.value = (prev.value + cur.value) / 2;
-					//prev.Agemos = (prev.Agemos + cur.Agemos) / 2;
-					data.splice( i, 1 );
-					i--;
-					len--;
-				}
-			}
-		}
-		
-		var ds, x, genders = { male : 1, female : 1 }, gender, type, key, group;
-		for ( x in GC.DATA_SETS ) {
-			for ( gender in genders ) {
-				ds = GC.DATA_SETS[x].data[gender];
-				type = Object.prototype.toString.call(ds);
-				
-				
-				
-				if ( type == "[object Array]" ) {
-					ds.sort(sortByAge);
-					
-					//cleanUp( ds );
-					//GC.DATA_SETS[x].data[gender] = ds;
-				}
-				else if ( type == "[object Object]" ) {
-					for ( key in ds ) {
-						group = ds[key];
-						
-						group.sort(sortByAge);
-						
-						cleanUp( group );
-						GC.DATA_SETS[x].data[gender][key] = group;
-					}
-				}
-			}
-		}
-	}());
-	// =========================================================================
-	
-	/**
-	 * @param {String} src  CDC|WHO|BB|DS...
-	 * @param {String} type LENGTH|WEIGHT|HEADC|BMI
-	 * @param {String} type male|female
-	 * @param {Number} startAgeMos
-	 * @param {Number} endAgeMos
-	 */
-	GC.getDataSet = function( src, type, gender, startAgeMos, endAgeMos ) {
-		
-		var tmp, ds, i, range, a = 0, n, out = null;
-		
-		// Something like GC.DATA_SETS_MAP.CDC
-		tmp = GC.DATA_SETS_MAP[ src ];
-		if ( !tmp ) {return null;}
-		
-		// Something like GC.DATA_SETS_MAP.CDC.LENGTH
-		tmp = tmp[ type ];
-		if ( !tmp ) {return null;}
-		
-		// Convert to array of data sets if needed
-		if ( Object.prototype.toString.call( tmp ) != "[object Array]" ) {
-			tmp = [ tmp ];
-		}
-		
-		//out = tmp[0];
-		
-		// Find the data set that intersects the most the given time range 
-		// for the given gender
-		for ( i = tmp.length - 1; i >= 0; i-- ) {
-			ds = tmp[i];
-			range = GC.getDataSetAgeRange( ds )[ gender ];
-			
-			if ( range.min <= endAgeMos && range.max >= startAgeMos ) {
-				n = endAgeMos - 
-					startAgeMos - 
-					Math.max(endAgeMos - range.max, 0) - 
-					Math.max(range.min - startAgeMos, 0);
-				
-				if ( n > a ) {
-					a = n;
-					out = ds;
-				}
-			}
-		}
-		
-		return out;
-	};
-	
-	/**
-	 * @param {Objects} ds One of the item in GC.DATA_SETS
-	 * @returns Object like 
-	 * {
-	 *     "male"   : { min : 0, max : 120 },
-	 *     "female" : { min : 0, max : 100 }
-	 * }
-	 */
-	GC.getDataSetAgeRange = function( ds ) {
-		
-		function sortByAge(a, b) {
-			return a.Agemos - b.Agemos;
-		}
-		
-		if ( !ds.ageRange ) {
-			
-			ds.ageRange = {
-				"male"   : { min : null, max : null },
-				"female" : { min : null, max : null }
-			};
-			
-			var genders = { male : 1, female : 1 },
-				currentGender = null, 
-				data, 
-				len, 
-				type;
-				
-			for ( currentGender in genders ) {
-				data = ds.data[ currentGender ];
-				type = Object.prototype.toString.call(data);
-				
-				// Entries are listed directly under the gender. That seems to 
-				// be the case for LMS data sets
-				if ( type == "[object Array]" ) {
-					data.sort(sortByAge);
-					
-					len = data.length;
-					
-					ds.ageRange[currentGender].min = data[0      ].Agemos;
-					ds.ageRange[currentGender].max = data[len - 1].Agemos;
-				} 
-				
-				// Standart deviations, percentiles or something else - the 
-				// label doesn't really matter. What needs to be done is to 
-				// find min/max from all the groups
-				else if ( type == "[object Object]" ) {
-					var min = Number.MAX_VALUE, 
-						max = Number.MIN_VALUE, 
-						x, 
-						group;
-					for ( x in data ) {
-						group = data[x];
-						
-						group.sort(sortByAge);
-						
-						len = group.length;
-						
-						min = Math.min(min, group[0].Agemos);
-						max = Math.max(max, group[len - 1].Agemos);
-					}
-					ds.ageRange[currentGender].min = min;
-					ds.ageRange[currentGender].max = max;
-				}
-			}
-		}
-		
-		return ds.ageRange;
-	};
     
-	GC.translateFentonDatasets = function(patient) {
-		if (patient.weeker) {
-			$.each(FENTON_WEIGHT_DATA.male, function(i, o) {
-				o.Agemos = FENTON_WEIGHT_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
-			});
-			$.each(FENTON_LENGHT_DATA.male, function(i, o) {
-				o.Agemos = FENTON_LENGHT_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
-			});
-			$.each(FENTON_HEADC_DATA.male, function(i, o) {
-				o.Agemos = FENTON_HEADC_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
-			});
-		}
-	};
-	
-	
+    GC.DATA_SETS_MAP = {
+        CDC : {
+            LENGTH : GC.DATA_SETS.CDC_STATURE,
+            WEIGHT : GC.DATA_SETS.CDC_WEIGHT,
+            HEADC  : GC.DATA_SETS.CDC_HEAD_CIRCUMFERENCE_INF,
+            BMI    : GC.DATA_SETS.CDC_BMI
+        },
+        WHO : {
+            WEIGHT : GC.DATA_SETS.WHO_WEIGHT,
+            LENGTH : GC.DATA_SETS.WHO_LENGTH,
+            HEADC  : GC.DATA_SETS.WHO_HEAD_CIRCUMFERENCE,
+            BMI    : null
+        },
+        BB : {
+            WEIGHT : GC.DATA_SETS.BB_WEIGHT,
+            LENGTH : GC.DATA_SETS.BB_STATURE,
+            HEADC  : null,
+            BMI    : null
+        },
+        DS : {
+            WEIGHT : [ GC.DATA_SETS.DS_WEIGHT_INF, GC.DATA_SETS.DS_WEIGHT ],
+            LENGTH : [ GC.DATA_SETS.DS_LENGTH_INF, GC.DATA_SETS.DS_STATURE ],
+            HEADC  : GC.DATA_SETS.DS_HEAD_CIRCUMFERENCE_INF,
+            BMI    : null
+        },
+        FENTON : {
+            WEIGHT : GC.DATA_SETS.FENTON_WEIGHT,
+            LENGTH : GC.DATA_SETS.FENTON_LENGHT,
+            HEADC  : GC.DATA_SETS.FENTON_HEADC,
+            BMI    : null
+        }
+    };
+    
+    // =========================================================================
+    // Preprocess the data (sort by age, remove dublicates, etc.)
+    (function() {
+        
+        function sortByAge(a, b) {
+            return a.Agemos - b.Agemos;
+        }
+        
+        function cleanUp( data ) {
+            var len = data.length, i, prev, cur;
+            for ( i = 1; i < len; i++ ) {
+                prev = data[ i - 1 ];
+                cur  = data[ i ];
+                
+                // smooth for data interval under 1 month
+                if ( Math.abs(prev.Agemos - cur.Agemos) < 1 ) {
+                    //console.log("handle" + cur.Agemos, [cur.value, prev.value]);
+                    prev.value = (prev.value + cur.value) / 2;
+                    //prev.Agemos = (prev.Agemos + cur.Agemos) / 2;
+                    data.splice( i, 1 );
+                    i--;
+                    len--;
+                }
+            }
+        }
+        
+        var ds, x, genders = { male : 1, female : 1 }, gender, type, key, group;
+        for ( x in GC.DATA_SETS ) {
+            for ( gender in genders ) {
+                ds = GC.DATA_SETS[x].data[gender];
+                type = Object.prototype.toString.call(ds);
+                
+                
+                
+                if ( type == "[object Array]" ) {
+                    ds.sort(sortByAge);
+                    
+                    //cleanUp( ds );
+                    //GC.DATA_SETS[x].data[gender] = ds;
+                }
+                else if ( type == "[object Object]" ) {
+                    for ( key in ds ) {
+                        group = ds[key];
+                        
+                        group.sort(sortByAge);
+                        
+                        cleanUp( group );
+                        GC.DATA_SETS[x].data[gender][key] = group;
+                    }
+                }
+            }
+        }
+    }());
+    // =========================================================================
+    
+    /**
+     * @param {String} src  CDC|WHO|BB|DS...
+     * @param {String} type LENGTH|WEIGHT|HEADC|BMI
+     * @param {String} type male|female
+     * @param {Number} startAgeMos
+     * @param {Number} endAgeMos
+     */
+    GC.getDataSet = function( src, type, gender, startAgeMos, endAgeMos ) {
+        
+        var tmp, ds, i, range, a = 0, n, out = null;
+        
+        // Something like GC.DATA_SETS_MAP.CDC
+        tmp = GC.DATA_SETS_MAP[ src ];
+        if ( !tmp ) {return null;}
+        
+        // Something like GC.DATA_SETS_MAP.CDC.LENGTH
+        tmp = tmp[ type ];
+        if ( !tmp ) {return null;}
+        
+        // Convert to array of data sets if needed
+        if ( Object.prototype.toString.call( tmp ) != "[object Array]" ) {
+            tmp = [ tmp ];
+        }
+        
+        //out = tmp[0];
+        
+        // Find the data set that intersects the most the given time range 
+        // for the given gender
+        for ( i = tmp.length - 1; i >= 0; i-- ) {
+            ds = tmp[i];
+            range = GC.getDataSetAgeRange( ds )[ gender ];
+            
+            if ( range.min <= endAgeMos && range.max >= startAgeMos ) {
+                n = endAgeMos - 
+                    startAgeMos - 
+                    Math.max(endAgeMos - range.max, 0) - 
+                    Math.max(range.min - startAgeMos, 0);
+                
+                if ( n > a ) {
+                    a = n;
+                    out = ds;
+                }
+            }
+        }
+        
+        return out;
+    };
+    
+    /**
+     * @param {Objects} ds One of the item in GC.DATA_SETS
+     * @returns Object like 
+     * {
+     *     "male"   : { min : 0, max : 120 },
+     *     "female" : { min : 0, max : 100 }
+     * }
+     */
+    GC.getDataSetAgeRange = function( ds ) {
+        
+        function sortByAge(a, b) {
+            return a.Agemos - b.Agemos;
+        }
+        
+        if ( !ds.ageRange ) {
+            
+            ds.ageRange = {
+                "male"   : { min : null, max : null },
+                "female" : { min : null, max : null }
+            };
+            
+            var genders = { male : 1, female : 1 },
+                currentGender = null, 
+                data, 
+                len, 
+                type;
+                
+            for ( currentGender in genders ) {
+                data = ds.data[ currentGender ];
+                type = Object.prototype.toString.call(data);
+                
+                // Entries are listed directly under the gender. That seems to 
+                // be the case for LMS data sets
+                if ( type == "[object Array]" ) {
+                    data.sort(sortByAge);
+                    
+                    len = data.length;
+                    
+                    ds.ageRange[currentGender].min = data[0      ].Agemos;
+                    ds.ageRange[currentGender].max = data[len - 1].Agemos;
+                } 
+                
+                // Standart deviations, percentiles or something else - the 
+                // label doesn't really matter. What needs to be done is to 
+                // find min/max from all the groups
+                else if ( type == "[object Object]" ) {
+                    var min = Number.MAX_VALUE, 
+                        max = Number.MIN_VALUE, 
+                        x, 
+                        group;
+                    for ( x in data ) {
+                        group = data[x];
+                        
+                        group.sort(sortByAge);
+                        
+                        len = group.length;
+                        
+                        min = Math.min(min, group[0].Agemos);
+                        max = Math.max(max, group[len - 1].Agemos);
+                    }
+                    ds.ageRange[currentGender].min = min;
+                    ds.ageRange[currentGender].max = max;
+                }
+            }
+        }
+        
+        return ds.ageRange;
+    };
+    
+    GC.translateFentonDatasets = function(patient) {
+        if (patient.weeker) {
+            $.each(FENTON_WEIGHT_DATA.male, function(i, o) {
+                o.Agemos = FENTON_WEIGHT_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
+            });
+            $.each(FENTON_LENGHT_DATA.male, function(i, o) {
+                o.Agemos = FENTON_LENGHT_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
+            });
+            $.each(FENTON_HEADC_DATA.male, function(i, o) {
+                o.Agemos = FENTON_HEADC_DATA_ORIGINAL[i].Agemos - patient.weeker/4.348214285714286;
+            });
+        }
+    };
+    
+    
 }(jQuery));

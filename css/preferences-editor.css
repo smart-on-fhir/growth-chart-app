@@ -164,6 +164,7 @@
 	padding: 2px;
 	font-family: Tahoma, sans-serif;
 	font-size: 1.1em;
+	width: auto;
 }
 #preferences-editor #panel-about h1 {
 	margin-bottom: 3px;
