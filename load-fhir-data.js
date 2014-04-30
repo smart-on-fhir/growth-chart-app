@@ -3,24 +3,17 @@ window.GC = window.GC || {};
 GC.get_data = function() {
   var dfd = $.Deferred();
 
-  BBClient.ready(function(fhirClient){
+  FHIR.oauth2.ready(function(smart){
 
-    var hidePatientHeader = (BBClient.state.preferences === 'hidePatientHeader');
+    var hidePatientHeader = (FHIR.oauth2.state.preferences === 'hidePatientHeader');
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
     var vitals = $.Deferred();
-    var pt = fhirClient.get({
-      resource: 'Patient',
-      id: fhirClient.patientId
-    });
+    var pt = smart.Patient.read();
 
-    fhirClient.search({
-      resource: 'Observation',
-      searchTerms: {
-        'subject:Patient':fhirClient.patientId,
-        'name' : ['3141-9', '8302-2', '8287-5', '39156-5'].join(',')
-      }
-    }).done(drainVitals);
+    smart.Observation.where.
+      nameIn(['3141-9', '8302-2', '8287-5', '39156-5']).
+      search().done(drainVitals);
 
     var allVitals = [];
     function drainVitals(vs, cursor){
@@ -28,7 +21,7 @@ GC.get_data = function() {
       if (cursor.hasNext()){
         cursor.next().done(drainVitals);
       } else {
-        vitals.resolve(fhirClient.byCode(allVitals, 'name'));
+        vitals.resolve(smart.byCode(allVitals, 'name'));
       }
     }
 
@@ -60,7 +53,7 @@ GC.get_data = function() {
       p.demographics.birthday = patient.birthDate;
       p.demographics.gender = (patient.gender.coding[0].code == 'M' ? 'male' : 'female');
 
-      var units = fhirClient.units;
+      var units = smart.units;
       process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
       process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
       process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
