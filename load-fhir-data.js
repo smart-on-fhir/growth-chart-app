@@ -8,24 +8,25 @@ GC.get_data = function() {
     var hidePatientHeader = (FHIR.oauth2.state.preferences === 'hidePatientHeader');
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
-    var vitals = $.Deferred();
-    var pt = smart.Patient.read();
+    var patient = smart.context.patient;
 
-    smart.Observation.where.
+    var vitalsFetch = $.Deferred();
+    var ptFetch = patient.read();
+
+    patient.Observation.where.
       nameIn(['3141-9', '8302-2', '8287-5', '39156-5']).
-      search().done(drainVitals);
+      drain(drainVitals).done(doneVitals);
 
     var allVitals = [];
-    function drainVitals(vs, cursor){
+    function drainVitals(vs){
       [].push.apply(allVitals, vs); 
-      if (cursor.hasNext()){
-        cursor.next().done(drainVitals);
-      } else {
-        vitals.resolve(smart.byCode(allVitals, 'name'));
-      }
-    }
+    };
+    
+    function doneVitals(){
+        vitalsFetch.resolve(smart.byCode(allVitals, 'name'));
+    };
 
-    $.when(pt, vitals).done(onData);
+    $.when(ptFetch, vitalsFetch).done(onData);
 
     function onData(patient, vitalsByCode){
 
