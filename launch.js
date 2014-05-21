@@ -12,8 +12,8 @@ var client = {
   "scope":  "summary search"
 };
 
-BBClient.providers(fhirServiceUrl, function(provider){
-  BBClient.authorize({
+FHIR.oauth2.providers(fhirServiceUrl, function(provider){
+  FHIR.oauth2.authorize({
     client: client, 
     provider: provider,
     patientId: getParameterByName("patientId")
