@@ -5,7 +5,7 @@ GC.get_data = function() {
 
   FHIR.oauth2.ready(function(smart){
 
-    var hidePatientHeader = (FHIR.oauth2.state.preferences === 'hidePatientHeader');
+    var hidePatientHeader = (smart.state.preferences === 'hidePatientHeader');
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
     var patient = smart.context.patient;
