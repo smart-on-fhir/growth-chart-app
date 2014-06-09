@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Growth Chart SMART Application</title>
     <script src="../../js/fhir-client.js"></script>
-    <script src="launch.js"></script>
+    <script>
+      FHIR.oauth2.authorize({
+        "client_id": "growth_chart",
+        "scope":  "patient/*.read"
+      });
+    </script>
   </head>
   Loading...
 </html>
