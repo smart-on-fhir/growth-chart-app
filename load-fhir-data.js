@@ -18,9 +18,7 @@ GC.get_data = function() {
       nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
       drain(drainVitals).done(doneVitals);
       
-     patient.FamilyHistory.where.
-      relationshipIn(['FTH', 'MTH']).
-      drain(drainFamilyHistory).done(doneFamilyHistory);
+     patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory);
 
     var allVitals = [];
     function drainVitals(vs){
