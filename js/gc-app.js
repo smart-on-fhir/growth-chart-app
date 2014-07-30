@@ -830,9 +830,9 @@
                 data.demographics, 
                 data.vitals, 
                 null, //allergies, 
-                null,//familyHistory,
+                data.familyHistory,
                 null,//	annotations, 
-                null//boneAge
+                data.boneAge
               );
               GC.translateFentonDatasets(PATIENT);
               done();
