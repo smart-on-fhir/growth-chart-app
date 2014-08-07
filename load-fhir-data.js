@@ -3,7 +3,16 @@ window.GC = window.GC || {};
 GC.get_data = function() {
   var dfd = $.Deferred();
 
-  FHIR.oauth2.ready(function(smart){
+  FHIR.oauth2.ready(onReady, onError);
+
+  function onError(){
+    console.log("Loading error", arguments);
+    dfd.reject({
+      responseText: "Loading error. See console for details."
+    });
+  };
+
+  function onReady(smart){
 
     var hidePatientHeader = (smart.state.preferences === 'hidePatientHeader');
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
@@ -15,27 +24,27 @@ GC.get_data = function() {
     var ptFetch = patient.read();
 
     patient.Observation.where.
-      nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
-      drain(drainVitals).done(doneVitals);
-      
-     patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory);
+    nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
+    drain(drainVitals).done(doneVitals).fail(onError);
+
+    patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory);
 
     var allVitals = [];
     function drainVitals(vs){
       [].push.apply(allVitals, vs); 
     };
-    
+
     var allFamilyHistories = [];
     function drainFamilyHistory(vs){
       [].push.apply(allFamilyHistories, vs); 
     };
-    
+
     function doneVitals(){
-        vitalsFetch.resolve(smart.byCode(allVitals, 'name'));
+      vitalsFetch.resolve(smart.byCode(allVitals, 'name'));
     };
-    
+
     function doneFamilyHistory(){
-        familyHistoryFetch.resolve(allFamilyHistories);
+      familyHistoryFetch.resolve(allFamilyHistories);
     };
 
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
@@ -55,14 +64,14 @@ GC.get_data = function() {
         },
         boneAge: [],
         familyHistory: {
-            father : {
-                height: null,
-                isBio : false
-            },
-            mother : {
-                height: null,
-                isBio : false
-            }
+          father : {
+            height: null,
+            isBio : false
+          },
+          mother : {
+            height: null,
+            isBio : false
+          }
         }
       };
 
@@ -83,14 +92,14 @@ GC.get_data = function() {
         p.demographics.gestationalAge = gestAge[0].valueQuantity.value;
         p.demographics.weeker = p.demographics.gestationalAge;
       }
-      
+
       var units = smart.units;
       process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
       process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
       process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
       process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
       processBA(vitalsByCode['37362-1'], p.boneAge);
-      
+
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
           arr.push({
@@ -99,7 +108,7 @@ GC.get_data = function() {
           })
         });
       };
-      
+
       function processBA(boneAgeValues, arr){
         boneAgeValues && boneAgeValues.forEach(function(v){
           arr.push({
@@ -115,22 +124,22 @@ GC.get_data = function() {
 
       $.each(familyHistories, function(index, fh){
         $.each(fh.relation, function(index, rel){
-            var code = rel.relationship.coding[0].code;
-            $.each(rel.extension, function(index, ext){
-                if (ext.url === "http://fhir-registry.smartplatforms.org/Profile/family-history#height") {
-                    var ht = units.cm(ext.valueQuantity);
-                    var r = null;
-                    if (code === 'FTH') {
-                        r = p.familyHistory.father;
-                    } else if (code === 'MTH') {
-                        r = p.familyHistory.mother;
-                    }
-                    if (r) {
-                        r.height = ht;
-                        r.isBio = true;
-                    }
-                }
-            });
+          var code = rel.relationship.coding[0].code;
+          $.each(rel.extension, function(index, ext){
+            if (ext.url === "http://fhir-registry.smartplatforms.org/Profile/family-history#height") {
+              var ht = units.cm(ext.valueQuantity);
+              var r = null;
+              if (code === 'FTH') {
+                r = p.familyHistory.father;
+              } else if (code === 'MTH') {
+                r = p.familyHistory.mother;
+              }
+              if (r) {
+                r.height = ht;
+                r.isBio = true;
+              }
+            }
+          });
         });
       });
 
@@ -138,7 +147,7 @@ GC.get_data = function() {
       console.log("Check out the patient's growth data: window.data");
       dfd.resolve(p);
     }
-  });
+  }
 
   return dfd.promise();
 };
