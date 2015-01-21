@@ -85,7 +85,7 @@ GC.get_data = function() {
       var lname = patient.name[0].family.join(" ");
       p.demographics.name = fname + " " + lname;
       p.demographics.birthday = patient.birthDate;
-      p.demographics.gender = (patient.gender.coding[0].code == 'M' ? 'male' : 'female');
+      p.demographics.gender = patient.gender;
 
       var gestAge = vitalsByCode['18185-9'];
       if (gestAge && gestAge.length > 0) {
