@@ -14,7 +14,7 @@ GC.get_data = function() {
 
   function onReady(smart){
 
-    var hidePatientHeader = (smart.tokenResponse.need_patient_banner === "false");
+    var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
     var patient = smart.context.patient;
