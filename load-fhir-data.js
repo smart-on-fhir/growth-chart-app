@@ -127,7 +127,7 @@ GC.get_data = function() {
             $.each(fh.relation, function(index, rel){
               var code = rel.relationship.coding[0].code;
               $.each(rel.extension || [], function(index, ext){
-                if (ext.url === "http://fhir-registry.smartplatforms.org/Profile/family-history#height") {
+                if (ext.url === "http://fhir-registry.smarthealthit.org/Profile/family-history#height") {
                   var ht = units.cm(ext.valueQuantity);
                   var r = null;
                   if (code === 'FTH') {

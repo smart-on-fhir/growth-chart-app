@@ -797,7 +797,7 @@
 
         function loadData(done) {
 
-            var SMART_NS = "http://smartplatforms.org/terms#", 
+            var SMART_NS = "http://smarthealthit.org/terms#", 
               capabilities = {
                 preferences : {
                   read  : false,
