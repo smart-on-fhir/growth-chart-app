@@ -24,7 +24,7 @@ GC.get_data = function() {
     var ptFetch = patient.read();
 
     patient.Observation.where.
-    nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
+    codeIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
     drain(drainVitals).done(doneVitals).fail(onError);
 
     patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
@@ -40,7 +40,7 @@ GC.get_data = function() {
     };
 
     function doneVitals(){
-      vitalsFetch.resolve(smart.byCode(allVitals, 'name'));
+      vitalsFetch.resolve(smart.byCode(allVitals, 'code'));
     };
 
     function doneFamilyHistory(){
