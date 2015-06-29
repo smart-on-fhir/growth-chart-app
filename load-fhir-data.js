@@ -24,7 +24,7 @@ GC.get_data = function() {
     var ptFetch = patient.read();
 
     patient.Observation.where.
-    nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
+    nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1', '11884-4']).
     drain(drainVitals).done(doneVitals).fail(onError);
 
     patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
@@ -88,6 +88,10 @@ GC.get_data = function() {
       p.demographics.gender = (patient.gender.coding[0].code == 'M' ? 'male' : 'female');
 
       var gestAge = vitalsByCode['18185-9'];
+      if (gestAge === undefined) {
+        //handle an alternate mapping of Gest Age used by Cerner
+        gestAge = vitalsByCode['11884-4'];
+      }
       if (gestAge && gestAge.length > 0) {
         p.demographics.gestationalAge = gestAge[0].valueQuantity.value;
         p.demographics.weeker = p.demographics.gestationalAge;

@@ -32,7 +32,7 @@ window.GC = window.GC || {};
             minor    : 9,
             build    : 9,
             revision : 0,
-            state    : "beta", // dev|alpha|beta|rc|r
+            state    : "IHC", // dev|alpha|beta|rc|r
             
             asString : function() {
                 return  this.major    + "." + 

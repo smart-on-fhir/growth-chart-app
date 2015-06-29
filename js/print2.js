@@ -10,7 +10,7 @@
     window.debugLog = window.console ? console.log : $.noop;
     
     $.extend(true, GC.chartSettings, opener.GC.chartSettings);
-    GC.translateFentonDatasets(PATIENT);
+    GC.translatePreemieDatasets(PATIENT);
     
     GC.App = {
         DEBUG_MODE : false,
@@ -128,12 +128,12 @@
         type = type || GC.App.getViewType();
         
         $("#view-clinical")[type == "graphs" ? "show" : "hide"]();
-        $("#view-parental")[type == "parent" ? "show" : "hide"]();
+        //$("#view-parental")[type == "parent" ? "show" : "hide"]();
         $("#view-table"   )[type == "table"  ? "show" : "hide"]();
         
         $("html")
         .toggleClass("view-clinical", type == "graphs" || type == "table")
-        .toggleClass("view-parental", type == "parent")
+        //.toggleClass("view-parental", type == "parent")
         .toggleClass("view-charts"  , type == "graphs")
         .toggleClass("view-table"   , type == "table" );
         

@@ -834,7 +834,7 @@
                 null,//	annotations, 
                 data.boneAge
               );
-              GC.translateFentonDatasets(PATIENT);
+              GC.translatePreemieDatasets(PATIENT);
               done();
             }).fail(function(response){
               var msg = response.responseText;
@@ -865,13 +865,13 @@
                 });
 
                 $("#view-clinical")[type == "graphs" ? "show" : "hide"]();
-                $("#view-parental")[type == "parent" ? "show" : "hide"]();
+                //$("#view-parental")[type == "parent" ? "show" : "hide"]();
                 $("#view-table"   )[type == "table"  ? "show" : "hide"]();
 
                 $("html")
                 .toggleClass("has-patient-header", !GC.Preferences.prop("hidePatientHeader"))
                 .toggleClass("view-clinical", type == "graphs" || type == "table")
-                .toggleClass("view-parental", type == "parent")
+                //.toggleClass("view-parental", type == "parent")
                 .toggleClass("view-charts", type == "graphs")
                 .toggleClass("view-table", type == "table");
 

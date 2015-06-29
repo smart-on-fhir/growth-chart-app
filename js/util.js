@@ -2195,31 +2195,26 @@ if ( !Array.prototype.indexOf ) {
     });
     
     $(function() {
-        $(".menu-button").menuButton({
-            placeHolder : "STR_6049",
-            dataSet : [
-                {
-                    label : "CDC",
-                    value : "CDC"
-                },
-                {
-                    label : "WHO",
-                    value : "WHO"
-                },
-                "-",
-                {
-                    label    : "Bayer-Bayley",
-                    value    : "BB"
-                },
-                {
-                    label : "Down Syndrome",
-                    value : "DS"
-                },
-                {
-                    label : "Fenton",
-                    value : "FENTON"
+
+        $.ajax({
+            url: "GCMenuItemsJSON.txt",
+            success: function (data) {
+                try {
+                    GC.MENU_MAP = JSON.parse(data);
+
+                    $(".menu-button").menuButton({
+                        placeHolder : "STR_6049",
+                        dataSet : GC.MENU_MAP
+                    });
                 }
-            ]
+                catch (exc)
+                {
+                    alert("error reading menu data from JSON file." +" \n" + exc);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("error loading menu data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
+            }
         });
     });
     
