@@ -128,12 +128,12 @@
         type = type || GC.App.getViewType();
         
         $("#view-clinical")[type == "graphs" ? "show" : "hide"]();
-        //$("#view-parental")[type == "parent" ? "show" : "hide"]();
+        $("#view-parental")[type == "parent" ? "show" : "hide"]();
         $("#view-table"   )[type == "table"  ? "show" : "hide"]();
         
         $("html")
         .toggleClass("view-clinical", type == "graphs" || type == "table")
-        //.toggleClass("view-parental", type == "parent")
+        .toggleClass("view-parental", type == "parent")
         .toggleClass("view-charts"  , type == "graphs")
         .toggleClass("view-table"   , type == "table" );
         

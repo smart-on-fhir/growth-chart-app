@@ -502,7 +502,9 @@ window.GC = window.GC || {};
             "stroke-width"     : 1,
             "stroke-opacity"   : 0.5,
             "stroke-dasharray" : "- "
-        }
+        },
+
+        isParentTabShown : false
     };
     
     // Populate the chart color defaults from the default color presets

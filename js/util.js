@@ -2209,11 +2209,11 @@ if ( !Array.prototype.indexOf ) {
                 }
                 catch (exc)
                 {
-                    alert("error reading menu data from JSON file." +" \n" + exc);
+                    console.log("error reading menu data from JSON file." +" \n" + exc);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert("error loading menu data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
+                console.log("error loading menu data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
             }
         });
     });

@@ -865,15 +865,21 @@
                 });
 
                 $("#view-clinical")[type == "graphs" ? "show" : "hide"]();
-                //$("#view-parental")[type == "parent" ? "show" : "hide"]();
+                $("#view-parental")[type == "parent" ? "show" : "hide"]();
                 $("#view-table"   )[type == "table"  ? "show" : "hide"]();
 
                 $("html")
                 .toggleClass("has-patient-header", !GC.Preferences.prop("hidePatientHeader"))
                 .toggleClass("view-clinical", type == "graphs" || type == "table")
-                //.toggleClass("view-parental", type == "parent")
+                .toggleClass("view-parental", type == "parent")
                 .toggleClass("view-charts", type == "graphs")
                 .toggleClass("view-table", type == "table");
+
+                //hide parent tab
+                if ( ! GC.Preferences._data.isParentTabShown) {
+                    $("#parent-tab")["hide"]();
+                    $("#view-parental")["hide"]();
+                }
 
                 setStageHeight();
 

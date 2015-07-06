@@ -21,11 +21,11 @@ if (!GC) {
                 GC.DATA_SETS = JSON.parse(data);
             }
             catch (exc) {
-                alert("error reading curve data from JSON file." +" \n" + exc);
+                console.log("error reading curve data from JSON file." +" \n" + exc);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("error loading curve data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
+            console.log("error loading curve data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
         }
     });
 
