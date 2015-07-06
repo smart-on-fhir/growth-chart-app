@@ -32,7 +32,7 @@ window.GC = window.GC || {};
             minor    : 9,
             build    : 9,
             revision : 0,
-            state    : "IHC", // dev|alpha|beta|rc|r
+            state    : "DEV", // dev|alpha|beta|rc|r
             
             asString : function() {
                 return  this.major    + "." + 
@@ -504,7 +504,7 @@ window.GC = window.GC || {};
             "stroke-dasharray" : "- "
         },
 
-        isParentTabShown : false
+        isParentTabShown : true
     };
     
     // Populate the chart color defaults from the default color presets
