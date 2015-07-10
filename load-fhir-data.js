@@ -27,7 +27,7 @@ GC.get_data = function() {
     codeIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
     drain(drainVitals).done(doneVitals).fail(onError);
 
-    patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
+    patient.FamilyMemberHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
 
     var allVitals = [];
     function drainVitals(vs){
@@ -123,7 +123,7 @@ GC.get_data = function() {
       }
 
       $.each(familyHistories, function(index, fh){
-        if (fh.resourceType === "FamilyHistory") {
+        if (fh.resourceType === "FamilyMemberHistory") {
             $.each(fh.relation, function(index, rel){
               var code = rel.relationship.coding[0].code;
               $.each(fh.extension || [], function(index, ext){
