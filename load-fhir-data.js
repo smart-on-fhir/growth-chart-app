@@ -124,10 +124,9 @@ GC.get_data = function() {
 
       $.each(familyHistories, function(index, fh){
         if (fh.resourceType === "FamilyMemberHistory") {
-            $.each(fh.relation, function(index, rel){
-              var code = rel.relationship.coding[0].code;
+              var code = fh.relationship.coding[0].code;
               $.each(fh.extension || [], function(index, ext){
-                if (ext.url === "http://fhir-registry.smarthealthit.org/Profile/family-history#height") {
+                if (ext.url === "http://fhir-registry.smarthealthit.org/StructureDefinition/family-history#height") {
                   var ht = units.cm(ext.valueQuantity);
                   var r = null;
                   if (code === 'FTH') {
@@ -141,7 +140,6 @@ GC.get_data = function() {
                   }
                 }
               });
-            });
         }
       });
 
