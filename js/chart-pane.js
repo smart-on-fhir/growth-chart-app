@@ -1767,8 +1767,8 @@ ChartPane.prototype = {
         
         if (!this.__CACHE__.pixelsPerDay[ colIndex ]) {
             var w = this.getColumnWidth( colIndex, true ), 
-                a = new XDate(GC.samplePatient.birthdate).addWeeks(GC.App.getStartWeek()),
-                b = new XDate(GC.samplePatient.birthdate).addWeeks(GC.App.getEndWeek());
+                a = new XDate(GC.currentPatient.birthdate).addWeeks(GC.App.getStartWeek()),
+                b = new XDate(GC.currentPatient.birthdate).addWeeks(GC.App.getEndWeek());
             this.__CACHE__.pixelsPerDay[ colIndex ] = w / a.diffDays(b);
         }
         

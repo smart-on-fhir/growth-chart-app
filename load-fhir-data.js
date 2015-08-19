@@ -93,8 +93,15 @@ GC.get_data = function() {
         gestAge = vitalsByCode['11884-4'];
       }
       if (gestAge && gestAge.length > 0) {
-        p.demographics.gestationalAge = gestAge[0].valueQuantity.value;
+        //p.demographics.gestationalAge = gestAge[0].valueQuantity.value;
+        //parse out to be 32.5?
+        var parsedstring = gestAge[0].valueString.value.split(" ");
+        var weeks = parsedstring[0].substring(0,parsedstring[0].length-1);
+        var days = parsedstring[1].substring(0,parsedstring[1].length-1);
+
+        p.demographics.gestationalAge = parseFloat(weeks+"."+days);
         p.demographics.weeker = p.demographics.gestationalAge;
+       // p.demographics.EDD = new XDate(p.demographics.birthday).clone().addWeeks((40 - p.demographics.weeker) *-1);
       }
 
       var units = smart.units;

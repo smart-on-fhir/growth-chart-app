@@ -12,77 +12,9 @@ if (!GC) {
 (function ($) {
     "use strict";
 
-    //Chart growth chart curves data ranges are in the local json file gccurvedatajson.txt
-    //this jquery ajax call will read that file async, and then parse it into the needed structure
-    $.ajax({
-        url: "GCCurveDataJSON.txt",
-        success: function (data) {
-            try {
-                GC.DATA_SETS = JSON.parse(data);
-            }
-            catch (exc) {
-                console.log("error reading curve data from JSON file." +" \n" + exc);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error loading curve data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
-        }
-    });
 
-    // =========================================================================
-    // Preprocess the data (sort by age, remove dublicates, etc.)
-    (function() {
-        
-        function sortByAge(a, b) {
-            return a.Agemos - b.Agemos;
-        }
-        
-        function cleanUp( data ) {
-            var len = data.length, i, prev, cur;
-            for ( i = 1; i < len; i++ ) {
-                prev = data[ i - 1 ];
-                cur  = data[ i ];
-                
-                // smooth for data interval under 1 month
-                if ( Math.abs(prev.Agemos - cur.Agemos) < 1 ) {
-                    //console.log("handle" + cur.Agemos, [cur.value, prev.value]);
-                    prev.value = (prev.value + cur.value) / 2;
-                    //prev.Agemos = (prev.Agemos + cur.Agemos) / 2;
-                    data.splice( i, 1 );
-                    i--;
-                    len--;
-                }
-            }
-        }
-        
-        var ds, x, genders = { male : 1, female : 1 }, gender, type, key, group;
-        for ( x in GC.DATA_SETS ) {
-            for ( gender in genders ) {
-                ds = GC.DATA_SETS[x].data[gender];
-                type = Object.prototype.toString.call(ds);
-                
-                
-                
-                if ( type == "[object Array]" ) {
-                    ds.sort(sortByAge);
-                    
-                    //cleanUp( ds );
-                    //GC.DATA_SETS[x].data[gender] = ds;
-                }
-                else if ( type == "[object Object]" ) {
-                    for ( key in ds ) {
-                        group = ds[key];
-                        
-                        group.sort(sortByAge);
-                        
-                        cleanUp( group );
-                        GC.DATA_SETS[x].data[gender][key] = group;
-                    }
-                }
-            }
-        }
-    }());
-    // =========================================================================
+    //TODO: call the load from file function above.
+
     
     /**
      * @param {String} src  CDC|WHO|BB|DS...
@@ -204,44 +136,44 @@ if (!GC) {
 
             //FENTON
             $.each(GC.DATA_SETS["FENTON_WEIGHT"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["FENTON_LENGTH"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["FENTON_HEADC"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
 
             $.each(GC.DATA_SETS["FENTON_WEIGHT"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["FENTON_LENGTH"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["FENTON_HEADC"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
 
             //OLSEN
             $.each(GC.DATA_SETS["OLSEN_WEIGHT"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["OLSEN_LENGTH"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["OLSEN_HEADC"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.male.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.male[i].Agemos - patient.weeker/4.348214285714286;
             });
 
             $.each(GC.DATA_SETS["OLSEN_WEIGHT"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["OLSEN_LENGTH"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
             $.each(GC.DATA_SETS["OLSEN_HEADC"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.female.data[i].Agemos - patient.weeker/4.348214285714286;
+                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.female[i].Agemos - patient.weeker/4.348214285714286;
             });
         }
     };
