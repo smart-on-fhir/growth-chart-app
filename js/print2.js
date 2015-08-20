@@ -10,7 +10,7 @@
     var drawn, 
         leftPane, 
         parentalDarwn,
-        PATIENT = jQuery.extend(true, {}, opener.GC.currentPatient);
+        PATIENT =  GC.currentPatient;
 
     window.debugLog = window.console ? console.log : $.noop;
     

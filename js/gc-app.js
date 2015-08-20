@@ -825,7 +825,6 @@
             // Patient
             GC.get_data().done(
             function(data) {
-              //console.log(boneAge);
               GC.currentPatient = PATIENT = new GC.Patient(
                 data.demographics, 
                 data.vitals, 
@@ -1420,9 +1419,7 @@
 
                                 // smooth for data interval under 1 month
                                 if ( Math.abs(prev.Agemos - cur.Agemos) < 1 ) {
-                                    //console.log("handle" + cur.Agemos, [cur.value, prev.value]);
                                     prev.value = (prev.value + cur.value) / 2;
-                                    //prev.Agemos = (prev.Agemos + cur.Agemos) / 2;
                                     data.splice( i, 1 );
                                     i--;
                                     len--;
@@ -1438,9 +1435,6 @@
 
                                 if ( type == "[object Array]" ) {
                                     ds.sort(sortByAge);
-
-                                    //cleanUp( ds );
-                                    //GC.DATA_SETS[x].data[gender] = ds;
                                 }
                                 else if ( type == "[object Object]" ) {
                                     for ( key in ds ) {
