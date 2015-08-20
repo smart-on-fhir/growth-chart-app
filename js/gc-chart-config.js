@@ -32,7 +32,7 @@ window.GC = window.GC || {};
             minor    : 9,
             build    : 9,
             revision : 0,
-            state    : "BETA", // dev|alpha|beta|rc|r
+            state    : "IHC", // dev|alpha|beta|rc|r
             
             asString : function() {
                 return  this.major    + "." + 
@@ -62,7 +62,7 @@ window.GC = window.GC || {};
     // by whatever is stored on the server as preferences
     // =========================================================================
     var settings = {
-        isParentTabShown : true,
+        isParentTabShown : false,
         hidePatientHeader: true,
         defaultChart : "CDC", // 2+ years
         defaultBabyChart : "WHO", // 0 - 2 years
@@ -502,9 +502,7 @@ window.GC = window.GC || {};
             "stroke-width"     : 1,
             "stroke-opacity"   : 0.5,
             "stroke-dasharray" : "- "
-        },
-
-        isParentTabShown : true
+        }
     };
     
     // Populate the chart color defaults from the default color presets
