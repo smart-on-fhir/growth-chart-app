@@ -732,6 +732,11 @@ window.GC = (function(NS) {
             es : "Cargando datos",
             bg : "Зареждане на данни"
         },
+        STR_LoadingCurveData : {
+            en : "Loading curve data",
+            es : "Cargando datos de la curva",
+            bg : "Зареждане данни крива"
+        },
         STR_ApplyLocalizations : {
             en : "Apply localizations",
             es : "Aplicar localizaciones",

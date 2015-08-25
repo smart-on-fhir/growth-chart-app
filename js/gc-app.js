@@ -825,7 +825,6 @@
             // Patient
             GC.get_data().done(
             function(data) {
-              //console.log(boneAge);
               GC.currentPatient = PATIENT = new GC.Patient(
                 data.demographics, 
                 data.vitals, 
@@ -834,7 +833,7 @@
                 null,//	annotations, 
                 data.boneAge
               );
-              GC.translateFentonDatasets(PATIENT);
+              GC.translatePreemieDatasets(PATIENT);
               done();
             }).fail(function(response){
               var msg = response.responseText;
@@ -874,6 +873,12 @@
                 .toggleClass("view-parental", type == "parent")
                 .toggleClass("view-charts", type == "graphs")
                 .toggleClass("view-table", type == "table");
+
+                //hide parent tab
+                if ( ! GC.Preferences._data.isParentTabShown) {
+                    $("#parent-tab")["hide"]();
+                    $("#view-parental")["hide"]();
+                }
 
                 setStageHeight();
 
@@ -1384,9 +1389,82 @@
             done();
         }
 
+        function loadDataSets(done) {
+
+            //Chart growth chart curves data ranges are in the local json file gccurvedatajson.txt
+            //this jquery ajax call will read that file async, and then parse it into the needed structure
+            $.ajax({
+                url: "GCCurveDataJSON.txt",
+                success: function (data) {
+                    try {
+                        GC.DATA_SETS = JSON.parse(data);
+                    }
+                    catch (exc) {
+                        console.log("error reading curve data from JSON file." +" \n" + exc);
+                    }
+
+                    // =========================================================================
+                    // Preprocess the data (sort by age, remove dublicates, etc.)
+                    (function() {
+
+                        function sortByAge(a, b) {
+                            return a.Agemos - b.Agemos;
+                        }
+
+                        function cleanUp( data ) {
+                            var len = data.length, i, prev, cur;
+                            for ( i = 1; i < len; i++ ) {
+                                prev = data[ i - 1 ];
+                                cur  = data[ i ];
+
+                                // smooth for data interval under 1 month
+                                if ( Math.abs(prev.Agemos - cur.Agemos) < 1 ) {
+                                    prev.value = (prev.value + cur.value) / 2;
+                                    data.splice( i, 1 );
+                                    i--;
+                                    len--;
+                                }
+                            }
+                        }
+
+                        var ds, x, genders = { male : 1, female : 1 }, gender, type, key, group;
+                        for ( x in GC.DATA_SETS ) {
+                            for ( gender in genders ) {
+                                ds = GC.DATA_SETS[x].data[gender];
+                                type = Object.prototype.toString.call(ds);
+
+                                if ( type == "[object Array]" ) {
+                                    ds.sort(sortByAge);
+                                }
+                                else if ( type == "[object Object]" ) {
+                                    for ( key in ds ) {
+                                        group = ds[key];
+
+                                        group.sort(sortByAge);
+
+                                        cleanUp( group );
+                                        GC.DATA_SETS[x].data[gender][key] = group;
+                                    }
+                                }
+                            }
+                        }
+                    }());
+                    // =========================================================================
+
+                    //continue processing...
+                    done();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("error loading curve data from JSON file.\n" + jqXHR.status + " " + textStatus + " " + errorThrown);
+                }
+            });
+        }
+
         setStageHeight();
         NS.Util.translateHTML();
-        
+
+        QUEUE.add(NS.str("STR_LoadingCurveData"),loadDataSets);
+
         QUEUE.add(NS.str("STR_LoadingData"), loadData);
         
         QUEUE.add(NS.str("STR_PreloadImages"), function(done) {

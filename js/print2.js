@@ -1,17 +1,21 @@
 (function() {
     
     "use strict";
-    
+
+    //pull over the cached context
+
+    GC.DATA_SETS = jQuery.extend(true, {}, opener.GC.DATA_SETS);
+    GC.currentPatient = jQuery.extend(true, {}, opener.GC.currentPatient);
+
     var drawn, 
         leftPane, 
         parentalDarwn,
-        PATIENT = opener.GC.currentPatient;
-    
+        PATIENT =  GC.currentPatient;
+
     window.debugLog = window.console ? console.log : $.noop;
     
     $.extend(true, GC.chartSettings, opener.GC.chartSettings);
-    GC.translateFentonDatasets(PATIENT);
-    
+
     GC.App = {
         DEBUG_MODE : false,
         Charts : [],
@@ -42,7 +46,6 @@
     });
     
     (function() {
-        
         GC.SELECTION = {
             hover    : { age : new GC.Time(-1), record : null },
             selected : { age : new GC.Time(-1), record : null }
@@ -118,7 +121,7 @@
         
         $("#stage").css({
             top : top,
-            height: $(window).height() - bottom - top - marginTop
+            height: $(window).height() - bottom - top - marginTop,
             //marginTop : marginTop,
             //bottom : bottom
         });
@@ -126,7 +129,7 @@
     
     function draw(type) {
         type = type || GC.App.getViewType();
-        
+
         $("#view-clinical")[type == "graphs" ? "show" : "hide"]();
         $("#view-parental")[type == "parent" ? "show" : "hide"]();
         $("#view-table"   )[type == "table"  ? "show" : "hide"]();
@@ -136,7 +139,7 @@
         .toggleClass("view-parental", type == "parent")
         .toggleClass("view-charts"  , type == "graphs")
         .toggleClass("view-table"   , type == "table" );
-        
+
         document.title = PATIENT.name + (
             type == "graphs" ? " - Charts" : 
                 type == "table" ? " - Data" : 
@@ -159,7 +162,7 @@
                     GC.App.Pane = leftPane;
                     GC.App.ChartsView = leftPane;
                 }
-                
+
                 leftPane.draw();
                 break;
         
@@ -175,7 +178,7 @@
                 GC.TableView.render();
                 break;
         }
-        
+
         drawn = true;
     }
     
@@ -185,19 +188,18 @@
         $("html").addClass(PATIENT.gender);
         
         GC.Util.translateHTML();
-        
-        
+
         $('.patient-name').text(PATIENT.name);
         $('.patient-age').text(PATIENT.getCurrentAge().toString(GC.chartSettings.timeInterval));
         $('.patient-birth').text(PATIENT.DOB.toString(GC.chartSettings.dateFormat));
         $('.patient-gender').text(GC.str("STR_SMART_GENDER_" + PATIENT.gender));
-        
+
         if (PATIENT.weeker) {
             $(".weeker").show().find(".value").html(PATIENT.weeker + " Weeker");
         } else {
             $(".weeker").hide();
         }
-        
+
         var currentAge   = PATIENT.getCurrentAge();
         var correctedAge = PATIENT.getCorrectedAge();
         if (correctedAge > currentAge || correctedAge < currentAge) {

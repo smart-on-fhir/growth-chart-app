@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="themes/custom-theme/jquery-ui-1.8.18.custom.css" />
 
         <!-- Standard JS Libraries -->
-        <script src="node_modules/fhirclient/fhir-client.js"></script>
+        <script src="../../js/fhir-client.js"></script>
 		    <script type="text/javascript" src="load-fhir-data.js"></script>
         <script type="text/javascript" src="lib/jquery-1.8.2.js"></script>
         <script type="text/javascript" src="lib/jquery-ui-1.9.1.js"></script>
@@ -28,7 +28,7 @@
         <script type="text/javascript" src="js/gc-charts-data.js"></script>
         <script type="text/javascript" src="js/gc-statistics.js"></script>
         <script type="text/javascript" src="js/gc-chart.js"></script>
-        <script type="text/javascript" src="js/gc-parental-view.js"></script>
+        <script type="text/javascript" src="js/gc-parental-view.js"></script> 
         <script type="text/javascript" src="js/gc-app.js"></script>
         <script type="text/javascript" src="js/chart-pane.js"></script>
         <script type="text/javascript" src="js/charts/chart.js"></script>
@@ -231,7 +231,8 @@
                 
                 <!-- View Mode -->
                 <div id="view-mode">
-                    <span data-value="parent" data-translatecontent="STR_3042"></span>
+                    <!-- hide the parent tab -->
+                    <span id="parent-tab" data-value="parent" data-translatecontent="STR_3042"></span>
                     <span data-value="table" data-translatecontent="STR_3043"></span>
                     <span data-value="graphs" data-translatecontent="STR_3044"></span>
                 </div>
