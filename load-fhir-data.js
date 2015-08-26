@@ -93,10 +93,10 @@ GC.get_data = function() {
         gestAge = vitalsByCode['11884-4'];
       }
       if (gestAge && gestAge.length > 0) {
-        var weeks = 0, qty = gestAge[0].valueQuantity ? 
-          gestAge[0].valueQuantity.value || 40 :
-          gestAge[0].valueString ? 
-            gestAge[0].valueString.value || '40W 0D' :
+        var weeks = 0, qty = gestAge[0].valueString ? 
+          gestAge[0].valueString.value || '40W 0D' :
+          gestAge[0].valueQuantity ? 
+            gestAge[0].valueQuantity.value || 40 :
             40;
 
         if (typeof qty == 'string') {
