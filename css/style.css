@@ -1086,8 +1086,8 @@ table.toggle-button {
 .female #secondary-ds .value span:after {
 	content: " — GIRLS";
 }
-.fenton #primary-ds   .value span:after,
-.fenton #secondary-ds .value span:after {
+.premature #primary-ds   .value span:after,
+.premature #secondary-ds .value span:after {
 	content: "" !important;
 }
 

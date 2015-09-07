@@ -1979,11 +1979,11 @@ Chart.prototype = {
                 1) * 12;
         }
         
-        var caFixed      = GC.App.getPatient().gestationAge, //GC.Util.intVal(GC.App.getCorrectionAge()),
-            correctUntil = getCorrectionMonths( GC.App.getPatient().weeker ),
+        var weeker       = GC.App.getPatient().weeker,
+            caFixed      = weeker ? Math.min(0, ((40 - weeker) || 0) * -1) : 0,
+            correctUntil = getCorrectionMonths( weeker ),
             arrowType    = GC.chartSettings.gestCorrectionType,
-            dsType       = GC.App.getPrimaryChartType(),
-            canDraw      = arrowType != "none" && dsType != "FENTON",
+            canDraw      = arrowType != "none" && !GC.DATA_SETS[this.dataSet].isPremature,
             startX       = cfg.startX,
             startY       = cfg.startY,
             caDeclining,
@@ -2000,9 +2000,7 @@ Chart.prototype = {
             x,
             a2,
             a3;
-            
-        caFixed = Math.min(0, (caFixed || 0) * -1);
-        
+
         if ( caFixed && canDraw && cfg.curAgemos < correctUntil ) {
             
             caDeclining = caFixed - caFixed * (cfg.curAgemos / correctUntil);
@@ -2042,11 +2040,10 @@ Chart.prototype = {
             // The small arrow head --------------------------------------------
             if ( drawSmallArrow ) {
                 this._nodes.push(this.pane.paper.path().attr({
-                    "path"  : "M" + (endX - 10 * (caFixed < 0 ? -1 : 1)) + "," + (startY - 4) 
-                            + "L" + endX + "," + startY
-                            + "L" + (endX - 10 * (caFixed < 0 ? -1 : 1)) + "," + (startY + 4) 
-                            + "L" + (endX - 7 * (caFixed < 0 ? -1 : 1)) + "," + startY
-                            + "Z",
+                    "path"  : "M" + (endX - 10 * (caFixed < 0 ? -1 : 1)) + "," + (startY - 4) + 
+                              "L" + endX + "," + startY + 
+                              "L" + (endX - 10 * (caFixed < 0 ? -1 : 1)) + "," + (startY + 4) + 
+                              "L" + (endX - 7 * (caFixed < 0 ? -1 : 1)) + "," + startY + "Z",
                     "stroke"       : colorDark,
                     "fill"         : colorLight,
                     "stroke-width" : 1

@@ -133,47 +133,15 @@ if (!GC) {
     
     GC.translatePreemieDatasets = function(patient) {
         if (patient.weeker) {
-
-            //FENTON
-            $.each(GC.DATA_SETS["FENTON_WEIGHT"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["FENTON_LENGTH"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["FENTON_HEADC"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-
-            $.each(GC.DATA_SETS["FENTON_WEIGHT"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_WEIGHT"].data.female[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["FENTON_LENGTH"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_LENGTH"].data.female[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["FENTON_HEADC"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["FENTON_HEADC"].data.female[i].Agemos - patient.weeker/4.348214285714286;
-            });
-
-            //OLSEN
-            $.each(GC.DATA_SETS["OLSEN_WEIGHT"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["OLSEN_LENGTH"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["OLSEN_HEADC"].data.male, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.male[i].Agemos - patient.weeker/4.348214285714286;
-            });
-
-            $.each(GC.DATA_SETS["OLSEN_WEIGHT"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_WEIGHT"].data.female[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["OLSEN_LENGTH"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_LENGTH"].data.female[i].Agemos - patient.weeker/4.348214285714286;
-            });
-            $.each(GC.DATA_SETS["OLSEN_HEADC"].data.female, function(i, o) {
-                o.Agemos = GC.DATA_SETS["OLSEN_HEADC"].data.female[i].Agemos - patient.weeker/4.348214285714286;
+            var diff = patient.weeker/4.348214285714286;
+            $.each(GC.DATA_SETS, function(type, ds) {
+                if (ds.isPremature) {
+                    $.each(['male', 'female'], function(i, gender) {
+                        $.each(ds.data[gender] || [], function(j, rec) {
+                            rec.Agemos -= diff;
+                        });
+                    });
+                }
             });
         }
     };
