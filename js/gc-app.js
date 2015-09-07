@@ -964,15 +964,16 @@
             // Choose primary and secondary datasets and related behaviors
             // =================================================================
             function onDataSetsChange() {
-                $("#the-tab").toggleClass("double", !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE);
-                $("#tab-btn-right").attr("title", $("#the-tab").is(".double") ? "Leave only the left data source as primary" : "Add secondary data source");
-                
-                // Uncomment the following to make the gest. correction widgets disabled on FENTON
-                /*$('[name="gest-correction-type"]')
-                    .toggleClass("ui-state-disabled", PRIMARY_CHART_TYPE == "FENTON")
-                    .prop("disabled", PRIMARY_CHART_TYPE == "FENTON");
-                
-                $('[name="gest-correction-treshold"]').stepInput(PRIMARY_CHART_TYPE == "FENTON" ? "disable" : "enable");*/
+                $("#the-tab").toggleClass(
+                    "double",
+                    !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE
+                );
+                $("#tab-btn-right").attr(
+                    "title",
+                    $("#the-tab").is(".double") ?
+                        "Leave only the left data source as primary" :
+                        "Add secondary data source"
+                );
             }
 
             // Swap dataSets
