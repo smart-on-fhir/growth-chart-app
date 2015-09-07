@@ -973,12 +973,15 @@
                     "double",
                     !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE
                 );
+
                 $("#tab-btn-right").attr(
                     "title",
                     $("#the-tab").is(".double") ?
                         "Leave only the left data source as primary" :
                         "Add secondary data source"
                 );
+                
+                $("html").toggleClass("premature", !!isDSPremature);
             }
 
             // Swap dataSets
@@ -1033,7 +1036,6 @@
                 }
             }
             $("#primary-ds").menuButton("value", ds);
-            $("html").toggleClass("fenton", ds == "FENTON");
 
             PRIMARY_CHART_TYPE = $("#primary-ds").bind("menubuttonchange", function(e, data) {
                 PRIMARY_CHART_TYPE = data.value;
@@ -1048,8 +1050,9 @@
             }).menuButton("value");
 
             $("#the-tab").toggleClass("double", !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE);
-            
-            
+
+            onDataSetsChange();
+
             // Automatically disable some dataset options if their data is not available
             // =============================================================
             function hasData(src) {
