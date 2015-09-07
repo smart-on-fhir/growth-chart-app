@@ -964,6 +964,11 @@
             // Choose primary and secondary datasets and related behaviors
             // =================================================================
             function onDataSetsChange() {
+                var isDSPremature = (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_LENGTH"]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_WEIGHT"]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_HEADC" ]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_BMI"   ]||{}).isPremature;
+
                 $("#the-tab").toggleClass(
                     "double",
                     !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE
