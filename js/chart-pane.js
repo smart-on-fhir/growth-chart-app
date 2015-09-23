@@ -1658,8 +1658,9 @@ ChartPane.prototype = {
                 q       = 1,
                 i       = 0,
                 label   = "",
-                offset = (Math.floor(p1) - p1) * this.pixelsPerWeek(colIndex);
-            
+                offset = (Math.floor(p1) - p1) * this.pixelsPerWeek(colIndex),
+                diff;
+
             switch ( type ) {
                 case "years":
                     offset = (
@@ -1700,48 +1701,58 @@ ChartPane.prototype = {
                     label = "days";
                     break;
                 case "gestweeks":
-                    offset = (Math.floor(p1) - p1) * this.pixelsPerWeek(colIndex);
-                    minStep = 20;
-                    p1 = Math.floor(p1 + 40 + patient.EDD.diffWeeks(patient.DOB));
-                    p2 = Math.ceil (p2 + 40 + patient.EDD.diffWeeks(patient.DOB));
-                    p2 = Math.min(p2, 51);
+                    diff = patient.EDD.diffWeeks(patient.DOB);
                     px = this.pixelsPerWeek( colIndex );
+                    offset = (Math.floor(p1) - p1) * px;
+                    offset += (Math.floor(diff) - diff) * px;
+                    minStep = 20;
+                    p1 = Math.floor(p1 + 40 + diff);
+                    p2 = Math.ceil (p2 + 40 + diff);
+                    p2 = Math.min(p2, 51);
                     q  = GC.Constants.TIME.WEEK;
                     label = "gest. weeks";
                     break;
                 default:
                     throw "Invalid argument";
             }
-            
+
+            diff = 1;
             while ( p1 <= p2 && x < cw - minStep ) {
                 x = (GC.chartSettings.leftgutter + offset) + px * n++;
                 
-                //if (x >= GC.chartSettings.leftgutter) {
-                    if ( !lastX || x - lastX >= minStep ) {
-                        lastX = x;
-                        
-                        // Set the end time of the last interval to the start of 
-                        // this one minus one ms
-                        if (i > 0) {
-                            out[i - 1].raw[1] = p1 * q - 1;
-                            out[i - 1].p2 = p1;
-                        }
-                        
-                        out[i] = {
-                            p1    : p1,
-                            x     : x,
-                            value : Math.round(p1), //Math.round(p1 + (i > 0 ? (p1 - out[i - 1].p1) / 2 : step / 2)),
-                            raw   : [p1 * q],
-                            q     : q,
-                            label : label
-                        };
-                        
-                        i++;
+                if ( !lastX || x - lastX >= minStep ) {
+                    lastX = x;
+                    
+                    // Set the end time of the last interval to the start of 
+                    // this one minus one ms
+                    if (i > 0) {
+                        out[i - 1].raw[1] = p1 * q - 1;
+                        out[i - 1].p2 = p1;
                     }
-                //}
+
+                    diff = 1;
+
+                    if (type == "gestweeks" && p1 > 51) {
+                        break;
+                    }
+
+                    out[i] = {
+                        p1    : p1,
+                        p2    : p2 * diff,
+                        x     : x,
+                        value : Math.round(p1),
+                        raw   : [p1 * q, p2 * q * diff],
+                        q     : q,
+                        label : label
+                    };
+                    
+                    i++;
+                }
+
                 p1 += step;
+                diff += step;
             }
-            
+
             // Set the end time of the last interval to the end time selected
             if (i > 0) {
                 out[i - 1].raw[1] = p1 * q;
