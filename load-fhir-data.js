@@ -17,39 +17,14 @@ GC.get_data = function() {
     var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
-    var patient = smart.context.patient;
-
-    var vitalsFetch = $.Deferred();
-    var familyHistoryFetch = $.Deferred();
-    var ptFetch = patient.read();
-
-    patient.Observation.where.
-    codeIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']).
-    drain(drainVitals).done(doneVitals).fail(onError);
-
-    patient.FamilyMemberHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
-
-    var allVitals = [];
-    function drainVitals(vs){
-      [].push.apply(allVitals, vs); 
-    };
-
-    var allFamilyHistories = [];
-    function drainFamilyHistory(vs){
-      [].push.apply(allFamilyHistories, vs); 
-    };
-
-    function doneVitals(){
-      vitalsFetch.resolve(smart.byCode(allVitals, 'code'));
-    };
-
-    function doneFamilyHistory(){
-      familyHistoryFetch.resolve(allFamilyHistories);
-    };
+    var ptFetch = smart.patient.read();
+    var vitalsFetch = smart.fetchAll({type: "Observation", query: {code: {$or: ['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']}}});
+    var familyHistoryFetch = smart.fetchAll({type: "FamilyMemberHistory"});
 
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
 
-    function onData(patient, vitalsByCode, familyHistories){
+    function onData(patient, vitals, familyHistories){
+      var vitalsByCode = smart.byCode(vitals, 'code');
 
       var t0 = new Date().getTime();
 
@@ -103,7 +78,7 @@ GC.get_data = function() {
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
           arr.push({
-            agemos: months(v.appliesDateTime, patient.birthDate),
+            agemos: months(v.effectiveDateTime, patient.birthDate),
             value: toUnit(v.valueQuantity)
           })
         });
@@ -112,7 +87,7 @@ GC.get_data = function() {
       function processBA(boneAgeValues, arr){
         boneAgeValues && boneAgeValues.forEach(function(v){
           arr.push({
-            date: v.appliesDateTime,
+            date: v.effectiveDateTime,
             boneAgeMos: units.any(v.valueQuantity)
           })
         });
