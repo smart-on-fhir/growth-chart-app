@@ -18,8 +18,8 @@ GC.get_data = function() {
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
     var ptFetch = smart.patient.read();
-    var vitalsFetch = smart.fetchAll({type: "Observation", query: {code: {$or: ['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']}}});
-    var familyHistoryFetch = smart.fetchAll({type: "FamilyMemberHistory"});
+    var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1']}}});
+    var familyHistoryFetch = smart.patient.api.fetchAll({type: "FamilyMemberHistory"});
 
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
 
