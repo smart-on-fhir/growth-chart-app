@@ -64,11 +64,23 @@ window.GC = window.GC || {};
             // If this record was NOT made at the same day as the previous one -
             // get it, but first get the buffer if not empty
             else {
-                if (buffer > -1) {
-                    out.push(data[buffer]);
+                //when moving from one clustered group to another, the first an last of that cluster are both added.
+                //this will step back one and overwrite the first, leaving on the last of each group, as desired
+                 if (buffer > -1) {
+                    if (out.length >0 && Math.floor(out[out.length-1].agemos * 30.4375) == Math.floor(data[buffer].agemos * 30.4375) ) {
+                        out[out.length-1] =data[buffer];
+                    }
+                    else {
+                        out.push(data[buffer]);
+                    }
                     buffer = -1;
+
+                     //catchup
+                     out.push(rec);
                 }
-                out.push(rec);
+                else{
+                    out.push(rec);
+                }
             }
             
             lastDay = day;
