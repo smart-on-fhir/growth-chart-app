@@ -406,7 +406,10 @@ window.GC = window.GC || {};
         if ( d.valid() ) {
             this.DOB = d;
             this.birthdate = d.toString();
-            this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(this.EDD));
+
+            if (this.gestationAge == null) {
+                this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(this.EDD));
+            }            
             
             $("html")
             .trigger("change:patient:DOB", this.DOB)
@@ -421,7 +424,10 @@ window.GC = window.GC || {};
         d = new XDate( d );
         if ( d.valid() ) {
             this.EDD = d;
-            this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(d));
+
+            if (this.gestationAge == null) {
+                this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(d));
+            }            
             
             $("html")
             .trigger("change:patient:EDD", this.EDD)

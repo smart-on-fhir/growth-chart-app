@@ -170,7 +170,7 @@ window.GC = window.GC || {};
             weight     : { std : 1, nicu : 3 },
             headc      : { std : 1, nicu : 1 },
             bmi        : { std : 1, nicu : 1 },
-            percentile : { std : 0, nicu : 0 },
+            percentile : { std : 0, nicu : 3 },
             zscore     : { std : 2, nicu : 2 },
             velocity   : { std : "year", nicu : "day" }
         },
