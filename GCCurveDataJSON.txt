@@ -6,6 +6,7 @@
         "description": "Length of premature children",
         "units": "cm",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -248,6 +249,7 @@
         "description": "Weight of premature children",
         "units": "kg",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -490,6 +492,7 @@
         "description": "Head Circumference of premature children",
         "units": "cm",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -726,6 +729,7 @@
         }
     },
     "OLSEN_BMI": {
+        "isPremature" : true,
         "data": {
             "male": [
                 {}
@@ -742,6 +746,7 @@
         "description": "Length of premature children",
         "units": "cm",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -1104,6 +1109,7 @@
         "description": "Weight of premature children",
         "units": "kg",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -1466,6 +1472,7 @@
         "description": "Head Circumference of premature children",
         "units": "cm",
         "type": "LMS",
+        "isPremature" : true,
         "data": {
             "male": [
                 {
@@ -1822,6 +1829,7 @@
         }
     },
     "FENTON_BMI": {
+        "isPremature" : true,
         "data": {
             "male": [
                 {}

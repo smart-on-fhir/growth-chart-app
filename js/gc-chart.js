@@ -19,7 +19,7 @@ window.GC = window.GC || {};
             age = data[i].Agemos;
             
             // Limit in time if needed
-            if ( !(dataSet.source !== "FENTON" && (
+            if ( !(!dataSet.isPremature && (
                  ((startAge || startAge === 0) && age < startAge) || 
                  ((endAge   || endAge   === 0) && age > endAge)) )) {
                 points.push({

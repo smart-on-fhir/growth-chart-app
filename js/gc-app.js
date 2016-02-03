@@ -964,15 +964,24 @@
             // Choose primary and secondary datasets and related behaviors
             // =================================================================
             function onDataSetsChange() {
-                $("#the-tab").toggleClass("double", !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE);
-                $("#tab-btn-right").attr("title", $("#the-tab").is(".double") ? "Leave only the left data source as primary" : "Add secondary data source");
+                var isDSPremature = (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_LENGTH"]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_WEIGHT"]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_HEADC" ]||{}).isPremature ||
+                                    (GC.DATA_SETS[PRIMARY_CHART_TYPE + "_BMI"   ]||{}).isPremature;
+
+                $("#the-tab").toggleClass(
+                    "double",
+                    !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE
+                );
+
+                $("#tab-btn-right").attr(
+                    "title",
+                    $("#the-tab").is(".double") ?
+                        "Leave only the left data source as primary" :
+                        "Add secondary data source"
+                );
                 
-                // Uncomment the following to make the gest. correction widgets disabled on FENTON
-                /*$('[name="gest-correction-type"]')
-                    .toggleClass("ui-state-disabled", PRIMARY_CHART_TYPE == "FENTON")
-                    .prop("disabled", PRIMARY_CHART_TYPE == "FENTON");
-                
-                $('[name="gest-correction-treshold"]').stepInput(PRIMARY_CHART_TYPE == "FENTON" ? "disable" : "enable");*/
+                $("html").toggleClass("premature", !!isDSPremature);
             }
 
             // Swap dataSets
@@ -1027,7 +1036,6 @@
                 }
             }
             $("#primary-ds").menuButton("value", ds);
-            $("html").toggleClass("fenton", ds == "FENTON");
 
             PRIMARY_CHART_TYPE = $("#primary-ds").bind("menubuttonchange", function(e, data) {
                 PRIMARY_CHART_TYPE = data.value;
@@ -1042,8 +1050,9 @@
             }).menuButton("value");
 
             $("#the-tab").toggleClass("double", !!PRIMARY_CHART_TYPE && !!CORRECTION_CHART_TYPE);
-            
-            
+
+            onDataSetsChange();
+
             // Automatically disable some dataset options if their data is not available
             // =============================================================
             function hasData(src) {
