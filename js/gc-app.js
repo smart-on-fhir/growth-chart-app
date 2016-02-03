@@ -708,7 +708,7 @@
             $(".patient-age").text(currentAge.toString(GC.chartSettings.timeInterval));
             $('.patient-birth').text(PATIENT.DOB.toString(GC.chartSettings.dateFormat));
             if (PATIENT.weeker) {
-                $(".weeker").show().find(".value").html(PATIENT.weeker);
+                $(".weeker").show().find(".value").html(PATIENT.weeker.toFixed(2));
             } else {
                 $(".weeker").hide();
             }
