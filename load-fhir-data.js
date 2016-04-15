@@ -31,7 +31,10 @@ GC.get_data = function() {
     };
 
     var ptFetch = smart.patient.read();
-    var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1', '11884-4']}}});
+    var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['http://loinc.org|3141-9',
+      'http://loinc.org|8302-2', 'http://loinc.org|8287-5',
+      'http://loinc.org|39156-5', 'http://loinc.org|18185-9',
+      'http://loinc.org|37362-1', 'http://loinc.org|11884-4']}}});
     var familyHistoryFetch = defaultOnFail(smart.patient.api.fetchAll({type: "FamilyMemberHistory"}), []);
 
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
