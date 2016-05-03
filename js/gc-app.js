@@ -750,7 +750,6 @@
                 .toggleClass("no-transforms", !hasTransform)
                 .toggleClass("ie", $.browser.msie === true);
 
-            $.helperStyle("#dummy", {});
 
             if (PATIENT) {
                 BIRTH_XDATE = new XDate(PATIENT.birthdate);
