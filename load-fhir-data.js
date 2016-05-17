@@ -12,6 +12,15 @@ GC.get_data = function() {
     });
   };
 
+  function onErrorWithWarning(msg){
+    console.log("Loading error", arguments);
+    dfd.reject({
+      responseText: msg,
+      showMessage: true,
+      messageType: 'warning',
+    })
+  };
+
   function onReady(smart){
 
     var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
@@ -40,6 +49,9 @@ GC.get_data = function() {
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
 
     function onData(patient, vitals, familyHistories){
+      // check patient gender
+      if (!isKnownGender(patient.gender)) onErrorWithWarning(GC.str('STR_Error_UnknownGender'));
+
       var vitalsByCode = smart.byCode(vitals, 'code');
 
       var t0 = new Date().getTime();
@@ -112,6 +124,16 @@ GC.get_data = function() {
       process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
       process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
       processBA(vitalsByCode['37362-1'], p.boneAge);
+
+      function isKnownGender(gender) {
+        switch (gender) {
+          case 'male':
+          case 'female':
+            return true;
+            break;
+        }
+        return false;
+      }
 
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
