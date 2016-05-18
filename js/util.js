@@ -1787,12 +1787,12 @@ if ( !Array.prototype.indexOf ) {
             _helperStyle = $('<style type="text/css"/>').appendTo('head');
         }
         _helperStyle[0].disabled = false;
-        return _helperStyle[0][$.browser.msie ? 'styleSheet' : 'sheet'];
+        return _helperStyle[0]['sheet'] || _helperStyle[0]['styleSheet'];
     }
     
     $.helperStyle = function( selector, style ) {
         var s = getCssHelperStyle(), 
-            rules = s[$.browser.msie ? 'rules' : 'cssRules'],
+            rules = s['cssRules'] || s['rules'],
             handled = false;
         $.each(rules, function(i, rule) {
             if ( rule.selectorText.toLowerCase() === selector.toLowerCase() ) {

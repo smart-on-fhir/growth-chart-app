@@ -286,9 +286,7 @@ ChartPane.prototype = {
             
             divider.addClass("active");
             
-            var root = $.browser.msie ?
-                     document.documentElement || document.body : 
-                     window,
+            var root = (document.documentElement || document.body) || window,
                 
                 left = $(inst.container).offset().left,
                 
@@ -372,9 +370,7 @@ ChartPane.prototype = {
                 return true;
             }
             
-            root = $.browser.msie ? 
-                document.documentElement || document.body : 
-                window;
+            root = (document.documentElement || document.body) || window;
             
             rect = inst.paper.rect()
                 .attr(GC.chartSettings.selectionRect)

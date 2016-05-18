@@ -750,7 +750,6 @@
                 .toggleClass("no-transforms", !hasTransform)
                 .toggleClass("ie", $.browser.msie === true);
 
-            $.helperStyle("#dummy", {});
 
             if (PATIENT) {
                 BIRTH_XDATE = new XDate(PATIENT.birthdate);
@@ -838,7 +837,14 @@
             }).fail(function(response){
               var msg = response.responseText;
               console.log("Failed.");
-              $("#loading-indicator h2").html(msg); 
+
+              if (response.showMessage) {
+                showMessage(response);
+              }
+              else {
+                $("#loading-indicator h2").html(msg);
+              }
+
               if (response.status === 404) {
                 $("#loading-indicator h2").append($("<button>Make me a fake one!</button>"));
                 $("#loading-indicator button").click(function(){
@@ -848,6 +854,39 @@
                 });
               }
             });
+
+            function showMessage(response) {
+              var message = response.responseText;
+              var icon;
+
+              switch (response.messageType) {
+                case 'warning':
+                  icon = createIcon('&#9888;', 'warning'); // warning triangle
+                  break;
+                default:
+                  icon = createIcon('&#9888;', 'warning'); // defaults to warning triangle
+                  break
+              }
+
+              var $loaderNode = $('#loading-indicator h2');
+              var $messageNode = $('#loading-indicator .error-msg');
+
+              $messageNode.find('.icon').html(icon);
+              $messageNode.find('.message').text(message);
+
+              $loaderNode.fadeOut(function() {
+                  $messageNode
+                    .fadeIn()
+                    .css('display', 'inline-block');
+              });
+
+              // This technique uses the unicode icon's baseline to help vertically center it instead of
+              // the true middle since the icon is not vertically centered within the font. This can be
+              // replaced and simplified if a vertically-centered icon is added to the application.
+              function createIcon(unicode, cssClass) {
+                  return '<div class="wrapper"><div class="' + cssClass + '">' + unicode + '</div><div class="baseline">X</div></div>'
+              }
+            }
         }
 
         function initUIControls(done) {

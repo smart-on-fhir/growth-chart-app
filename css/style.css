@@ -48,6 +48,7 @@ a:hover {
 i {
 	font-style: italic;
 }
+
 #loading-indicator {
 	position: fixed;
 	z-index: 10000000;
@@ -58,26 +59,82 @@ i {
 	height: 100%;
 	width: 100%;
 	background: #4D5B66;
+	display: table;
 }
 
 #loading-indicator h2 {
-	position: absolute;
-	z-index: 2;
-	top: 50%;
-	left: 50%;
-	width  : 150px;
-	margin : -35px auto auto -110px;
+	background: url(../img/spinner2.gif) 10px 50% no-repeat #728391;
+	border-radius: 10px;
+	display: inline-block;
 	line-height : 30px;
 	padding: 10px 10px 10px 60px;
-	color: #FFF;
-	background: url(../img/spinner2.gif) 10px 50% no-repeat #728391;
-	font-size: 18px;
-	border-radius: 10px;
+	text-align: left;
+	width: 150px;
 }
 
 #loading-indicator h2 .msg {
 	font-size: 11px;
 	line-height: normal;
+}
+
+/* onload error message indicator */
+#loading-indicator .container {
+	color: #FFF;
+	display: table-cell;
+	font-size: 18px;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	width: 100%;
+}
+
+#loading-indicator .error-msg {
+	border-radius: 10px;
+	background-color: #728391;
+	display: none;
+	font-size: 18px;
+	line-height: normal;
+	padding: 10px;
+	text-align: left;
+	width  : 300px;
+}
+
+#loading-indicator .error-msg .display {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+
+#loading-indicator .error-msg .display .icon,
+#loading-indicator .error-msg .display .message {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#loading-indicator .error-msg .display .icon {
+	width: 50px;
+}
+
+#loading-indicator .error-msg .display .icon .wrapper {
+	display: table;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 40px;
+	height: 35px;
+	table-layout: fixed;
+}
+
+#loading-indicator .error-msg .display .icon .warning,
+#loading-indicator .error-msg .display .icon .baseline {
+	display: table-cell;
+	vertical-align: baseline;
+}
+
+#loading-indicator .error-msg .display .icon .baseline {
+	visibility: hidden;
+}
+
+#loading-indicator .error-msg .display .message {
+	width: 100%;
 }
 
 b, strong {
