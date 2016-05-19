@@ -445,40 +445,40 @@
                         lengthAndStature : getDefaultHeight()
                     };
 
-                    if (lastHeight) {
-                        heightChild = GC.Util.roundToPrecision(lastHeight.lengthAndStature, 1);
-                    }
+                if (lastHeight) {
+                    heightChild = GC.Util.roundToPrecision(lastHeight.lengthAndStature, 1);
+                }
 
-                    // The Y of the marker line
-                    y = this.paper.height - heightChild * (this.paper.height / MAX_HEIGHT);
+                // The Y of the marker line
+                y = this.paper.height - heightChild * (this.paper.height / MAX_HEIGHT);
 
-                    this._nodes.childDataRect.attr({
-                        "y" : heightChild > heightTreshold ? y + 2 : y - 52,
-                        "fill-opacity" : heightChild > heightTreshold ? 0.75 : 0
-                    });
+                this._nodes.childDataRect.attr({
+                    "y" : heightChild > heightTreshold ? y + 2 : y - 52,
+                    "fill-opacity" : heightChild > heightTreshold ? 0.75 : 0
+                });
 
-                    this._nodes.childHeightLabel.attr({
-                        text : lastHeight.agemos === null ?
-                            GC.str("STR_158") :
-                            ("on " +
-                            (new XDate(PATIENT.DOB.getTime())).addMonths(lastHeight.agemos)
-                            .toString(GC.chartSettings.dateFormat) + "\n"
-                            + heightChild + " cm"),
-                        y : heightChild > heightTreshold ?
-                            y + 35 :
-                            y - 16
-                    });
+                this._nodes.childHeightLabel.attr({
+                    text : lastHeight.agemos === null ?
+                        GC.str("STR_158") :
+                        ("on " +
+                        (new XDate(PATIENT.DOB.getTime())).addMonths(lastHeight.agemos)
+                        .toString(GC.chartSettings.dateFormat) + "\n"
+                        + heightChild + " cm"),
+                    y : heightChild > heightTreshold ?
+                        y + 35 :
+                        y - 16
+                });
 
-                    this._nodes.childName.attr(
-                        "y",
-                        heightChild > heightTreshold ?
-                            y + 10 :
-                            y - 40
-                    );
+                this._nodes.childName.attr(
+                    "y",
+                    heightChild > heightTreshold ?
+                        y + 10 :
+                        y - 40
+                );
 
-                    this._nodes.childHeightLine.attr({
-                        y : y
-                    });
+                this._nodes.childHeightLine.attr({
+                    y : y
+                });
 
                 img.onload = function() {
                     var heightAvail = inst.paper.height - 22,
@@ -1150,26 +1150,26 @@
                     msg[i++] = GC.str(PATIENT.gender == "male" ? "STR_165" : "STR_166");
 
                     switch (meta.stateGoingTo) {
-                        case WEIGHT_TRENDS.MORE_UNDERWEIGHT:
-                            msg[i++] = GC.str("STR_167");
-                            break;
-                        case WEIGHT_TRENDS.IMPROVING:
-                            msg[i++] = GC.str("STR_168");
-                            break;
-                        case WEIGHT_TRENDS.RISK_FOR_UNDERWEIGHT:
-                            msg[i++] = GC.str("STR_169");
-                            break;
-                        case WEIGHT_TRENDS.RISK_FOR_OVERWEIGHT:
-                            msg[i++] = GC.str("STR_170");
-                            break;
-                        case WEIGHT_TRENDS.RISK_FOR_OBESE:
-                            msg[i++] = GC.str("STR_171");
-                            break;
-                        case WEIGHT_TRENDS.MORE_OBESE:
-                            msg[i++] = GC.str("STR_172");
-                            break;
-                        default:
-                            throw 'Unknown trend "' + meta.stateGoingTo + '".';
+                    case WEIGHT_TRENDS.MORE_UNDERWEIGHT:
+                        msg[i++] = GC.str("STR_167");
+                        break;
+                    case WEIGHT_TRENDS.IMPROVING:
+                        msg[i++] = GC.str("STR_168");
+                        break;
+                    case WEIGHT_TRENDS.RISK_FOR_UNDERWEIGHT:
+                        msg[i++] = GC.str("STR_169");
+                        break;
+                    case WEIGHT_TRENDS.RISK_FOR_OVERWEIGHT:
+                        msg[i++] = GC.str("STR_170");
+                        break;
+                    case WEIGHT_TRENDS.RISK_FOR_OBESE:
+                        msg[i++] = GC.str("STR_171");
+                        break;
+                    case WEIGHT_TRENDS.MORE_OBESE:
+                        msg[i++] = GC.str("STR_172");
+                        break;
+                    default:
+                        throw 'Unknown trend "' + meta.stateGoingTo + '".';
                     }
 
                     $("#vitals-message .weight-trend").html(msg.join(" "));
