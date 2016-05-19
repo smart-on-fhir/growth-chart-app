@@ -461,7 +461,7 @@ window.GC = window.GC || {};
             this.familyHistory.mother.height &&
             this.familyHistory.father.isBio  && 
             this.familyHistory.mother.isBio) {
-            this.midParentalHeight = GC.Util.round((this.familyHistory.father.height + this.familyHistory.mother.height) / 2);
+            this.midParentalHeight = this.getMidParentalHeight().height;
         } else {
             this.midParentalHeight = null;
         }
@@ -842,7 +842,11 @@ window.GC = window.GC || {};
             !this.familyHistory.mother.isBio) {
             return null;
         }
-        var midHeight = GC.Util.round((this.familyHistory.father.height + this.familyHistory.mother.height) / 2);
+        var midHeight
+        if (this.gender === "male")
+            midHeight = GC.Util.round((this.familyHistory.father.height + this.familyHistory.mother.height + 13) / 2);
+        else
+            midHeight = GC.Util.round((this.familyHistory.father.height + this.familyHistory.mother.height - 13) / 2);
         
         var dataSet    = GC.DATA_SETS.CDC_STATURE;
         var data       = dataSet.data[this.gender];
