@@ -1,11 +1,12 @@
+/* global Raphael, $, XDate, GC */
 (function(GC) {
     "use strict";
     /**
      * Some constants and local variables
      */
     var PATIENT,
-        GREY         = "#CCC",
-        GREY_LIGHT   = "#DDD",
+        // GREY         = "#CCC",
+        // GREY_LIGHT   = "#DDD",
         GREY_LIGHTER = "#F2F2F2",
         GREY_DARK    = "#999",
         GREY_DARKER  = "#666",
@@ -147,7 +148,7 @@
 
         // Attach some re-draw listeners
         var inst = this;
-        $("html").bind("set:language", function (e, selectedLanguageCode) {
+        $("html").bind("set:language", function (/*e, selectedLanguageCode*/) {
             inst._setParentHeight("father", PATIENT.familyHistory.father.height);
             inst._setParentHeight("mother", PATIENT.familyHistory.mother.height);
             inst.drawHeuristics();
@@ -976,7 +977,7 @@
                 dataSet = GC.DATA_SETS.CDC_WEIGHT,
                 weightPctNow,
                 weightPctPrev,
-                bmi, healthyWeightMin, healthyWeightMax, weightPctDiff;
+                healthyWeightMin, healthyWeightMax, weightPctDiff;
 
             out.name = PATIENT.name;
 
@@ -1012,8 +1013,6 @@
                         prevWeightEntry.agemos
                     ) * 100;
                 }
-
-                bmi = lastWeightEntry.weight / Math.pow(lastHeightEntry.lengthAndStature / 100, 2);
 
                 healthyWeightMin = GC.findXFromPercentile(
                     0.05,
