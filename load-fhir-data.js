@@ -154,8 +154,14 @@ GC.get_data = function() {
       };
 
       function months(d){
-        return -1 * new XDate(d).diffMonths(new XDate(p.demographics.birthday));
-      }
+            var diffDays = -1 * new XDate(d).diffDays(new XDate(p.demographics.birthday));
+            if (diffDays < 0) {
+                return ((Math.ceil(diffDays))/7)/ 4.348214285714286;
+            }
+            else {
+                return ((Math.floor(diffDays))/7)/ 4.348214285714286;
+            }
+        }
 
       $.each(familyHistories, function(index, fh){
         if (fh.resourceType === "FamilyMemberHistory") {

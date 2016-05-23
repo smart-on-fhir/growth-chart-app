@@ -122,7 +122,8 @@ XDate, setTimeout, getDataSet*/
                 if ( isNaN(pct) || !isFinite(pct) ) {
                     return EMPTY_MARK;
                 }
-                return GC.Util.roundToPrecision(pct * 100, 0);
+                
+                return GC.Util.roundToPrecision(pct * 100, GC.chartSettings.roundPrecision.percentile[GC.chartSettings.nicu ? "nicu" : "std"]);
             }
         }
         return EMPTY_MARK;
