@@ -51,7 +51,7 @@ window.GC = window.GC || {};
         
         for (idx = 0; idx < len; idx++) {
             rec = data[idx];
-            day = Math.floor(rec.agemos * 30.4375);
+            day = Math.floor(rec.agemos * 30.4375 * 24 * 60);
             
             // If this record was made at the same day as the previous one - 
             // pick the latest one and store it as the "buffer"
@@ -67,7 +67,7 @@ window.GC = window.GC || {};
                 //when moving from one clustered group to another, the first an last of that cluster are both added.
                 //this will step back one and overwrite the first, leaving on the last of each group, as desired
                  if (buffer > -1) {
-                    if (out.length >0 && Math.floor(out[out.length-1].agemos * 30.4375) == Math.floor(data[buffer].agemos * 30.4375) ) {
+                    if (out.length >0 && Math.floor(out[out.length-1].agemos * 30.4375 * 24 * 60) == Math.floor(data[buffer].agemos * 30.4375 * 24 * 60) ) {
                         out[out.length-1] =data[buffer];
                     }
                     else {
@@ -303,7 +303,8 @@ window.GC = window.GC || {};
                 agemos: o.hasOwnProperty("agemos") ? 
                     o.agemos : 
                     patient.DOB.diffMonths(new XDate(o.date)),
-                value : o.value
+                value : o.value,
+                display: o.display
             });
         }
         
@@ -406,10 +407,9 @@ window.GC = window.GC || {};
         if ( d.valid() ) {
             this.DOB = d;
             this.birthdate = d.toString();
-
             if (this.gestationAge == null) {
                 this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(this.EDD));
-            }            
+            }
             
             $("html")
             .trigger("change:patient:DOB", this.DOB)
@@ -424,10 +424,9 @@ window.GC = window.GC || {};
         d = new XDate( d );
         if ( d.valid() ) {
             this.EDD = d;
-
             if (this.gestationAge == null) {
                 this.gestationAge = this.weeker = Math.round(40 - this.DOB.diffWeeks(d));
-            }            
+            }
             
             $("html")
             .trigger("change:patient:EDD", this.EDD)
@@ -499,22 +498,24 @@ window.GC = window.GC || {};
     GC.Patient.prototype.getModel = function() {
         if ( !this.model ) {
             var model = {};
-            
-            // Length and Stature
-            $.each(this.data.lengthAndStature, function(i, o) {
-                if ( model.hasOwnProperty(o.agemos) ) {
-                    model[ o.agemos ].lengthAndStature = o.value;
-                } else {
-                    model[ o.agemos ] = { "lengthAndStature" : o.value };
-                }
-            });
-            
+
             // Weight
             $.each(this.data.weight, function(i, o) {
                 if ( model.hasOwnProperty(o.agemos) ) {
                     model[ o.agemos ].weight = o.value;
+                    model[ o.agemos ].display = o.display;
                 } else {
-                    model[ o.agemos ] = { "weight" : o.value };
+                    model[ o.agemos ] = { "weight" : o.value , "display" : o.display};
+                }
+            });
+
+            // Length and Stature
+            $.each(this.data.lengthAndStature, function(i, o) {
+                if ( model.hasOwnProperty(o.agemos) ) {
+                    model[ o.agemos ].lengthAndStature = o.value;
+                    model[ o.agemos ].display = o.display;
+                } else {
+                    model[ o.agemos ] = { "lengthAndStature" : o.value , "display" : o.display};
                 }
             });
             
@@ -522,8 +523,9 @@ window.GC = window.GC || {};
             $.each(this.data.headc, function(i, o) {
                 if ( model.hasOwnProperty(o.agemos) ) {
                     model[ o.agemos ].headc = o.value;
+                    model[ o.agemos ].display = o.display;
                 } else {
-                    model[ o.agemos ] = { "headc" : o.value };
+                    model[ o.agemos ] = { "headc" : o.value , "display" : o.display};
                 }
             });
             
@@ -531,8 +533,9 @@ window.GC = window.GC || {};
             $.each(this.data.bmi, function(i, o) {
                 if ( model.hasOwnProperty(o.agemos) ) {
                     model[ o.agemos ].bmi = o.value;
+                    model[ o.agemos ].display = o.display;
                 } else {
-                    model[ o.agemos ] = { "bmi" : o.value };
+                    model[ o.agemos ] = { "bmi" : o.value , "display" : o.display};
                 }
             });
             
@@ -540,8 +543,9 @@ window.GC = window.GC || {};
             $.each(this.boneAge, function(i, o) {
                 if ( model.hasOwnProperty(o.agemos) ) {
                     model[ o.agemos ].boneAge = o.boneAge;
+                    model[ o.agemos ].display = o.display;
                 } else {
-                    model[ o.agemos ] = { "boneAge" : o.boneAge };
+                    model[ o.agemos ] = { "boneAge" : o.boneAge , "display" : o.display};
                 }
             });
             
@@ -549,8 +553,9 @@ window.GC = window.GC || {};
             $.each(this.annotations, function(i, o) {
                 if ( model.hasOwnProperty(o.agemos) ) {
                     model[ o.agemos ].annotation = o.annotation;
+                    model[ o.agemos ].display = o.display;
                 } else {
-                    model[ o.agemos ] = { "annotation" : o.annotation };
+                    model[ o.agemos ] = { "annotation" : o.annotation , "display" : o.display};
                 }
             });
             
@@ -940,7 +945,7 @@ window.GC = window.GC || {};
             return null;
         }
         
-        var dataSet    = GC.DATA_SETS.CDC_STATURE;
+        var dataSet    = GC.DATA_SETS.CDC_LENGTH;
         var data       = dataSet.data[this.gender];
         var lastAgeMos = GC.Util.findMinMax(data, "Agemos").max;
         

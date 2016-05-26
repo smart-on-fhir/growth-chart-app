@@ -17,14 +17,39 @@ GC.get_data = function() {
     var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
     GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
-    var ptFetch = smart.patient.read();
-    var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1', '11884-4']}}});
-    var familyHistoryFetch = smart.patient.api.fetchAll({type: "FamilyMemberHistory"});
+    var patient = smart.context.patient;
+
+    var vitalsFetch = $.Deferred();
+    var familyHistoryFetch = $.Deferred();
+    var ptFetch = patient.read();
+
+    patient.Observation.where.
+    nameIn(['3141-9', '8302-2', '8287-5', '39156-5', '18185-9', '37362-1', '11884-4']).
+    drain(drainVitals).done(doneVitals).fail(onError);
+
+    patient.FamilyHistory.where.drain(drainFamilyHistory).done(doneFamilyHistory).fail(doneFamilyHistory);
+
+    var allVitals = [];
+    function drainVitals(vs){
+      [].push.apply(allVitals, vs); 
+    };
+
+    var allFamilyHistories = [];
+    function drainFamilyHistory(vs){
+      [].push.apply(allFamilyHistories, vs); 
+    };
+
+    function doneVitals(){
+      vitalsFetch.resolve(smart.byCode(allVitals, 'name'));
+    };
+
+    function doneFamilyHistory(){
+      familyHistoryFetch.resolve(allFamilyHistories);
+    };
 
     $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
 
-    function onData(patient, vitals, familyHistories){
-      var vitalsByCode = smart.byCode(vitals, 'code');
+    function onData(patient, vitalsByCode, familyHistories){
 
       var t0 = new Date().getTime();
 
@@ -60,7 +85,7 @@ GC.get_data = function() {
       var lname = patient.name[0].family.join(" ");
       p.demographics.name = fname + " " + lname;
       p.demographics.birthday = patient.birthDate;
-      p.demographics.gender = patient.gender;
+      p.demographics.gender = (patient.gender.coding[0].code == 'M' ? 'male' : 'female');
 
       var gestAge = vitalsByCode['18185-9'];
       if (gestAge === undefined) {
@@ -68,14 +93,22 @@ GC.get_data = function() {
         gestAge = vitalsByCode['11884-4'];
       }
       if (gestAge && gestAge.length > 0) {
-        var weeks = 0, qty = gestAge[0].valueString ? 
-          gestAge[0].valueString.value || '40W 0D' :
-          gestAge[0].valueQuantity ? 
+
+        var weeks = 0, qty = gestAge[0].valueString ?
+        gestAge[0].valueString.value || '40W 0D' :
+            gestAge[0].valueQuantity ?
             gestAge[0].valueQuantity.value || 40 :
-            40;
+                40;
 
         if (typeof qty == 'string') {
-          qty.replace(/(\d+)([WD])\s*/gi, function(token, num, code) {
+          //the CERNER FHIR service returns inconsistent GEST age formats.
+          //either 32W 3D
+          // or 32 Weeks
+          //this attempts to standardize them for later parsing.
+          if (qty.indexOf("weeks") >0){
+            qty = qty.replace(/ weeks/gi, "W");
+          }
+          qty.replace(/(\d+)([WD])\s*/gi, function (token, num, code) {
             num = parseFloat(num);
             if (code.toUpperCase() == 'D') {
               num /= 7;
@@ -88,6 +121,7 @@ GC.get_data = function() {
 
         p.demographics.gestationalAge = weeks;
         p.demographics.weeker = weeks;
+
       }
 
       var units = smart.units;
@@ -99,37 +133,45 @@ GC.get_data = function() {
 
       function process(observationValues, toUnit, arr){
         observationValues && observationValues.forEach(function(v){
+          if (v.valueQuantity.value > 0) {
           arr.push({
-            agemos: months(v.effectiveDateTime, patient.birthDate),
-            value: toUnit(v.valueQuantity)
-          })
+            agemos: months(v.appliesDateTime, patient.birthDate),
+            value: toUnit(v.valueQuantity),
+            display: v.appliesDateTime
+
+          })}
         });
       };
 
       function processBA(boneAgeValues, arr){
         boneAgeValues && boneAgeValues.forEach(function(v){
           arr.push({
-            date: v.effectiveDateTime,
+            date: v.appliesDateTime,
             boneAgeMos: units.any(v.valueQuantity)
           })
         });
       };
 
       function months(d){
-            var diffDays = -1 * new XDate(d).diffDays(new XDate(p.demographics.birthday));
-            if (diffDays < 0) {
-                return ((Math.ceil(diffDays))/7)/ 4.348214285714286;
-            }
-            else {
-                return ((Math.floor(diffDays))/7)/ 4.348214285714286;
-            }
-        }
+       return -1 * new XDate(d).diffMonths(new XDate(p.demographics.birthday));
+      }
+      // function months(d){
+      //       var diffDays = -1 * new XDate(d).diffDays(new XDate(p.demographics.birthday));
+      //       if (diffDays < 0) {
+      //           return ((Math.ceil(diffDays))/7)/ 4.348214285714286;
+      //       }
+      //       else {
+      //           return ((Math.floor(diffDays))/7)/ 4.348214285714286;
+      //       }
+      //   }
+
 
       $.each(familyHistories, function(index, fh){
-        if (fh.resourceType === "FamilyMemberHistory") {
-              var code = fh.relationship.coding[0].code;
+        if (fh.resourceType === "FamilyHistory") {
+            $.each(fh.relation, function(index, rel){
+              var code = rel.relationship.coding[0].code;
               $.each(fh.extension || [], function(index, ext){
-                if (ext.url === "http://fhir-registry.smarthealthit.org/StructureDefinition/family-history#height") {
+                if (ext.url === "http://fhir-registry.smarthealthit.org/Profile/family-history#height") {
                   var ht = units.cm(ext.valueQuantity);
                   var r = null;
                   if (code === 'FTH') {
@@ -143,6 +185,7 @@ GC.get_data = function() {
                   }
                 }
               });
+            });
         }
       });
 

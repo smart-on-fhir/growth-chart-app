@@ -108,6 +108,16 @@ XDate, setTimeout, getDataSet*/
         }
         return EMPTY_MARK;
     }
+
+    function monthsInDays(d){
+          var diffDays = -1 * (new XDate(d)).diffDays(GC.App.getPatient().DOB);
+          if (diffDays < 0) {
+              return ((Math.ceil(diffDays))/7)/ 4.348214285714286;
+          }
+          else {
+              return ((Math.floor(diffDays))/7)/ 4.348214285714286;
+          }
+      }
     
     function getPercentile( entry, prop ) {
         if (entry.hasOwnProperty(prop)) {
@@ -117,13 +127,13 @@ XDate, setTimeout, getDataSet*/
                     entry[prop], 
                     ds, 
                     GC.App.getGender(), 
-                    entry.agemos
+                    monthsInDays(entry.display)
                 );
                 if ( isNaN(pct) || !isFinite(pct) ) {
                     return EMPTY_MARK;
                 }
-                
-                return GC.Util.roundToPrecision(pct * 100, GC.chartSettings.roundPrecision.percentile[GC.chartSettings.nicu ? "nicu" : "std"]);
+                var prec = GC.chartSettings.roundPrecision.percentile[GC.chartSettings.nicu ? "nicu" : "std"];
+                return GC.Util.roundToPrecision(pct * 100, prec);
             }
         }
         return EMPTY_MARK;
@@ -179,11 +189,11 @@ XDate, setTimeout, getDataSet*/
             case "length":
             case "stature":
             case "lengthandstature":
-                return GC.DATA_SETS[ds + "_STATURE"];
+                return GC.DATA_SETS[ds + "_LENGTH"];
             case "weight":
                 return GC.DATA_SETS[ds + "_WEIGHT"];
             case "headc":
-                return GC.DATA_SETS[ds + "_HEAD_CIRCUMFERENCE_INF"];
+                return GC.DATA_SETS[ds + "_HEADC"];
         }
     }
     
@@ -258,29 +268,32 @@ XDate, setTimeout, getDataSet*/
         
         $.each(model, function( index, data ) {
             //debugger;
-            var age  = new GC.TimeInterval(patient.DOB).setMonths(data.agemos),
-                date = new XDate(patient.DOB.getTime()).addMonths(data.agemos),
-                sameDay = lastDate && lastDate.diffDays(date) < 1,
-                dateText = sameDay ? 
-                    '<div style="text-align: center;font-size:20px">&bull;</div>' : 
-                    date.toString(
-                        GC.chartSettings.dateFormat
-                    ),
-                years,
+            var age  = new GC.TimeInterval(patient.DOB).setMonths(data.agemos);
+//            var date = new XDate(patient.DOB.getTime()).addMonths(data.agemos);
+            var date = new XDate(data.display);
+                var sameDay = false; //lastDate && lastDate.diffDays(date) < 1;
+                var dateText ;
+            if (data.display === undefined) {
+                dateText =  sameDay ?
+                '<div style="text-align: center;font-size:20px">&bull;</div>' :
+                date.toString(GC.chartSettings.dateFormat);}
+            else {
+
+               dateText = date.toString(GC.chartSettings.dateFormat);}
+
+                var years,
                 months,
                 days;
             
             // Header - Date
             $('<th/>').append( 
-                $('<div class="date"/>').html(dateText)
+                $('<div class="date"/>').html(dateText+'<br/>'+date.toString(GC.chartSettings.timeFormat))
             )
             .appendTo(thr1);
-            
+
             // Header - Age
             $('<th/>')
-                .append( $('<div class=""/>').html(
-                    sameDay ? 
-                    date.toString(GC.chartSettings.timeFormat) :
+                .append( $('<div class="age"/>').html(
                     age.toString(shortDateFormat)
                 )
             ).appendTo(thr2);
@@ -488,14 +501,15 @@ XDate, setTimeout, getDataSet*/
     
     function renderTableViewForPrint(container) {
         $(container).empty();
-        
         var printScheme = [
             {
                 label : "Date",
                 get   : function( entry, model ) {
-                    return new XDate(patient.DOB.getTime())
-                        .addMonths(entry.agemos)
-                        .toString(GC.chartSettings.dateFormat);
+                    var rowDate =  new XDate(entry.display).toString(GC.chartSettings.dateFormat);
+                    return rowDate;
+                   // return new XDate(patient.DOB.getTime())
+                   //     .addMonths(entry.agemos)
+                   //     .toString(GC.chartSettings.dateFormat);
                 },
                 style : "text-align:left"
             },
@@ -643,7 +657,7 @@ XDate, setTimeout, getDataSet*/
         
         // Table Body ==========================================================
         var patient = GC.App.getPatient(),
-            model = patient.getModel();
+            model = patient.getModel().reverse();
             
         function createCell(meta, entry) {
             var html = '<td';
@@ -653,7 +667,6 @@ XDate, setTimeout, getDataSet*/
             html += '>' + (meta.get ? meta.get(entry) : "") + '</td>';
             return html;
         }
-        
         $.each(model, function( index, data ) {
             html[j++] = '<tr class="' + (index % 2 ? "odd" : "even") + '">';
             $.each(printScheme, function(i, o) {
