@@ -24,7 +24,7 @@ window.GC = window.GC || {};
     // =========================================================================
     var readOnlySettings = {
         
-        fileRevision : 202,
+        fileRevision : 203,
         
         // See the toString method for the rendering template
         version : {
@@ -64,6 +64,9 @@ window.GC = window.GC || {};
     var settings = {
         isParentTabShown : true,
         hidePatientHeader: true,
+        hideAppPreferences: false,
+        hideGCComparison: false,
+        hideAddData: false,
         defaultChart : "CDC", // 2+ years
         defaultBabyChart : "WHO", // 0 - 2 years
         defaultPrematureChart : "FENTON", // premature

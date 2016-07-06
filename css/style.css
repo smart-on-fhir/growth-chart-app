@@ -1545,6 +1545,12 @@ span.title {
 	right: -36px;
 	background: url(../img/tab-sprite.png) -20px -42px no-repeat;
 }
+
+/* Override the padding for the GC tab to rid the space of the hidden compare button */
+#the-tab.hide-compare-button {
+	padding: 11px 0 1px 0;
+}
+
 .view-table #the-tab .disable-overlay,
 .view-parental #the-tab .disable-overlay {
 	display: block;
