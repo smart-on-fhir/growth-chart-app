@@ -39,14 +39,23 @@ GC.get_data = function() {
       return deferred.promise();
     };
 
-    var ptFetch = smart.patient.read();
-    var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['http://loinc.org|3141-9',
-      'http://loinc.org|8302-2', 'http://loinc.org|8287-5',
-      'http://loinc.org|39156-5', 'http://loinc.org|18185-9',
-      'http://loinc.org|37362-1', 'http://loinc.org|11884-4']}}});
-    var familyHistoryFetch = defaultOnFail(smart.patient.api.fetchAll({type: "FamilyMemberHistory"}), []);
+    if (smart.hasOwnProperty('patient')) {
+      var ptFetch = smart.patient.read();
+      var vitalsFetch = smart.patient.api.fetchAll({type: "Observation", query: {code: {$or: ['http://loinc.org|3141-9',
+        'http://loinc.org|8302-2', 'http://loinc.org|8287-5',
+        'http://loinc.org|39156-5', 'http://loinc.org|18185-9',
+        'http://loinc.org|37362-1', 'http://loinc.org|11884-4']}}});
 
-    $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
+      $.when(ptFetch, vitalsFetch).fail(function() {
+        onErrorWithWarning(GC.str('STR_Error_LoadingApplication'));
+      });
+
+      var familyHistoryFetch = defaultOnFail(smart.patient.api.fetchAll({type: "FamilyMemberHistory"}), []);
+
+      $.when(ptFetch, vitalsFetch, familyHistoryFetch).done(onData);
+    } else {
+      onErrorWithWarning(GC.str('STR_Error_LoadingApplication'));
+    }
 
     function onData(patient, vitals, familyHistories){
       // check patient gender
