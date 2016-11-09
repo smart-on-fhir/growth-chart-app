@@ -743,6 +743,11 @@ window.GC = (function(NS) {
             es : "Se ha producido un error al cargar la aplicación",
             bg : "Възникна грешка при зареждане на приложението"
         },
+        STR_Error_NoPatient : {
+            en : "Patient not found",
+            es : "Paciente no encontrado",
+            bg : "Липсващ пациент"
+        },
         STR_ApplyLocalizations : {
             en : "Apply localizations",
             es : "Aplicar localizaciones",
