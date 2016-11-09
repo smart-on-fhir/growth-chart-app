@@ -27,12 +27,15 @@ body {
 	position: fixed;
 	z-index: 100;
 	top: -1px;
-	right: 10%;
+	left: 50%;
+    width: 100px;
 	padding: 4px 8px;
-	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 1px 1px 7px rgba(0, 0, 0, 0.5), 0 0 0 1px #DDD inset; 
+    margin-left: -58px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 1px 1px 7px rgba(0, 0, 0, 0.5), 0 0 0 1px #DDD inset;
 	text-shadow: 0 1px 0 #DDD;
 	-webkit-user-select: none;
 	-moz-user-select: none;
+    -ms-user-select: none;
 	user-select: none;
 }
 #print-toolbar .print-link {
@@ -156,9 +159,9 @@ svg {
 	text-align: left;
 	overflow: hidden;
 	color: #7A909E;
-} 
+}
 
- 
+
 /* -------------------------------------------------------------------------- *
  *                         SVG and VML Styles                                 *
  * -------------------------------------------------------------------------- */
@@ -173,7 +176,7 @@ svg {
 path.grid-line-y {
     shape-rendering: crispedges;
     /*stroke: #999;
-	
+
     stroke-opacity: 0.3;
     stroke-width:  1;*/
 }
@@ -197,7 +200,7 @@ svg marker use {
 }
 svg path {
 	pointer-events: none;
-	
+
 }
 .pattern-fill {
 	/*fill: url("../img/problem-pattern-blue.png") !important;
@@ -211,7 +214,7 @@ svg path {
 
 
 
-/* -------------------------------------------------------------------------- * 
+/* -------------------------------------------------------------------------- *
  *                                TIMELINES                                   *
  * -------------------------------------------------------------------------- */
 
@@ -242,7 +245,7 @@ svg path {
 	line-height  : 16px;
 	display  : none; /* initially hidden */
 	margin   : auto;
-	
+
 }
 
 .timeline > div {
@@ -253,7 +256,7 @@ svg path {
 	border-top:1px solid #CCC;
 	border-bottom: none;
 }
-.timeline .gest { 
+.timeline .gest {
 	border-top: none;
 	border-bottom: none;
 	background: rgba(255, 255, 255, 0.5) !important;
@@ -267,7 +270,7 @@ svg path {
 .timeline .weeks:before,
 .timeline .weeks:after,
 .timeline .days:before,
-.timeline .days:after { 
+.timeline .days:after {
 	position: absolute;
 	top : 0;
 	z-index: 11;
@@ -278,7 +281,7 @@ svg path {
 .timeline .years:before,
 .timeline .months:before,
 .timeline .weeks:before,
-.timeline .days:before { 
+.timeline .days:before {
 	left : 2px;
 	text-align: left;
 }
@@ -295,30 +298,30 @@ svg path {
 .timeline .years:after,
 .timeline .months:after,
 .timeline .weeks:after,
-.timeline .days:after { 
+.timeline .days:after {
 	right : 2px;
 	text-align: right;
 }
 
-.timeline .years:before { content : "Years"; } 
+.timeline .years:before { content : "Years"; }
 .timeline .years:after { content : "Years"; }
 
-.timeline .months:before { content: "Months"; } 
+.timeline .months:before { content: "Months"; }
 .timeline .months:after { content: "Months"; }
 
-.timeline .weeks:before { content: "Weeks"; } 
+.timeline .weeks:before { content: "Weeks"; }
 .timeline .weeks:after { content: "Weeks"; }
 
-.timeline .days:before { content: "Days"; } 
+.timeline .days:before { content: "Days"; }
 .timeline .days:after { content: "Days"; }
 
 .timeline .years:before,
 .timeline .years:after,
 .timeline .months:before,
 .timeline .months:after,
-.timeline .weeks:before, 
+.timeline .weeks:before,
 .timeline .weeks:after,
-.timeline .days:before, 
+.timeline .days:before,
 .timeline .days:after {
 	content: attr(data-content) !important;
 }
@@ -358,7 +361,7 @@ svg path {
 }
 #timeline-bottom .months .labels div:before {
 	top: 0;
-	bottom: auto;	
+	bottom: auto;
 }
 
 .timeline .years .labels,
@@ -427,12 +430,12 @@ svg path {
 	border-radius : 3px;
 }
 .annotations .annotation-button:hover {
-	opacity     : 1; 
+	opacity     : 1;
 }
 .annotations .annotation-button.active {
 	background-color: #FFF;
 	border-color: #666;
-	opacity     : 1; 
+	opacity     : 1;
 	z-index     : 300;
 	box-shadow  : 0 2px 3px rgba(0, 0, 0, 0.5);
 }
@@ -555,7 +558,7 @@ svg path {
 
 /* -------------------- Parental View Styles -------------------------------- */
 
-#PatientHeader, 
+#PatientHeader,
 #PredictedHeightHeader {
 	background: transparent;
 	overflow: visible;
