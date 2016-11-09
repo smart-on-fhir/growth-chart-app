@@ -1,95 +1,96 @@
+/* global $*/
 window.GC = (function(NS) {
     "use strict";
     var locales = {};
-    
+
     function createLocale(options) {
         var out = $.extend(true, {}, {
-            
+
             /**
-             * The name of the language to use. This will be displayed at the 
+             * The name of the language to use. This will be displayed at the
              * language selection UI controls and is ALWAYS in english.
              * @type {String}
              */
             language : null,
-            
+
             /**
-             * The language abbreviation. This is a short string that can be 
+             * The language abbreviation. This is a short string that can be
              * used to identify the language (used internaly as key to store the
              * translated strings). If not provided, it will be set to the first
-             * three letters of the @language setting (lowercased). 
+             * three letters of the @language setting (lowercased).
              * @type {String}
              */
             langAbbr : null,
-            
+
             /**
              * The writing dirrection of the language. Can be "ltr" or "rtl".
              * Defaults to "ltr".
              * @type {String}
              */
             dir : "ltr",
-            
+
             /**
-             * If we search for some string that has no translation defined for 
+             * If we search for some string that has no translation defined for
              * the desired language, it can failback to the same string from the
              * language identified by this abbr.
              * @type {String}
-             */ 
+             */
             failback : "en",
-            
+
             /**
-             * Set this to false to disable the locale. That will hide it from 
+             * Set this to false to disable the locale. That will hide it from
              * the UI making it unreachable.
              * @type {Boolean}
              */
             enabled  : true
             // TODO: more options here (dates, units etc.)?
-            
+
         }, options);
-        
-        // Currently "language" is the only required property so make sure to 
+
+        // Currently "language" is the only required property so make sure to
         // validate it
         out.language = $.trim(String(out.language));
-        
+
         if (!out.language) {
             throw "Please define locale.language";
         }
-        
+
         // Create "langAbbr" in case it is missing
         if (!out.langAbbr) {
             out.langAbbr = out.language.toLowerCase().substr(0, 3);
         }
-        
+
         // Prevent failback recursion
         if ( out.failback === out.langAbbr ) {
             out.failback = null;
         }
-        
+
         // Register self
         locales[out.langAbbr] = out;
-        
+
         // return the resulting object
         return out;
     }
-    
+
     // Register languages here!
     createLocale({ language : "English"  , langAbbr : "en" });
     createLocale({ language : "Spanish"  , langAbbr : "es" });
     createLocale({ language : "Bulgarian", langAbbr : "bg" });
     //createLocale({ language : "Slovenian", langAbbr : "sl" });
-    
+
     var _data = {
-        
-        STR_0  : { 
-            en : "Language", 
+
+        STR_0  : {
+            en : "Language",
             es : "Lengua",
             bg : "Език"
         },
-        
+
         STR_1  : { en : "Head Circumference", es : "Circunferencia de la cabeza",  bg: "Обиколка на главата" },
         STR_2  : { en : "Length"            , es : "Eslora",                       bg: "Дължина" },
         STR_3  : { en : "Stature"           , es : "Estatura",                     bg: "Ръст"},
         STR_4  : { en : "Length/Stature"    , es : "Eslora/Estatura",              bg: "Дължина/Ръст" },
-        STR_5  : { en : "Body Mass Index"   , es : "Indice de masa corporal",      bg: "Индекс на телесната маса" },    
+        STR_5  : { en : "Body Mass Index"   , es : "Indice de masa corporal",      bg: "Индекс на телесната маса" },
         STR_6  : { en : "Weight"            , es : "Peso",                         bg: "Тегло" },
         STR_7  : { en : "Z Score"           , es : "Score Z",                      bg: "Z Резултат" },
         STR_8  : { en : "Percentiles"       , es : "Percentiles",                  bg: "Перцентили" },
@@ -99,7 +100,7 @@ window.GC = (function(NS) {
         STR_12 : { en : "Annotation"        , es : "Anotacion",                    bg: "Коментар" },
         STR_13 : { en : "Head C"            , es : "Head C",                       bg: "Глава О" },
         STR_14 : { en : "BMI"               , es : "BMI",                          bg: "ИТМ" },
-        
+
         // Calendar strings
         STR_15 : { en : "Years"             , es : "Anos",                         bg: "Години" },
         STR_16 : { en : "Year"              , es : "Ano",                          bg: "Година" },
@@ -109,7 +110,7 @@ window.GC = (function(NS) {
         STR_20 : { en : "Week"              , es : "Semana",                       bg: "Седмица" },
         STR_21 : { en : "Days"              , es : "Dias",                         bg: "Дни" },
         STR_22 : { en : "Day"               , es : "Dia",                          bg: "Ден" },
-        
+
         // Calendar strings (short) TODO
         STR_23 : { en : "Yrs"               , es : "Anos",                         bg: "Години" },
         STR_24 : { en : "Yr"                , es : "Ano",                          bg: "Година" },
@@ -119,23 +120,23 @@ window.GC = (function(NS) {
         STR_28 : { en : "Wk"                , es : "Sem",                          bg: "Седмица" },
         STR_29 : { en : "Days"              , es : "Dias",                         bg: "Дни" },
         STR_30 : { en : "Day"               , es : "Dia",                          bg: "Ден" },
-        
+
         STR_31 : { en : "Medical Service"   , es : "Servicio medico",                            bg: "Медицински услуги"},
         STR_32 : { en : "Mid-Parental Height", es : "Mid. Altura de los padres",                 bg: "Средна височина на родителите" },
         STR_33 : { en : "Latest Percentile Height", es : "Altura nominal estimada",              bg: "Последна процентилна височина" },
         STR_34 : { en : "Bone Age Adjusted Height", es : "Bone estimada Edad Altura",            bg: "Височина коригирана на база костна възраст" },
         STR_35 : { en : "Entry Date"              , es : "Fecha",                                bg: "Дата на постъпване" },
         STR_36 : { en : "Age"                     , es : "Edad",                                 bg: "Възраст" },
-        
+
         STR_37 : { en : "Mid-Parental"     , es : "Mid. Altura de los padres",                   bg: "Среден резултат на родителите" },
         STR_38 : { en : "Latest Percentile", es : "Altura nominal estimada",                     bg: "Последен процентил"  },
         STR_39 : { en : "Bone Age Adjusted", es : "Bone estimada Edad Altura",                   bg: "Коригирано на база костна възраст" },
-        
+
         STR_40 : { en : "time", es : "tiempo",                                                   bg: "време"  },
-        
+
         // =====================================================================
-        // Parental view 
-        // (Must use suffix of 100+ because it is very difficult to merge 
+        // Parental view
+        // (Must use suffix of 100+ because it is very difficult to merge
         // the code otherwise)
         // =====================================================================
         STR_131: { en : "Father"               , es : "Papa",                                           bg: "Баща" },
@@ -166,9 +167,9 @@ window.GC = (function(NS) {
         STR_156: { en : "age", es: "edad",                    bg: "Възраст" },
         STR_157: { en : "dob", es: "dob",                     bg: "Дата на раждане"  },
         STR_158: { en : "No data", es: "No hay datos",        bg: "Няма въведена дата"  },
-        
+
         STR_159: { en : "has a <b>healthy weight</b> of", es : "tiene un <b>peso saludable</b> de",                                           bg: "има <b>нормално</b> тегло" },
-        STR_160: { en : "is <b>underweight</b> at", es : "está <b>bajo de peso</b> con",                                                      bg: "е с <b>тегло по ниско от нормата</b>" },                                                    
+        STR_160: { en : "is <b>underweight</b> at", es : "está <b>bajo de peso</b> con",                                                      bg: "е с <b>тегло по ниско от нормата</b>" },
         STR_161: { en : "is <b>overweight</b> at", es : "tiene un <b>sobrepeso</b> de",                                                       bg: "е с <b>тегло по високо от нормата</b>" },
         STR_162: { en : "is <b>obese</b> at", es : "está <b>obeso</b> con",                                                                   bg: "е със <b>свръхтегло</b>" },
         STR_163: { en : "The healthy weight for his age and height is", es : "El peso saludable para su edad y estatura es",                  bg: "Нормалното тегло за неговата възраст и височна е" },
@@ -181,23 +182,23 @@ window.GC = (function(NS) {
         STR_170: { en : "at risk for becoming overweight." , es :  "en riesgo de sobrepeso.",                                                 bg: "в риск да премине над нормата." },
         STR_171: { en : "at risk for becoming obese."      , es :  "en riesgo de obesidad.",                                                  bg: "в да стане със свръхтегло." },
         STR_172: { en : "more obese."                      , es :  "más obes{o/a}.",                                                          bg: "със свръхтегло." },
-        
+
         STR_173: { en : "Underweight", es : "Bajo peso",                          bg: "Поднормено тегло" },
         STR_174: { en : "Healthy"    , es : "Saludable",                          bg: "Нормално тегло" },
         STR_175: { en : "Overweight" , es : "Sobrepeso",                          bg: "Наднормено тегло" },
         STR_176: { en : "Obese"      , es : "Obeso",                              bg: "Свръх-тегло"     },
-        
+
         STR_177: { en : "Latest measurements", es : "Las últimas mediciones",     bg: "Последни измервания" },
-        
+
         STR_178: { en : "Add Data", es : "Agregar datos",     bg: "Добави" },
         STR_179: { en : "Print View", es : "Imprimir View",     bg: "Принтирай" },
         STR_180 : { en : "Please Wait...", es : "Espere por favor...", bg : "Моля изчакайте..." },
-        
+
         STR_181 : { en : "his", es : "su" , bg : "неговият" },
-        STR_182 : { en : "her", es : "sus", bg : "нейният" }, 
+        STR_182 : { en : "her", es : "sus", bg : "нейният" },
         STR_183 : { en : "has not enough data to calculate", es : "no tiene suficientes datos para calcular", bg : "няма достатъчно данни за изчисляване на" },
         STR_184 : { en : "state", es : "estado", bg : "статус" },
-        
+
         // Header --------------------------------------------------------------
         STR_2999 : {
             en : "Toggle Settings",
@@ -210,7 +211,7 @@ window.GC = (function(NS) {
             bg : "Дата на раждане"
         },
         STR_3001 : { // Date of Birth (input label at the header)
-            en : "DOB", 
+            en : "DOB",
             es : "DOB",
             bg : "Реална"
         },
@@ -220,7 +221,7 @@ window.GC = (function(NS) {
             bg : "дата на раждане"
         },
         STR_3003 : { // Expected Delivery Date (input label at the header)
-            en : "EDD", 
+            en : "EDD",
             es : "EDD",
             bg : "Очаквана"
         },
@@ -239,40 +240,40 @@ window.GC = (function(NS) {
             es : "Semanas",
             bg : "Седмичен"
         },
-        
+
         // Header parents information
-        
-        STR_3007 : { 
+
+        STR_3007 : {
             en : "Parent’s Heights",
             es : "Las alturas de los padres",
             bg : "Височини на родителите"
         },
-        STR_3008 : { 
+        STR_3008 : {
             en : "Mother",
             es : "Mama",
             bg : "Майка"
         },
-        STR_3009 : { 
+        STR_3009 : {
             en : "Biological",
             es : "Biológico",
             bg : "Биологическа"
         },
-        STR_3010 : { 
+        STR_3010 : {
             en : "Father",
             es : "Papa",
             bg : "Баща"
         },
-        STR_3011 : { 
+        STR_3011 : {
             en : "Biological",
             es : "Biológico",
             bg : "Биологически"
         },
-        STR_3012 : { 
+        STR_3012 : {
             en : "Mid Parental Height",
             es : "Mid. Altura de los padres",
             bg : "Средна височина"
         },
-        STR_3013 : { 
+        STR_3013 : {
             en : "Both parents must be biological parents and have height specified to calculate the Mid Parental Height Value",
             es : "Ambos padres deben ser los padres biológicos y tienen altura especificada para calcular el valor de la altura media Parental",
             bg : "И двамата родители трябва да са биологични родители и трябва да имат въведени височини, за да може да бъде изчислена средната им обща височина."
@@ -282,14 +283,14 @@ window.GC = (function(NS) {
             es : "App Preferencias",
             bg : "Настройки"
         },
-        
-        // Settings 
+
+        // Settings
         STR_3015 : { // Value attributes for the settings in the header in the input tag
             en : "Advanced Settings",
             es : "Opciones avanzadas",
             bg : "Разширени настройки"
         },
-        
+
         STR_3016 : { // Value attributes for the settings in the header in the input tag
             en : "About This App",
             es : "Acerca de esta aplicación",
@@ -300,18 +301,18 @@ window.GC = (function(NS) {
             es : "Unidades por defecto",
             bg : "Метрични единици"
         },
-        STR_3018 : { 
+        STR_3018 : {
             en : "Velocity",
             es : "Velocidad",
             bg : "Изменение"
         },
-        STR_3019 : { // Неонаталогично Интензивно Отделение за Новородени - Neonatal Intensive Care Unit 
+        STR_3019 : { // Неонаталогично Интензивно Отделение за Новородени - Neonatal Intensive Care Unit
             en : "NICU Velocity",
             es : "NICU Velocity",//bla-bla
             bg : "НИОН "
         },
-        
-        // Header 
+
+        // Header
         // Time units as options to choose from
         STR_3020 : {
             en : "Year",
@@ -358,8 +359,8 @@ window.GC = (function(NS) {
             es : "Corrección gestacional",
             bg : "Преждевременно"
         },
-        
-        // Options to choose from 
+
+        // Options to choose from
         STR_3029 : {
             en : "Type",
             es : "Tipo",
@@ -390,7 +391,7 @@ window.GC = (function(NS) {
             es : "durante 2 años si",
             bg : "за 2 години ако"
         },
-        STR_3035 : { // value attribute 
+        STR_3035 : { // value attribute
             en : "< 32 Weeker",
             es : "< 32 Weeker",
             bg : "< 32 седмици"
@@ -555,7 +556,7 @@ window.GC = (function(NS) {
         STR_3095  : { en : "Weeks", es : "Semanas", bg : "Седмици" },
         STR_3096  : { en : "from", es : "de", bg : "от" },
         STR_3097  : { en : "to", es : "hasta", bg : "до" },
-        STR_3098  : { en : "Months", es : "Meses", bg : "Месеци" }, 
+        STR_3098  : { en : "Months", es : "Meses", bg : "Месеци" },
         STR_3099  : { en : "from", es : "de", bg : "от" },
         STR_3100  : { en : "to", es : "hasta", bg : "до" },
         STR_3101  : { en : "Years", es : "Аños", bg : "Години" },
@@ -622,9 +623,9 @@ window.GC = (function(NS) {
         STR_3162  : { en : "Auto", es : "Automático", bg : "Автоматично" },
 
         // End Of Header Translations-----------------------------------------------------------------------------------------------------------------
-        
+
         // add_edit_dataentry.html document translations
-        
+
         STR_5000  : { en : "Date of measurement/note", es : "Fecha de la medida / nota ",  bg: "Дата на измерване/бележка " },
         STR_5001  : { en : "Patient's age on above date ", es : "Edad de la paciente ",  bg: "Възрaст на пациента " },
         STR_5002  : { en : "Entered by user/department ", es : "Entró por el usuario/departamento ",  bg: "Въведено от потребителя/отдела " },
@@ -642,7 +643,7 @@ window.GC = (function(NS) {
         STR_5014  : { en : "Delete record", es : "Eliminar registro",  bg: "Изтрий запис" },
         STR_5015  : { en : "Save", es : "Guardar",  bg: "Съхрани" },
         STR_5016  : { en : "Cancel", es : "Cancelar",  bg: "Отказ" },
-    
+
         //Annotations html file
         STR_6000  : { en : "Print", es : "Imprimir",  bg: "Принтирай" },
         //Print charts html
@@ -650,38 +651,38 @@ window.GC = (function(NS) {
         STR_6021  : { en : "Patient`s name", es : "Nombre del `s del Paciente",  bg: "Име на пациента" },
         STR_6022  : { en : "corrected age", es : "edad corregida",  bg: "oчаквана" },
         //Select patient html file
-        STR_6030  : { en : "The GC application was launched outside a SMART container.We loaded some demo data for you.", es : "La aplicación GC fue lanzado fuera de una container.We INTELIGENTE cargado algunos datos de ejemplo para usted.",  bg: "GC приложенито е беше пуснато извън SMART. Ние заредихме някои примерни данни за вас." }, 
+        STR_6030  : { en : "The GC application was launched outside a SMART container.We loaded some demo data for you.", es : "La aplicación GC fue lanzado fuera de una container.We INTELIGENTE cargado algunos datos de ejemplo para usted.",  bg: "GC приложенито е беше пуснато извън SMART. Ние заредихме някои примерни данни за вас." },
         STR_6031  : { en : "Please select Demo Patient to use:", es : "Seleccione Paciente Demostración de empleo:",  bg: "Моля изберете примерен пациент:" },
-        
+
         STR_6032  : { en : "Apply", es : "Aplicar", bg : "Приложи" },
         STR_6033  : { en : "Save", es : "Guardar", bg : "Запази" },
         STR_6034  : { en : "Reset to Defaults", es : "Predeterminados", bg : "Настроики по подразбиране!" },
-        STR_6035  : { 
+        STR_6035  : {
             en : "Not enough statistics data to calculate the percentile",
             es : "No hay suficientes datos estadísticos para calcular el percentil",
             bg : "Няма достатъчно данни за изчисляване на процент"
         },
-        STR_6036  : { 
+        STR_6036  : {
             en : "There is another record existing at the selected day.\nDo you want to edit it instead?",
             es : "Hay otro registro existente en el día seleccionado.\n¿Quieres editarlo en su lugar?",
             bg : "Вече има запис в избраният ден. Желаете ли да го редактирате,\nвместо да създавате нов?"
         },
-        STR_6037 : { 
+        STR_6037 : {
             en : "Edit Data",
             es : "Modificar información",
             bg : "Редактиране на данни"
         },
-        STR_6038 : { 
+        STR_6038 : {
             en : "Add Data",
             es : "Agregar datos",
             bg : "Добавяне на данни"
         },
-        STR_6039 : { 
+        STR_6039 : {
             en : "Submit",
             es : "Presentar",
             bg : "Запази"
         },
-        STR_6040 : { 
+        STR_6040 : {
             en : "Today",
             es : " Hoy ",
             bg : "Днес "
@@ -690,38 +691,38 @@ window.GC = (function(NS) {
         STR_6042  : { en : "Continue", es : "Continuar", bg : "Продължи" },
         STR_6043  : { en : "ON", es : "EN", bg : "Да" },
         STR_6044  : { en : "OFF", es : "DE", bg : "Не" },
-        STR_6045  : { 
+        STR_6045  : {
             en : "No data available!",
             es : "No hay datos disponibles!",
             bg : "Няма налични данни!"
         },
-        
-        STR_6046  : { 
+
+        STR_6046  : {
             en : "No curves data",
             es : "Pero no los datos de los gráficos",
             bg : "Няма достатъчно данни за графика"
         },
-        STR_6047  : { 
+        STR_6047  : {
             en : "Last recording",
             es : "Última grabación",
             bg : "Последен запис"
         },
-        STR_6048  : { 
+        STR_6048  : {
             en : "Selected recording",
             es : "Grabación seleccionado",
             bg : "Избран запис"
         },
-        STR_6049  : { 
+        STR_6049  : {
             en : "PICK A CHART",
             es : "ELIJA UNA CARTA",
             bg : "ИЗБЕРИ ЧАРТ"
         },
-        
-        // The strings below are direct translations for some properties of the 
-        // patient or other smart data or just strings that are initially 
+
+        // The strings below are direct translations for some properties of the
+        // patient or other smart data or just strings that are initially
         // provided in English
         // ---------------------------------------------------------------------
-        
+
         STR_Loading : {
             en : "Loading",
             es : "Carga",
@@ -782,7 +783,7 @@ window.GC = (function(NS) {
             es : "Todas las tareas completadas!",
             bg : "Всички задачи са изпълнени"
         },
-        
+
         STR_dlg_title_SelectDemoPatient : {
             en : "Select Demo Patient",
             es : "Seleccione Paciente demostración",
@@ -843,41 +844,41 @@ window.GC = (function(NS) {
             es : "Gris - аlto contraste",
             bg : "Черно-бял - висок контраст"
         }
-        
+
     };
-    
+
     NS.locales = locales;
-    
+
     NS.str = function( key, lang ) {
-        
+
         if (key == "LANGUAGE") {
             return locales[NS.App.getLanguage()].language;
         }
-        
+
         if ( !_data.hasOwnProperty( key ) ) {
             return "Missing string '" + key + "'";
         }
-        
+
         lang = lang || NS.App.getLanguage();
-        
+
         var locale = locales[lang];
-        
+
         if ( !locale ) {
             return "Missing locale for '" + lang + "'";
         }
-        
+
         var o = _data[key];
-        
+
         if ( !o.hasOwnProperty( lang ) ) {
             if (locale.failback) {
                 return NS.str(key, locale.failback);
             }
             return "Missing translation for '" + key + "' / '" + lang + "'";
         }
-        
+
         return o[lang];
     };
-    
+
     return NS;
-    
+
 }(window.GC || {}));
