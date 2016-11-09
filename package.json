@@ -5,6 +5,7 @@
     "serve": "./node_modules/http-server/bin/http-server -p 8000 -c-1 ."
   },
   "dependencies": {
+    "eslint": "^3.9.1",
     "fhirclient": "^0.1.9"
   },
   "devDependencies": {
