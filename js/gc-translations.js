@@ -736,12 +736,12 @@ window.GC = (function(NS) {
         STR_LoadingCurveData : {
             en : "Loading curve data",
             es : "Cargando datos de la curva",
-            bg : "Зареждане данни крива"
+            bg : "Зареждане на данни"
         },
         STR_Error_LoadingApplication : {
             en : "There was an error loading the application",
             es : "Se ha producido un error al cargar la aplicación",
-            bg : ""
+            bg : "Възникна грешка при зареждане на приложението"
         },
         STR_ApplyLocalizations : {
             en : "Apply localizations",
