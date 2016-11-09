@@ -6,9 +6,9 @@
     },
     "rules": {
 
-        "init-declarations": 0, // enforce or disallow variable initializations at definition
+        "init-declarations": 1, // enforce or disallow variable initializations at definition
         "no-catch-shadow": 2, // disallow the catch clause parameter name being the same as a variable in the outer scope
-        "no-delete-var": 0, // disallow deletion of variables (recommended)
+        "no-delete-var": 1, // disallow deletion of variables (recommended)
         "no-label-var": 1, // disallow labels that share a name with a variable
         "no-shadow-restricted-names": 1, // disallow shadowing of names such as arguments
         "no-shadow": 1, // disallow declaration of variables already declared in the outer scope
