@@ -1,25 +1,26 @@
+/* global GC, $, Raphael, XDate */
 (function() {
-    
+
     var root = $("#preferences-editor");
-    
+
     var $dialog = root.closest("#dialog").dialog("option", "close", function() {
         $("#header").unmask();
     });
-    
-    
+
+
     var PROXY = {
-        read  : function() { 
-            return $.when(GC.chartSettings); 
+        read  : function() {
+            return $.when(GC.chartSettings);
         },
-        write : function(data) { 
-            $.extend(true, GC.chartSettings, data); 
+        write : function(data) {
+            $.extend(true, GC.chartSettings, data);
             return GC.Preferences.save();
         }
     };
-    
+
     var STATE = $.extend(true, {}, GC.chartSettings);
     var CHANGES = {};
-    
+
     var MODEL = new GC.Model(STATE, null, PROXY);
     MODEL.autoCommit = false;
     MODEL.bind("set", function(e) {
@@ -27,21 +28,21 @@
         //console.log(e)
         CHANGES[e.data.path] = e.data;
     });
-    
+
     function mask() {
-        root.mask({ 
-            z : 10000000000, 
-            bgcolor : "#FFF", 
-            opacity: 0.8, 
-            html : GC.str("STR_180") 
+        root.mask({
+            z : 10000000000,
+            bgcolor : "#FFF",
+            opacity: 0.8,
+            html : GC.str("STR_180")
         });
     }
-    
+
     function applyChanges(callback) {
         mask();
         root.find(".footer input.save, .footer input.apply").addClass("ui-state-disabled");
-        setTimeout(function() {  
-            
+        setTimeout(function() {
+
             $.when(MODEL.save()).then(function() {
                 var path;
                 GC.styleGenerator.refresh();
@@ -62,19 +63,19 @@
             });
         }, 400);
     }
-    
+
     // Cancel button -----------------------------------------------------------
     root.find(".footer input.cancel").click(function() {
         $dialog.dialog("close");
     });
-    
+
     // Apply button -------------------------------------------------------------
     root.find(".footer input.apply").click(function() {
         if ( !$(this).is(".ui-state-disabled") ) {
             applyChanges();
         }
     });
-    
+
     // Save button -------------------------------------------------------------
     root.find(".footer input.save").click(function() {
         if ( !$(this).is(".ui-state-disabled") ) {
@@ -83,12 +84,12 @@
             });
         }
     });
-    
+
     // Reset button ------------------------------------------------------------
     root.find(".footer input.reset").click(function() {
         if ( !$(this).is(".ui-state-disabled") ) {
             mask();
-            setTimeout(function() {  
+            setTimeout(function() {
                 $.extend(true, GC.chartSettings, GC.__INITIAL__chartSettings);
                 //GC.Preferences.prop("fileRevision", 0);
                 //GC.Preferences.sync();
@@ -100,7 +101,7 @@
             }, 400);
         }
     });
-    
+
     // The group selector on the left side
     var loaded = false;
     root.find("#pref-view").change(function() {
@@ -120,16 +121,16 @@
         }
         loaded = true;
     }).triggerHandler("change");
-    
-    
+
+
     $("#header").mask({ z : 1000, bgcolor : "#000", opacity: 0.5 });
-    
+
     // App version =============================================================
     root.find(".app-ver").html(GC.chartSettings.version.asString());
-    
+
     // Colors ==================================================================
     (function() {
-        
+
         var presetList = root.find("#color-presets-list");
         var currentPreset = null;
         var colorPrresets = MODEL.prop("colorPrresets");
@@ -144,7 +145,7 @@
             "Primary selection"   : { path : "selectionLine.stroke"     , currentColor : null },
             "Secondary selection" : { path : "hoverSelectionLine.stroke", currentColor : null }
         };
-        
+
         function setChartColors(chartName, color) {
             MODEL.prop(chartName + ".color", color);
             MODEL.prop(chartName + ".fillRegion.fill", color);
@@ -154,43 +155,43 @@
             MODEL.prop(chartName + ".pointsColor", GC.Util.darken(color, 70));
             MODEL.prop(chartName + ".problemRegion.fillColor", color);
         }
-        
+
         $.each(colorPrresets, function(name, data) {
-            var html = [], 
+            var html = [],
                 i = 0,
                 type;
-            
+
             if (curPresetName === name) {
                 selectedIndex = j;
             }
-            
+
             html[i++] = '<div class="option" data-preset="' + name + '">';
             html[i++] = '<div class="title">' + GC.str("STR_colorPrreset_" + name) + '</div>';
             html[i++] = '<div class="colors">';
-            
+
             for (type in data) {
                 html[i++] = '<div class="color" style="background:' + data[type] + '" title="' + type + '"></div>';
             }
-            
+
             html[i++] = '</div>';
             html[i++] = '</div>';
-            
+
             presetList.append(html.join(""));
             j++;
         });
-        
+
         presetList.on("click", ".option:not(.selected)", function() {
             presetList.find(".option.selected").removeClass("selected");
             $(this).addClass("selected");
-            
+
             curPresetName = this.getAttribute("data-preset");
             MODEL.prop("currentColorPreset", curPresetName);
-            
+
             currentPreset = colorPrresets[curPresetName];
             applyColorChanges();
             renderColorsPreview();
         });
-        
+
         function renderColorsPreview() {
             root.find('#preset-preview .color[title="Length"]').css("background", MODEL.prop("lengthChart.color"));
             root.find('#preset-preview .color[title="Weight"]').css("background", MODEL.prop("weightChart.color"));
@@ -199,7 +200,7 @@
             root.find('#preset-preview .color[title="Primary selection"]').css("background", MODEL.prop("selectionLine.stroke"));
             root.find('#preset-preview .color[title="Secondary selection"]').css("background", MODEL.prop("hoverSelectionLine.stroke"));
         }
-        
+
         function applyColorChanges() {
             var s = root.find("#slider-saturation").slider("value");
             var l = root.find("#slider-brightness").slider("value");
@@ -209,20 +210,20 @@
                     if (color.s) {
                         color.s += s;
                     }
-                    
+
                     color.l += l;
-                    
+
                     color.s = Math.max(Math.min(color.s, 1), 0);
                     color.l = Math.max(Math.min(color.l, 1), 0);
-                    
-                    
-                    
+
+
+
                     color = Raphael.hsl(color.h, color.s, color.l);
-                    
+
                     meta.currentColor = color;
                 }
             });
-            
+
             setChartColors("lengthChart"  , map.Length.currentColor);
             setChartColors("weightChart"  , map.Weight.currentColor);
             setChartColors("headChart"    , map["Head C"].currentColor);
@@ -232,16 +233,16 @@
             MODEL.prop("saturation", s);
             MODEL.prop("brightness", l);
         }
-        
+
         function onSliderCahange() {
             if (!currentPreset) {
                 return false;
             }
-            
+
             applyColorChanges();
             renderColorsPreview();
         }
-        
+
         root.find("#slider-saturation, #slider-brightness").slider({
             min: -0.5,
             max: 0.5,
@@ -250,17 +251,17 @@
             change : onSliderCahange,
             slide : onSliderCahange
         });
-        
+
         root.find("#slider-saturation").slider("value", MODEL.prop("saturation"));
         root.find("#slider-brightness").slider("value", MODEL.prop("brightness"));
-        
+
         if (selectedIndex > -1) {
             presetList.find(".option:eq(" + selectedIndex + ")").trigger("click");
         }
     }());
-    
-    
-    
+
+
+
     // =========================================================================
     root.find([
         '[name="fontFamily"]',
@@ -272,7 +273,7 @@
             MODEL.prop(this.name, $(this).val());
         }).val(MODEL.prop(this.name));
     });
-    
+
     // fontSize ----------------------------------------------------------------
     root.find('[name="fontSize"]').stepInput({
         min : 11,
@@ -286,17 +287,17 @@
             MODEL.prop("fontSize", d.value);
         }
     }).stepInput("value", MODEL.prop("fontSize"));
-    
-    root.find([ 
+
+    root.find([
         'input[name="pctz"]',
         'input[name="metrics"]',
         'select[name="aspectRatio"]'
-    ].join(",")).each(function(i, o) {
-        $(this).change(function() { 
-            MODEL.prop(this.name, $(this).val()); 
+    ].join(",")).each(function(/*i, o*/) {
+        $(this).change(function() {
+            MODEL.prop(this.name, $(this).val());
         }).val(MODEL.prop(this.name)).triggerHandler("change");
     });
-    
+
     // percentile --------------------------------------------------------------
     MODEL.bind("set:percentiles", function(e) {
         var _pct  = $.makeArray(e.data.newValue).join(","),
@@ -310,7 +311,7 @@
     }).each(function() {
         this.checked = MODEL.prop("percentiles").join(",") === this.value;
     });
-    
+
     // paperWidthType ----------------------------------------------------------
     root.find('[name="paper-width-type"]').change(function() {
         root.find(".paper-max-width-row").toggleClass("ui-state-disabled", this.value == "fixed"  && this.checked);
@@ -321,7 +322,7 @@
     }).each(function() {
         this.checked = MODEL.prop("widthType") === this.value;
     }).filter(":checked").triggerHandler("change");
-    
+
     // maxWidth ----------------------------------------------------------------
     root.find('[name="maxWidth"]').stepInput({
         min : 800,
@@ -335,7 +336,7 @@
             MODEL.prop("maxWidth", d.value);
         }
     }).stepInput("value", MODEL.prop("maxWidth"));
-    
+
     // paperWidth --------------------------------------------------------------
     root.find('[name="paperWidth"]').stepInput({
         min : 800,
@@ -349,34 +350,34 @@
             MODEL.prop("paperWidth", d.value);
         }
     }).stepInput("value", MODEL.prop("paperWidth"));
-    
-    
+
+
     // dateFormat --------------------------------------------------------------
     root.find('[name="dateFormat"]').change(function() {
         MODEL.prop("dateFormat", $(this).val());
         root.find("#preview-date").html(new XDate().toString($(this).val()));
     }).val(MODEL.prop("dateFormat")).triggerHandler("change");
-    
+
     // timeFormat --------------------------------------------------------------
     root.find('[name="timeFormat"]').change(function() {
         MODEL.prop("timeFormat", $(this).val());
         root.find("#preview-time").html((new XDate()).setHours(18.56).toString(MODEL.prop("timeFormat")));
     }).val(MODEL.prop("timeFormat")).triggerHandler("change");
-    
+
     // timeInterval ------------------------------------------------------------
     (function() {
         var options = ["Years", "Months", "Weeks", "Days", "Hours", "Minutes", "Seconds", "Milliseconds"],
             abbrs = {
-                "Years"   : "y", 
-                "Months"  : "m", 
-                "Weeks"   : "w", 
-                "Days"    : "d", 
-                "Hours"   : "hrs", 
-                "Minutes" : "min", 
-                "Seconds" : "s", 
+                "Years"   : "y",
+                "Months"  : "m",
+                "Weeks"   : "w",
+                "Days"    : "d",
+                "Hours"   : "hrs",
+                "Minutes" : "min",
+                "Seconds" : "s",
                 "Milliseconds" : "ms"
             };
-        
+
         var idx = -1;
         $.each(options, function(i, name) {
             if (MODEL.prop("timeInterval." + name) === false) {
@@ -384,39 +385,38 @@
             }
             idx = i;
         });
-        
+
         root.find('[name="timeInterval-precision"]').change(function() {
-            var val = GC.Util.intVal($(this).val()),
-                pref = MODEL.prop("timeInterval");
+            var val = GC.Util.intVal($(this).val());
             $.each(options, function(i, name) {
                 MODEL.prop("timeInterval." + name, i > val ? false : abbrs[name]);
             });
             root.find("#preview-interval").html((new GC.Time()).setYears(0.56789).toString(MODEL.prop("timeInterval")));
         }).prop("selectedIndex", idx).triggerHandler("change");
-        
-        
+
+
     }());
-    
+
     root.find('[name="timeInterval.zeroFill"]').change(function() {
         MODEL.prop(this.name, this.checked);
         root.find("#preview-interval").html((new GC.Time()).setYears(0.56789).toString(MODEL.prop("timeInterval")));
     }).prop("checked", MODEL.prop("timeInterval.zeroFill"));
-    
+
     root.find('[name="timeInterval.separator"]').change(function() {
         MODEL.prop(this.name, $(this).val());
         root.find("#preview-interval").html((new GC.Time()).setYears(0.56789).toString(MODEL.prop("timeInterval")));
     }).val(MODEL.prop("timeInterval.separator"));
-    
+
     root.find('[name="timeInterval.limit"]').change(function() {
         MODEL.prop(this.name, GC.Util.intVal($(this).val()));
         root.find("#preview-interval").html((new GC.Time()).setYears(0.56789).toString(MODEL.prop("timeInterval")));
     }).val(MODEL.prop("timeInterval.limit"));
-    
+
     // =========================================================================
     // timeline stuff
     // =========================================================================
     (function() {
-        
+
         var sliders = {
                 daysTo     : root.find("#timeline-days-to"),
                 weeksFrom  : root.find("#timeline-weeks-from"),
@@ -426,94 +426,91 @@
                 yearsFrom  : root.find("#timeline-years-from")
             },
             IN_RECURSION,
-            timer,
-            isInitialized,
             orig    = MODEL.prop("timeline.showLabelsInterval"),
             state   = $.extend(true, {}, orig),
-            labels  = {},
             maxTime = GC.Constants.TIME.YEAR * 5;
-        
+
         function repareState(initiator) {
-            
+
             if (initiator === sliders.yearsFrom) {
                 state.weeks.max = state.years.min;
             } else {
                 state.years.min  = state.weeks.max;
             }
-            
+
             if (initiator === sliders.monthsFrom) {
                 state.days.max  = state.months.min;
             } else {
                 state.months.min = state.days.max;
             }
-            
+
             state.years.min  = Math.min(state.years.min, state.years.max);
             state.months.min = Math.min(state.months.min, state.months.max);
             state.weeks.min  = Math.min(state.weeks.min, state.weeks.max);
             state.days.max   = Math.max(state.days.min, state.days.max);
-            
-            
+
+
             if (initiator !== sliders.yearsFrom) {
                 sliders.yearsFrom.timeIntervalInput("value", state.years.min);
             }
-            
+
             if (initiator !== sliders.monthsTo) {
                 sliders.monthsTo.timeIntervalInput("value", state.months.max);
             }
-            
+
             if (initiator !== sliders.monthsFrom) {
                 sliders.monthsFrom.timeIntervalInput("value", state.months.min);
             }
-            
+
             if (initiator !== sliders.weeksTo) {
                 sliders.weeksTo.timeIntervalInput("value", state.weeks.max);
             }
-            
+
             if (initiator !== sliders.weeksFrom) {
                 sliders.weeksFrom.timeIntervalInput("value", state.weeks.min);
             }
-            
+
             if (initiator !== sliders.daysTo) {
                 sliders.daysTo.timeIntervalInput("value", state.days.max);
             }
         }
-            
+
         function drawPreview(initiator) {
             if (IN_RECURSION) {
                 return;
             }
-            
+
             IN_RECURSION = 1;
-            
+
             repareState(initiator);
-            
+
             MODEL.prop("timeline.showLabelsInterval.days.max"  , state.days  .max);
             MODEL.prop("timeline.showLabelsInterval.weeks.min" , state.weeks .min);
             MODEL.prop("timeline.showLabelsInterval.weeks.max" , state.weeks .max);
             MODEL.prop("timeline.showLabelsInterval.months.min", state.months.min);
             MODEL.prop("timeline.showLabelsInterval.months.max", state.months.max);
             MODEL.prop("timeline.showLabelsInterval.years.min" , state.years .min);
-            
+
             root.find("#timeline-preview .weeks  > div").css({
                 "left" : 100 * state.weeks.min / maxTime + "%",
                 "width": 100 * (state.weeks.max - state.weeks.min) / maxTime + "%"
             });
-            
+
             root.find("#timeline-preview .days   > div").css({
                 "width" : 100 * (state.days.max - state.days.min) / maxTime + "%"
             });
-            
+
             root.find("#timeline-preview .months > div").css({
                 "left"  : 100 * state.months.min / maxTime + "%",
                 "width" : 100 * (state.months.max - state.months.min) / maxTime + "%"
             });
-            
+
             root.find("#timeline-preview .years  > div").css(
                 "left", 100 * state.years.min / maxTime + "%"
             );
             IN_RECURSION = 0;
         }
-        
+
         sliders.daysTo.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -525,7 +522,7 @@
                 drawPreview(sliders.daysTo);
             }
         });
-        
+
         sliders.weeksFrom.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -537,7 +534,7 @@
                 drawPreview(sliders.weeksFrom);
             }
         });
-        
+
         sliders.weeksTo.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -549,7 +546,7 @@
                 drawPreview(sliders.weeksTo);
             }
         });
-        
+
         sliders.monthsFrom.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -561,7 +558,7 @@
                 drawPreview(sliders.monthsFrom);
             }
         });
-        
+
         sliders.monthsTo.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -573,7 +570,7 @@
                 drawPreview(sliders.monthsTo);
             }
         });
-        
+
         sliders.yearsFrom.timeIntervalInput({
             speed     : 20,
             max       : GC.Constants.TIME.YEAR * 4,
@@ -585,13 +582,12 @@
                 drawPreview(sliders.yearsFrom);
             }
         });
-        
-        //isInitialized = true;
+
         drawPreview();
-        
+
     }());
-    
-    
+
+
     // round-precisions --------------------------------------------------------
     var precisionOptions = [
         '<option value="0">0</option>',
@@ -608,7 +604,7 @@
             MODEL.prop(this.name, GC.Util.intVal($(this).val()));
         });
     });
-    
+
     // velocity-denominator ----------------------------------------------------
     root.find(".round-precisions select.velocity-denominator").each(function() {
         $(this)
@@ -617,7 +613,7 @@
             MODEL.prop(this.name, $(this).val());
         });
     });
-    
+
     // Mouse effects -----------------------------------------------------------
     root.find([
         '[name="higlightTimelineRanges"]',
@@ -631,5 +627,5 @@
             MODEL.prop(this.name, this.checked);
         }).prop("checked", MODEL.prop(this.name));
     });
-    
+
 }());

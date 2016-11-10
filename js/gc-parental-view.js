@@ -400,11 +400,11 @@
                     "fill-opacity" : 0.75
                 });
             }
-            
+
             if (!this._nodes.childDateLabel) {
                 this._nodes.childDateLabel = this.paper.text(
-                    this.paper.width / 2, 
-                    this.paper.height / 2 - 10, 
+                    this.paper.width / 2,
+                    this.paper.height / 2 - 10,
                     ""
                 ).attr({
                     "text-anchor" : "center",
@@ -444,7 +444,7 @@
                         agemos : null,
                         lengthAndStature : getDefaultHeight()
                     };
-                    
+
                 if (lastHeight) {
                     heightChild = GC.Util.roundToPrecision(lastHeight.lengthAndStature, 1);
                 }

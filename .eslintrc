@@ -6,7 +6,7 @@
     },
     "rules": {
 
-        "init-declarations": 1, // enforce or disallow variable initializations at definition
+        "init-declarations": 0, // enforce or disallow variable initializations at definition
         "no-catch-shadow": 2, // disallow the catch clause parameter name being the same as a variable in the outer scope
         "no-delete-var": 1, // disallow deletion of variables (recommended)
         "no-label-var": 1, // disallow labels that share a name with a variable
@@ -16,7 +16,7 @@
         "no-undef": 2, // disallow use of undeclared variables unless mentioned in a /*global */ block (recommended)
         "no-undefined": 0, // disallow use of undefined variable
         "no-unused-vars": 1, // disallow declaration of variables that are not used in the code (recommended)
-        "no-use-before-define": 1, // disallow use of variables before they are defined
+        "no-use-before-define": 0, // disallow use of variables before they are defined
 
         "strict": [ 0, "global" ],
 

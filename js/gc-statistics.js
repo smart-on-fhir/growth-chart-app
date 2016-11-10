@@ -1,12 +1,13 @@
+/* global GC */
 // Statistics functions used to compute the growth curves
-// Nikolai Schwertner, MedAppTech 
+// Nikolai Schwertner, MedAppTech
 
 // Initialize the GC global object as needed
 window.GC = window.GC || {};
 
 (function () {
     "use strict";
-    
+
     // Normal Distribution Functions
     //    Math.normsdist:    (-inf,+inf) -> (0,1)          Z-score to percentile
     //    Math.normsinv:           (0,1) -> (-inf,+inf)    percentile to Z-score
@@ -50,26 +51,27 @@ window.GC = window.GC || {};
         // Define break-points.
         var plow  = 0.02425;
         var phigh = 1 - plow;
+        var q;
 
         // Rational approximation for lower region:
         if ( p < plow ) {
-                 var q  = Math.sqrt(-2*Math.log(p));
-                 return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
-                                                 ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+            q  = Math.sqrt(-2*Math.log(p));
+            return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
+                        ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
         }
 
         // Rational approximation for upper region:
         if ( phigh < p ) {
-                 var q  = Math.sqrt(-2*Math.log(1-p));
-                 return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
-                                                        ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+            q  = Math.sqrt(-2*Math.log(1-p));
+            return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
+                        ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
         }
 
         // Rational approximation for central region:
-        var q = p - 0.5;
+        q = p - 0.5;
         var r = q*q;
         return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q /
-                                 (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+                        (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
     };
 
     Math.erf = function (x) {
@@ -82,11 +84,11 @@ window.GC = window.GC || {};
             a4 = -1.453152027,
             a5 =  1.061405429,
             p  =  0.3275911;
-            
+
         var sign = 1;
         if (x < 0)
             sign = -1;
-        
+
         x = Math.abs(x);
         var t = 1.0/(1.0 + p*x);
 
@@ -103,19 +105,19 @@ window.GC = window.GC || {};
         // Derived from http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
         return 0.5 * (1.0 + Math.erf(z/Math.sqrt(2)));
     };
-    
+
     function mean (a,b,weight) {
         return b * weight + a * (1-weight);
     }
-    
+
     var findLMSParameters = function (dataSet, gender, ageMonths) {
-    
+
         var data = dataSet.data[gender],
             len = data.length,
             weight, i;
-            
+
         ageMonths = GC.Util.floatVal(ageMonths);
-        
+
         for (i = 0; i < len; i++) {
             if (ageMonths === data[i].Agemos) {
                 // When we have an exact match, return it
@@ -135,33 +137,33 @@ window.GC = window.GC || {};
                 };
             }
         }
-        
+
         return null;
     };
-    
+
     /*
     // Adapted from: http://www.cdc.gov/growthcharts/percentile_data_files.htm
     // On 2012-11-28
     // By Nikolai Schwertner, MedAppTech
 
-    From CDC:  
+    From CDC:
 
     The LMS parameters are the median (M), the generalized coefficient of
-    variation (S), and the power in the Box-Cox transformation (L). To 
-    obtain the value (X) of a given physical measurement at a 
+    variation (S), and the power in the Box-Cox transformation (L). To
+    obtain the value (X) of a given physical measurement at a
     particular z-score or percentile, use the following equation:
 
     X = M (1 + LSZ)**(1/L), L <> 0
     X = M exp(SZ), L = 0
 
-    To obtain the z-score (Z) and corresponding percentile for a given 
+    To obtain the z-score (Z) and corresponding percentile for a given
     measurement (X), use the following equation:
 
 
     Z = (((X/M)**L) - 1)/LS  , L<>0
     Z = ln(X/M)/S            , L=0
     */
-    
+
     GC.findXFromZ = function(Z, dataSet, gender, ageMonths) {
         var params = findLMSParameters(dataSet, gender, ageMonths),
             L,M,S;
@@ -176,7 +178,7 @@ window.GC = window.GC || {};
         if (L !== 0) return M * Math.pow(1 + L * S * Z, 1/L);
         else return M * Math.exp(S * Z);
     };
-    
+
     GC.findZFromX = function(X, dataSet, gender, ageMonths) {
         var params = findLMSParameters(dataSet, gender, ageMonths),
             L,M,S;
@@ -191,12 +193,12 @@ window.GC = window.GC || {};
         if (L !== 0) return (Math.pow(X/M, L) - 1) / (L * S);
         else return Math.log(X/M)/S;
     };
-    
+
     GC.findXFromPercentile = function(percentile, dataSet, gender, ageMonths) {
         var Z = Math.normsinv(percentile);
         return GC.findXFromZ(Z, dataSet, gender, ageMonths);
     };
-    
+
     GC.findPercentileFromX = function(X, dataSet, gender, ageMonths) {
         var Z = GC.findZFromX(X, dataSet, gender, ageMonths);
         return Math.normsdist(Z);
