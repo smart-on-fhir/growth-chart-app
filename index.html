@@ -51,179 +51,183 @@
                 <span id="mouse-coords" class="hide-on-prod"></span>
                 <div class="header-table-wrap">
                     <table border="0" cellspacing="0" cellpadding="4" class="header-table">
-                        <tr class="patient-row">
-                            <th class="patient-name-cell">
-                                <div class="icon icon-user"></div>
-                                <span class="patient-name title"></span>
-                            </th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td colspan="7">
-                                <span data-translatecontent="STR_3053"></span>
-                                <span class="patient-gender title"></span>
-                                <span data-translatecontent="STR_3054"></span>
-                                <span class="patient-birth title"></span>
-                                <span data-translatecontent="STR_3055"></span>
-                                <span class="patient-age title"></span>
-                                <span class="weeker" style="display:none;">
-                                {
-                                    <span class="value title" style="margin-right: 0"></span>
-                                    <span data-translatecontent="STR_3006"></span>
-                                }&nbsp;&nbsp;
-                                </span>
-                                <span style="display: none;">
-                                    <span data-translatecontent="STR_3056"></span>
-                                    <span id="corrected-age" class="title"></span>
-                                </span>
-                            </td>
-                            <td colspan="3" align="right"></td>
-                        </tr>
-                        <tr>
-                            <th data-translatecontent="STR_3000"></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td align="right" data-translatecontent="STR_3001"></td>
-                            <td><input type="text" data-translateattr="placeholder=STR_3002" name="DOB" /></td>
-                            <td align="right" data-translatecontent="STR_3003"></td>
-                            <td><input type="text" data-translateattr="placeholder=STR_3004" name="EDD" /></td>
-                            <td colspan="2" align="right" data-translatecontent="STR_3005"></td>
-                            <td><input type="text" style="width:6em" readonly class="result" name="GA" value="N/A" /></td>
-                            <td>
-                                <span class="weeker" style="display:none;color:#FFF;white-space:nowrap;">
-                                (<span class="value"></span>
-                                <span data-translatecontent="STR_3006"></span>)
-                                </span>
-                            </td>
-                            <td width="100%"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th data-translatecontent="STR_3007"></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td align="right" data-translatecontent="STR_3008"></td>
-                            <td style="white-space:nowrap">
-                            <input type="text" name="mother-height" style="width:7em" />
-                            <label style="white-space:nowrap;margin-right:-2em">
-                                <input type="checkbox" name="bio-mother" >
-                                <span data-translatecontent="STR_3009"></span>
-                                </label></td>
-                            <td align="right" data-translatecontent="STR_3010"></td>
-                            <td colspan="2" style="white-space:nowrap">
-                            <input type="text" name="fader-height" style="width:7em" />
-                            <label style="white-space:nowrap">
-                                <input type="checkbox" name="bio-father" >
-                                <span data-translatecontent="STR_3011"></span>
-                                </label></td>
-                            <td align="right" style="white-space:nowrap" data-translatecontent="STR_3012"></td>
-                            <td>
-                            <input type="text" readonly name="mid-height" style="width:6em" class="result" />
-                            </td>
-                            <td><img id="not-bio-parents-info" src="img/info.png" data-translateattr="title=STR_3013" /></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class="empty-row">
-                            <td colspan="12"></td>
-                        </tr>
-                        <tr>
-                            <th class="prefs-header"><div class="icon" id="system-settings-icon"></div><span data-translatecontent="STR_3014"></span></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td></td>
-                            <td>
-                            <input type="button" data-translateattr="value=STR_3015" onClick="GC.App.editSettings()" />
-                            </td>
-                            <td colspan="2">
-                                <input type="button" data-translateattr="value=STR_3016" onClick="GC.App.aboutAppDialog()" />
-                                <!--label>
-                                    <input type="checkbox" id="edit-enabled" checked="checked" />
-                                    Enable patient editing
-                                </label-->
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th data-translatecontent="STR_3017"></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td colspan="4" style="white-space:nowrap; text-align:right">
-                            <input class="toggle-button" type="hidden" name="metrics" value="metric" data-value1="metric" data-value2="eng" data-label1="kg/cm" data-label2="lb/ft" />
-                            &nbsp;<span class="vertical-divider"></span>&nbsp;
-                            <input class="toggle-button" type="hidden" name="pctz" value="pct" data-value1="pct" data-value2="z" data-label1="%" data-label2="Z" />
-                            &nbsp;<span class="vertical-divider"></span>&nbsp;
-                            <span class="language-selector"></span>
-                            <!--input class="toggle-button" type="hidden" name="language" value="en" data-value1="en" data-value2="es" data-label1="English" data-label2="Spanish" /-->
-                            </td>
-                            <td align="right" data-translatecontent="STR_3018"></td>
-                            <td>
-                            <select name="roundPrecision.velocity.std" style="width:7em">
-                                <option value="year" data-translatecontent="STR_3020"></option>
-                                <option value="month" data-translatecontent="STR_3021"></option>
-                                <option value="week" data-translatecontent="STR_3022"></option>
-                                <option value="day" data-translatecontent="STR_3023"></option>
-                                <option value="auto" data-translatecontent="STR_3057"></option>
-                            </select></td>
-                            <td align="right" style="white-space: nowrap;" data-translatecontent="STR_3019" ></td>
-                            <td>
-                            <select name="roundPrecision.velocity.nicu" style="width:7em">
-                                <option value="year" data-translatecontent="STR_3024"></option>
-                                <option value="month" data-translatecontent="STR_3025"></option>
-                                <option value="week" data-translatecontent="STR_3026"></option>
-                                <option value="day" data-translatecontent="STR_3027"></option>
-                                <option value="auto" data-translatecontent="STR_3058"></option>
-                            </select></td>
-                            <td>&nbsp;</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th data-translatecontent="STR_3028"></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td align="right" data-translatecontent="STR_3029"></td>
-                            <td>
-                                <select name="gest-correction-type">
-                                    <option value="fixed" data-translatecontent="STR_3030"></option>
-                                    <option value="declining" data-translatecontent="STR_3031"></option>
-                                    <option value="both" data-translatecontent="STR_3032"></option>
-                                    <option value="none" data-translatecontent="STR_3033"></option>
-                                </select>
-                            </td>
-                            <td align="right" style="white-space:nowrap" data-translatecontent="STR_3034"></td>
-                            <td>
-                                <input name="gest-correction-treshold" type="text" style="width:10em;" data-translateattr="value=STR_3035"/>
-                            </td>
-                            <td style="white-space:nowrap" colspan="2" data-translatecontent="STR_3036"></td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td></td>
-                        </tr>
-                        <tr class="last">
-                            <th data-translatecontent="STR_3037"></th>
-                            <td><span class="vertical-divider"></span></td>
-                            <td align="right" data-translatecontent="STR_3038"></td>
-                            <td>
-                            <select name="aspectRatio" title="Height-To-Width Ratio">
-                                <option value="0.8">1:1.25</option>
-                                <option value="0.625">1:1.6</option>
-                                <option value="1" data-translatecontent="STR_3059"></option>
-                                <option value="0.5">1:2</option>
-                                <option value="0.6666666666666667">2:3</option>
-                                <option value="0.75">3:4</option>
-                                <option value="0.6">3:5</option>
-                                <option value="0.375">9:16</option>
-                                <option value="0" data-translatecontent="STR_3039"></option>
-                            </select></td>
-                            <td align="right" data-translatecontent="STR_3040"></td>
-                            <td>
-                            <input name="fontSize" type="text" />
-                            </td>
-                            <td align="right" data-translatecontent="STR_3041"></td>
-                            <td colspan="2"><select name="color-preset"></select></td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td></td>
-                        </tr>
+                        <tbody>
+                            <tr class="patient-row">
+                                <th class="patient-name-cell">
+                                    <div class="icon icon-user"></div>
+                                    <span class="patient-name title"></span>
+                                </th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td colspan="7">
+                                    <span data-translatecontent="STR_3053"></span>
+                                    <span class="patient-gender title"></span>
+                                    <span data-translatecontent="STR_3054"></span>
+                                    <span class="patient-birth title"></span>
+                                    <span data-translatecontent="STR_3055"></span>
+                                    <span class="patient-age title"></span>
+                                    <span class="weeker" style="display:none;">
+                                    {
+                                        <span class="value title" style="margin-right: 0"></span>
+                                        <span data-translatecontent="STR_3006"></span>
+                                    }&nbsp;&nbsp;
+                                    </span>
+                                    <span style="display: none;">
+                                        <span data-translatecontent="STR_3056"></span>
+                                        <span id="corrected-age" class="title"></span>
+                                    </span>
+                                </td>
+                                <td colspan="3" align="right"></td>
+                            </tr>
+                            <tr>
+                                <th data-translatecontent="STR_3000"></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td align="right" data-translatecontent="STR_3001"></td>
+                                <td><input type="text" data-translateattr="placeholder=STR_3002" name="DOB" /></td>
+                                <td align="right" data-translatecontent="STR_3003"></td>
+                                <td><input type="text" data-translateattr="placeholder=STR_3004" name="EDD" /></td>
+                                <td colspan="2" align="right" data-translatecontent="STR_3005"></td>
+                                <td><input type="text" style="width:6em" readonly class="result" name="GA" value="N/A" /></td>
+                                <td>
+                                    <span class="weeker" style="display:none;color:#FFF;white-space:nowrap;">
+                                    (<span class="value"></span>
+                                    <span data-translatecontent="STR_3006"></span>)
+                                    </span>
+                                </td>
+                                <td width="100%"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th data-translatecontent="STR_3007"></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td class="parent-labels" align="right" data-translatecontent="STR_3008"></td>
+                                <td style="white-space:nowrap">
+                                <input type="text" name="mother-height" style="width:7em" />
+                                <label style="white-space:nowrap">
+                                    <input type="checkbox" name="bio-mother" >
+                                    <span data-translatecontent="STR_3009"></span>
+                                    </label></td>
+                                <td class="parent-labels" align="right" data-translatecontent="STR_3010"></td>
+                                <td colspan="2" style="white-space:nowrap">
+                                <input type="text" name="fader-height" style="width:7em" />
+                                <label style="white-space:nowrap">
+                                    <input type="checkbox" name="bio-father" >
+                                    <span data-translatecontent="STR_3011"></span>
+                                    </label></td>
+                                <td align="right" style="white-space:nowrap" data-translatecontent="STR_3012"></td>
+                                <td>
+                                <input type="text" readonly name="mid-height" style="width:6em" class="result" />
+                                </td>
+                                <td><img id="not-bio-parents-info" src="img/info.png" data-translateattr="title=STR_3013" /></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="empty-row">
+                                <td colspan="12"></td>
+                            </tr>
+                        </tbody>
+                        <tbody class="gc-app-preferences">
+                            <tr>
+                                <th class="prefs-header"><div class="icon" id="system-settings-icon"></div><span data-translatecontent="STR_3014"></span></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td></td>
+                                <td>
+                                <input type="button" data-translateattr="value=STR_3015" onClick="GC.App.editSettings()" />
+                                </td>
+                                <td colspan="2">
+                                    <input type="button" data-translateattr="value=STR_3016" onClick="GC.App.aboutAppDialog()" />
+                                    <!--label>
+                                        <input type="checkbox" id="edit-enabled" checked="checked" />
+                                        Enable patient editing
+                                    </label-->
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th data-translatecontent="STR_3017"></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td colspan="4" style="white-space:nowrap; text-align:right">
+                                <input class="toggle-button" type="hidden" name="metrics" value="metric" data-value1="metric" data-value2="eng" data-label1="kg/cm" data-label2="lb/ft" />
+                                &nbsp;<span class="vertical-divider"></span>&nbsp;
+                                <input class="toggle-button" type="hidden" name="pctz" value="pct" data-value1="pct" data-value2="z" data-label1="%" data-label2="Z" />
+                                &nbsp;<span class="vertical-divider"></span>&nbsp;
+                                <span class="language-selector"></span>
+                                <!--input class="toggle-button" type="hidden" name="language" value="en" data-value1="en" data-value2="es" data-label1="English" data-label2="Spanish" /-->
+                                </td>
+                                <td align="right" data-translatecontent="STR_3018"></td>
+                                <td>
+                                <select name="roundPrecision.velocity.std" style="width:7em">
+                                    <option value="year" data-translatecontent="STR_3020"></option>
+                                    <option value="month" data-translatecontent="STR_3021"></option>
+                                    <option value="week" data-translatecontent="STR_3022"></option>
+                                    <option value="day" data-translatecontent="STR_3023"></option>
+                                    <option value="auto" data-translatecontent="STR_3057"></option>
+                                </select></td>
+                                <td align="right" style="white-space: nowrap;" data-translatecontent="STR_3019" ></td>
+                                <td>
+                                <select name="roundPrecision.velocity.nicu" style="width:7em">
+                                    <option value="year" data-translatecontent="STR_3024"></option>
+                                    <option value="month" data-translatecontent="STR_3025"></option>
+                                    <option value="week" data-translatecontent="STR_3026"></option>
+                                    <option value="day" data-translatecontent="STR_3027"></option>
+                                    <option value="auto" data-translatecontent="STR_3058"></option>
+                                </select></td>
+                                <td>&nbsp;</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th data-translatecontent="STR_3028"></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td align="right" data-translatecontent="STR_3029"></td>
+                                <td>
+                                    <select name="gest-correction-type">
+                                        <option value="fixed" data-translatecontent="STR_3030"></option>
+                                        <option value="declining" data-translatecontent="STR_3031"></option>
+                                        <option value="both" data-translatecontent="STR_3032"></option>
+                                        <option value="none" data-translatecontent="STR_3033"></option>
+                                    </select>
+                                </td>
+                                <td align="right" style="white-space:nowrap" data-translatecontent="STR_3034"></td>
+                                <td>
+                                    <input name="gest-correction-treshold" type="text" style="width:10em;" data-translateattr="value=STR_3035"/>
+                                </td>
+                                <td style="white-space:nowrap" colspan="2" data-translatecontent="STR_3036"></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td></td>
+                            </tr>
+                            <tr class="last">
+                                <th data-translatecontent="STR_3037"></th>
+                                <td><span class="vertical-divider"></span></td>
+                                <td align="right" data-translatecontent="STR_3038"></td>
+                                <td>
+                                <select name="aspectRatio" title="Height-To-Width Ratio">
+                                    <option value="0.8">1:1.25</option>
+                                    <option value="0.625">1:1.6</option>
+                                    <option value="1" data-translatecontent="STR_3059"></option>
+                                    <option value="0.5">1:2</option>
+                                    <option value="0.6666666666666667">2:3</option>
+                                    <option value="0.75">3:4</option>
+                                    <option value="0.6">3:5</option>
+                                    <option value="0.375">9:16</option>
+                                    <option value="0" data-translatecontent="STR_3039"></option>
+                                </select></td>
+                                <td align="right" data-translatecontent="STR_3040"></td>
+                                <td>
+                                <input name="fontSize" type="text" />
+                                </td>
+                                <td align="right" data-translatecontent="STR_3041"></td>
+                                <td colspan="2"><select name="color-preset"></select></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 

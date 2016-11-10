@@ -307,17 +307,16 @@
     }
 
     function togglePatientEditable(bEditable) {
+        $('[name="DOB"]').datepicker( bEditable ? "enable" : "disable");
+        $('[name="EDD"]').datepicker( bEditable ? "enable" : "disable");
+        $(".add-entry").toggleClass("ui-state-disabled", !bEditable);
+    }
+
+    function toggleParentEditable(bEditable) {
         $('[name="fader-height"]').stepInput( bEditable ? "enable" : "disable");
         $('[name="mother-height"]').stepInput( bEditable ? "enable" : "disable");
         $('[name="bio-father"]').prop("disabled", !bEditable);
         $('[name="bio-mother"]').prop("disabled", !bEditable);
-        $('[name="DOB"]').datepicker( bEditable ? "enable" : "disable");
-        $('[name="EDD"]').datepicker( bEditable ? "enable" : "disable");
-        //$(".add-entry").toggleClass("ui-state-disabled", !bEditable);
-    }
-
-    function togglePatientDataEditable(bEditable) {
-        $(".add-entry").toggleClass("ui-state-disabled", !bEditable);
     }
 
     NS.App.DEBUG_MODE = DEBUG_MODE;
@@ -916,6 +915,28 @@
                     $("#view-parental")["hide"]();
                 }
 
+                // hide app preferences
+                if ( GC.Preferences._data.hideAppPreferences ) {
+                    $('.gc-app-preferences')["hide"]();
+                    $('.parent-labels').css({
+                        padding: "0.4em 4px 0.4em 16px"
+                    });
+                }
+
+                // hide growth chart comparing feature
+                if ( GC.Preferences._data.hideGCComparison ) {
+                    $('#tab-btn-right')["hide"]();
+                    $('#the-tab').addClass('hide-compare-button');
+                }
+
+                // hide add data button
+                if ( GC.Preferences._data.hideAddData ) {
+                    $('#info-bar').css({
+                        "padding-right": "10px"
+                    });
+                    $('.add-entry')["hide"]();
+                }
+
                 setStageHeight();
 
                 draw(type);
@@ -1428,8 +1449,8 @@
 
             GC.Preferences.bind("set:dateFormat", showLastRecOrSelection);
 
-            togglePatientEditable(GC.chartSettings.patientFamilyHistoryEditable);
-            togglePatientDataEditable(GC._isPatientDataEditable);
+            togglePatientEditable(GC.chartSettings.patientDataEditable);
+            toggleParentEditable(GC.chartSettings.patientFamilyHistoryEditable);
 
             done();
         }
