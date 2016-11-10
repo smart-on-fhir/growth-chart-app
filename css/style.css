@@ -22,7 +22,7 @@ body {
 	min-height : 100%;
 	display    : block;
 	position   : relative;
-	
+
 }
 
 .view-table body {
@@ -54,7 +54,7 @@ i {
 	z-index: 10000000;
 	top: 0;
 	bottom: 0;
-	left: 0; 
+	left: 0;
 	right: 0;
 	height: 100%;
 	width: 100%;
@@ -544,7 +544,7 @@ select.styled {
 				 0 -1px 1px rgba(0  , 0  , 0  , 0.15);
 }
 #view-mode span:first-child {
-	border-radius: 0 8px 0 0;	
+	border-radius: 0 8px 0 0;
 }
 #view-mode span:before {
 	content: "";
@@ -658,7 +658,7 @@ input[type="button"] {
 }
 
 .header-inner input[type="text"],
-.header-inner input[type="number"], 
+.header-inner input[type="number"],
 .header-inner select,
 select.styled {
 	width: 10em;
@@ -666,7 +666,7 @@ select.styled {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.header-inner input[type="button"], 
+.header-inner input[type="button"],
 .header-inner button {
 	min-width: 10em;
 	background-color: #56697B;
@@ -678,11 +678,11 @@ select.styled {
 				0px 0px 0px 1px rgba(255, 255, 255, 0.15) inset,
 				0px 0px 1px 1px rgba(255, 255, 255, 0.15);
 }
-.header-inner input[type="button"]:hover, 
+.header-inner input[type="button"]:hover,
 .header-inner button:hover {
 	background-color: #698196;
 }
-.header-inner input[type="button"]:active, 
+.header-inner input[type="button"]:active,
 .header-inner button:active {
 	background-color: #445360;
 }
@@ -708,22 +708,22 @@ table.toggle-button {
 		padding: 2px 6px;
 		color: #000;
 		color: rgba(0, 0, 0, 0.6);
-		text-shadow: 0px -1px 1px  rgba(0  , 0  , 0  , 0.35), 
-					 0px  1px 1px  rgba(250, 250, 250, 0.35), 
+		text-shadow: 0px -1px 1px  rgba(0  , 0  , 0  , 0.35),
+					 0px  1px 1px  rgba(250, 250, 250, 0.35),
 					 0px  0px 11px rgba(255, 255, 255, 0.95);
 	}
-	
+
 	.toggle-button label:hover {
 		color: #EEE;
 		color: rgba(255, 255, 255, 0.5);
 		text-shadow:none;
 	}
-	
+
 	.toggle-button label.active {
 		color : #FFF;
 		text-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
 	}
-	
+
 	.toggle-button .action input {
 		display: none;
 	}
@@ -741,11 +741,11 @@ table.toggle-button {
 					0 -1px 1px 0 rgba(0, 0, 0, 0.3),
 					0 1px 1px 0 rgba(255, 255, 255, 0.5);
 	}
-	
+
 	.no-border-radius .toggle-button .action div {
 		border: 1px inset #888;
 	}
-	
+
 	.toggle-button .action div label {
 		display: block;
 		float  : left;
@@ -759,7 +759,7 @@ table.toggle-button {
 		vertical-align: top;
 		margin : 3px;
 	}
-	
+
 	.toggle-button .action div label.active {
 		width        : 18px;
 		height       : 18px;
@@ -772,7 +772,7 @@ table.toggle-button {
 					0 -5px 15px -5px rgba(0, 0, 0, 0.6) inset,
 					0 0 0 1px rgba(0, 0, 0, 0.6),
 					0 6px 5px -3px rgba(0, 0, 0, 0.97);
-					
+
 	}
 	.no-border-radius .toggle-button .action div label.active {
 		border      : 1px solid;
@@ -780,20 +780,20 @@ table.toggle-button {
 		height      : 16px;
 		border-color: #FFF #BBB #BBB #FFF;
 	}
-	
+
 	/* Different style for .toggle-button over darker BG -------------------- */
 	#info-bar .toggle-button label,
 	.header-inner .toggle-button label {
 		color: #AAA;
 		text-shadow: none;
 	}
-	
+
 	#info-bar .toggle-button label:hover,
 	.header-inner .toggle-button label:hover {
 		color: #CCC;
 		text-shadow: 0 2px 1px rgba(0, 0, 0, 0.75);
 	}
-	
+
 	#info-bar .toggle-button label.active,
 	.header-inner .toggle-button label.active {
 		color: #FFF;
@@ -814,9 +814,9 @@ table.toggle-button {
 	background-color: #999;
 }
 
-	
-	
-	
+
+
+
 /* -------------------------- checkbox-button ------------------------------- */
 .checkbox-button {
 	height: 26px;
@@ -828,7 +828,7 @@ table.toggle-button {
 		vertical-align: middle;
 		text-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
 	}
-	
+
 	.checkbox-button input {
 		display: none
 	}
@@ -842,23 +842,23 @@ table.toggle-button {
 		position      : relative;
 		font-weight   : bold;
 		border-collapse: separate;
-		box-shadow: 0 -8px 14px -1px rgba(0, 0, 0, 0.53) inset, 
-					0 1px 1px 0 rgba(0, 0, 0, 0.94) inset, 
-					0 1px 1px 0 rgba(255, 255, 255, 0.5), 
+		box-shadow: 0 -8px 14px -1px rgba(0, 0, 0, 0.53) inset,
+					0 1px 1px 0 rgba(0, 0, 0, 0.94) inset,
+					0 1px 1px 0 rgba(255, 255, 255, 0.5),
 					0 -1px 1px 0 rgba(0, 0, 0, 0.3);
 		text-shadow: 0 1px 0 rgba(50, 50, 50, 0.5);
 		font-family: sans-serif;
 		font-size: 12px;
 	}
-	
+
 	.no-border-radius .checkbox-button .btn-wrap {
 		border: 1px inset #888;
 	}
-	
+
 	.checkbox-button.on .btn-wrap {
 		background : #7A8F9D;
 	}
-	
+
 		.checkbox-button .btn-wrap .btn {
 			position     : absolute;
 			top          : 1px;
@@ -877,26 +877,26 @@ table.toggle-button {
 						0 0 0 1px rgba(0, 0, 0, 0.6),
 						0 6px 5px -3px rgba(0, 0, 0, 0.97);
 		}
-		
+
 		.no-border-radius .checkbox-button .btn-wrap .btn {
 			border      : 1px solid;
 			width       : 16px;
 			height      : 16px;
 			border-color: #FFF #BBB #BBB #FFF;
 		}
-		
+
 		.checkbox-button.on .btn-wrap .btn {
 			right : auto;
 			left  : 1px;
 			display: block;
 		}
-		
+
 		.checkbox-button.off .btn-wrap .btn {
 			right : 1px;
 			left  : auto;
 			display: block;
 		}
-		
+
 		.checkbox-button .btn-wrap:before {
 			content    : attr(data-content) !important;
 			font-size  : 12px;
@@ -904,7 +904,7 @@ table.toggle-button {
 			padding    : 0 10px;
 			position   : absolute;
 			text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
-			text-align : center; 
+			text-align : center;
 		}
 		.checkbox-button.off .btn-wrap:before {
 			content : "OFF"; /* if CSS attr() is not supported */
@@ -1084,7 +1084,7 @@ table.toggle-button {
 	left: 21px;
 	width: 0;
 	border-left: 1px solid #73818F;
-	border-right: 1px solid rgba(255, 255, 255, 0.1); 
+	border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 .menu-button.arrow-right .value:before {
 	content: "";
@@ -1094,7 +1094,7 @@ table.toggle-button {
 	right: 21px;
 	width: 0;
 	border-left: 1px solid #73818F;
-	border-right: 1px solid rgba(255, 255, 255, 0.1); 
+	border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* The arrow */
@@ -1290,11 +1290,11 @@ table.toggle-button {
 	border-top-color: #AAA;
 }
 
-input[disabled], 
+input[disabled],
 select[disabled],
-input.disabled, 
+input.disabled,
 select.disabled,
-input.ui-state-disabled, 
+input.ui-state-disabled,
 select.ui-state-disabled {
 	color: #333;
 	background-color: #DDD;
@@ -1644,7 +1644,7 @@ span.title {
 	height: 22px;
 	width: 22px;
 	vertical-align: top;
-	background-image: url(../img/close.png); 
+	background-image: url(../img/close.png);
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	margin-left: -3px;
@@ -1689,7 +1689,7 @@ span.title {
 	display: inline-block;
 }
 
-/* -------------------------------------------------------------------------- * 
+/* -------------------------------------------------------------------------- *
  *                    Stage ( the main view area) layout                      *
  * -------------------------------------------------------------------------- */
 #stage {
@@ -1698,7 +1698,7 @@ span.title {
 	right      : 0;
 	left       : 0;
 	bottom     : 16px;
-	overflow-x : hidden; 
+	overflow-x : hidden;
 	overflow-y : scroll !important;/* auto can mess with JS */
 }
 
@@ -1722,7 +1722,7 @@ span.title {
 	bottom: 0 !important;
 }
 
-/* -------------------------------------------------------------------------- * 
+/* -------------------------------------------------------------------------- *
  *                                TIMELINES                                   *
  * -------------------------------------------------------------------------- */
 
@@ -1764,7 +1764,7 @@ span.title {
 	display  : none; /* initially hidden */
 	margin   : auto;
 }
-.timeline .gest { 
+.timeline .gest {
 	color: #728391;
 	background: #FFF !important;
 	background: rgba(255, 255, 255, 0.8) !important;
@@ -1778,7 +1778,7 @@ span.title {
 .timeline .weeks:before,
 .timeline .weeks:after,
 .timeline .days:before,
-.timeline .days:after { 
+.timeline .days:after {
 	position: absolute;
 	top : 0;
 	z-index: 11;
@@ -1793,7 +1793,7 @@ span.title {
 .timeline.interactive .weeks:hover:before,
 .timeline.interactive .weeks:hover:after,
 .timeline.interactive .days:hover:before,
-.timeline.interactive .days:hover:after { 
+.timeline.interactive .days:hover:after {
 	text-shadow: 0 1px 0px rgba(255, 255, 255, 0.5);
 	color: #000;
 }
@@ -1801,7 +1801,7 @@ span.title {
 .timeline .years:before,
 .timeline .months:before,
 .timeline .weeks:before,
-.timeline .days:before { 
+.timeline .days:before {
 	left : 2px;
 	text-align: left;
 }
@@ -1821,7 +1821,7 @@ span.title {
 .timeline .years:after,
 .timeline .months:after,
 .timeline .weeks:after,
-.timeline .days:after { 
+.timeline .days:after {
 	right : 2px;
 	text-align: right;
 }
@@ -1835,9 +1835,9 @@ span.title {
 .timeline .years:after,
 .timeline .months:before,
 .timeline .months:after,
-.timeline .weeks:before, 
+.timeline .weeks:before,
 .timeline .weeks:after,
-.timeline .days:before, 
+.timeline .days:before,
 .timeline .days:after {
 	content: attr(data-content) !important;
 }
@@ -1888,7 +1888,7 @@ span.title {
 }
 #timeline-bottom .months .labels div:before {
 	top: 0;
-	bottom: auto;	
+	bottom: auto;
 }
 
 .timeline .years .labels,
@@ -2049,12 +2049,12 @@ svg {
 	border-radius : 3px;
 }
 .annotations .annotation-button:hover {
-	opacity     : 1; 
+	opacity     : 1;
 }
 .annotations .annotation-button.active {
 	background-color: #FFF;
 	border-color: #666;
-	opacity     : 1; 
+	opacity     : 1;
 	z-index     : 300;
 	box-shadow  : 0 2px 3px rgba(0, 0, 0, 0.5);
 }
@@ -2425,7 +2425,7 @@ svg {
 	vertical-align: middle;
 	background: url(../img/icons.png) -33px -59px no-repeat scroll transparent;
 }
- 
+
 /* -------------------------------------------------------------------------- *
  *                              datatable                                     *
  * -------------------------------------------------------------------------- */
@@ -2463,7 +2463,7 @@ svg {
 	table-layout: fixed;
 	background: #FFF;
 }
-  
+
 .datatable td {
 	padding       : 0 10px 2px;
 	border-top    : 4px solid #FFF;
@@ -2507,7 +2507,7 @@ svg {
 }
 .datatable tr.heading.weight td.active {
 	border-bottom-color: #FFF !important;
-} 
+}
 
 /* headc */
 .datatable tr.headc.velocity td.active {
@@ -2659,7 +2659,7 @@ svg {
 	text-align: left;
 	overflow: hidden;
 	color: #7A909E;
-} 
+}
 
 /* -------------------------------------------------------------------------- *
  *                                Dialogs                                     *
@@ -2815,14 +2815,14 @@ svg {
 #dialog input[name="med-service"] {
 	border-left-width: 2px;
 }
-#dialog input:focus, 
+#dialog input:focus,
 #dialog textarea:focus,
 #dialog select:focus,
 #dialog button:focus {
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
 	outline: none;
 }
-.no-box-shadow #dialog input:focus, 
+.no-box-shadow #dialog input:focus,
 .no-box-shadow #dialog textarea:focus,
 .no-box-shadow #dialog select:focus,
 .no-box-shadow #dialog button:focus {
@@ -2938,7 +2938,7 @@ svg {
 path.grid-line-y {
     shape-rendering: crispedges;
     /*stroke: #999;
-	
+
     stroke-opacity: 0.3;
     stroke-width:  1;*/
 }
@@ -2965,7 +2965,7 @@ svg marker use {
 }*/
 
 
-/* -------------------------------------------------------------------------- * 
+/* -------------------------------------------------------------------------- *
  *                    Temp. styles ( to be removed later)                     *
  * -------------------------------------------------------------------------- */
 
@@ -2993,11 +2993,11 @@ svg marker use {
 	background: #FFF;
 }
 
-.view-parental #timeline-top, 
-.view-parental #timeline-bottom,  
+.view-parental #timeline-top,
+.view-parental #timeline-bottom,
 .view-parental .chart-stack-panel,
-.view-table #timeline-top, 
-.view-table #timeline-bottom, 
+.view-table #timeline-top,
+.view-table #timeline-bottom,
 .view-table .chart-stack-panel {
 	display: none !important;
 }
@@ -3014,5 +3014,5 @@ svg marker use {
 .view-table .hide-on-table {
 	display: none !important;
 }
- 
+
 /******************************************************************************/
