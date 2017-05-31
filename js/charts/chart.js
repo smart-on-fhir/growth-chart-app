@@ -2129,34 +2129,28 @@ Chart.prototype = {
             }, settings),
             set = this.pane.paper.set();
 
-        // The point shadow
-        if (!cfg.firstMonth) {
-            set.push(
-                this.pane.paper.circle(cx, cy + 0.5, cfg.firstMonth ? 6 : 5)
-                .attr({
-                    blur : Raphael.svg ? 1 : 0,
-                    fill : "#000"
-                }).addClass("point")
-            );
-        }
-
         set.push(
 
-            // The point white outline
-            this.pane.paper.circle(cx, cy, cfg.firstMonth ? 5 : 4).attr({
-                stroke : "#FFF",
-                "stroke-opacity": cfg.firstMonth ? 0.75 : 1,
-                "stroke-width" : cfg.firstMonth ? 4 : 2
-            }).addClass("point"),
+          // The shadow
+          this.pane.paper.circle(cx, cy + 0.5, 5).attr({
+              blur : Raphael.svg ? 1 : 0,
+              fill : "#000"
+          }).addClass("point"),
 
-            // The inner point
-            this.pane.paper.circle(cx, cy, 3).attr({
-                fill   : cfg.annotation ?
-                        this.settings.pointsColor :
-                        GC.Util.brighten(this.settings.pointsColor),
-                stroke : "none"/*,
-                title  : cfg.point ? cfg.point.value : "error"*/
-            }).addClass("point")
+          // The point white outline
+          this.pane.paper.circle(cx, cy, 4).attr({
+              stroke : "#FFF",
+              "stroke-opacity": 1,
+              "stroke-width" : 2
+          }).addClass("point"),
+
+          // The inner point
+          this.pane.paper.circle(cx, cy, 3).attr({
+              fill   : cfg.annotation ?
+                this.settings.pointsColor :
+                GC.Util.brighten(this.settings.pointsColor),
+              stroke : "none"
+          }).addClass("point")
         );
 
         this._nodes.push(set);
