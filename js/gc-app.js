@@ -475,10 +475,88 @@
 
     NS.App.print = function() {
         if (PRINT_WINDOW === null || PRINT_WINDOW.closed) {
-            PRINT_WINDOW = window.open("print-charts.html", "printWindow", "resizable=yes,scrollbars=yes,status=yes,top=10,left=10,width=1100,height=800");
+            PRINT_WINDOW = window.open("gc-print.html", "printWindow", "resizable=yes,scrollbars=yes,status=yes,top=10,left=10,width=1100,height=800");
         } else {
             PRINT_WINDOW.focus();
             PRINT_WINDOW.location.reload();
+        }
+    };
+    /**
+     *  Function to be accessed by the print popup window once the popup UI has loaded. This function updates the UI on the popup
+     *  by populating the graph, table or parent view based on what is selected on the main GC window.
+     *  Why: To resolve the issue mentioned here : https://github.com/smart-on-fhir/growth-chart-app/issues/26
+     *  @param POPUP_HANDLE window handle sent in by the popup while calling this method on opener.
+    */
+    window.printFunctionalityLoaded = function(POPUP_HANDLE) {
+        if (POPUP_HANDLE === PRINT_WINDOW) {
+            GC.Util.translateHTML(PRINT_WINDOW.document);
+
+            $('.patient-name', PRINT_WINDOW.document).text(GC.currentPatient.name);
+            $('.patient-age', PRINT_WINDOW.document).text(GC.currentPatient.getCurrentAge().toString(GC.chartSettings.timeInterval));
+            $('.patient-birth', PRINT_WINDOW.document).text(GC.currentPatient.DOB.toString(GC.chartSettings.dateFormat));
+            $('.patient-gender', PRINT_WINDOW.document).text(GC.str("STR_SMART_GENDER_" + GC.currentPatient.gender));
+
+            if (GC.currentPatient.weeker) {
+                var weekerStr = GC.str("STR_3006");
+                PRINT_WINDOW.document.getElementById("weekerID").style.visibility = "visible";
+                PRINT_WINDOW.document.getElementById("weekerValue").innerHTML = GC.currentPatient.weeker + " " + weekerStr;
+            } else {
+                PRINT_WINDOW.document.getElementById("weekerID").style.visibility = "hidden";
+            }
+
+            var currentAge = GC.currentPatient.getCurrentAge();
+            var correctedAge = GC.currentPatient.getCorrectedAge();
+            if (correctedAge > currentAge || correctedAge < currentAge) {
+                PRINT_WINDOW.document.getElementById("correctedAgeID").style.visibility = "visibile";
+                PRINT_WINDOW.document.getElementById("corrected-age").innerHTML = correctedAge.toString(GC.chartSettings.timeInterval);
+            } else {
+                PRINT_WINDOW.document.getElementById("correctedAgeID").style.visibility = "hidden";
+            }
+
+            $("#today", PRINT_WINDOW.document).text(new XDate().toString("ddMMMyyyy HH:MM TT"));
+
+            var chartType = GC.App.getViewType();
+
+            $("html", PRINT_WINDOW)
+              .toggleClass("view-clinical", chartType == "graphs" || chartType == "table")
+              .toggleClass("view-parental", chartType == "parent")
+              .toggleClass("view-charts", chartType == "graphs")
+              .toggleClass("view-table", chartType == "table");
+
+            PRINT_WINDOW.document.title = GC.currentPatient.name + (
+                chartType == "graphs" ? " - Charts" :
+                  chartType == "table" ? " - Data" :
+                    chartType == "parent" ? " - Parental View" :
+                      ""
+              ) + " " + (new XDate().toString("ddMMMyyyy HH-MMTT"));
+
+            if (chartType === 'graphs') {
+                var mw_TimeLineTop = document.getElementById('timeline-top');
+                var mw_TimeLineBottom = document.getElementById('timeline-bottom');
+
+                var pw_TimeLineTop = PRINT_WINDOW.document.getElementById('timeline-top');
+                var pw_TimeLineBottom = PRINT_WINDOW.document.getElementById('timeline-bottom');
+
+                pw_TimeLineTop.outerHTML = mw_TimeLineTop.outerHTML;
+                pw_TimeLineBottom.outerHTML = mw_TimeLineBottom.outerHTML;
+            }
+
+            if (chartType === 'graphs' || chartType === 'parent') {
+                var mw_Stage = document.getElementById('stage');
+                var pw_Stage = PRINT_WINDOW.document.getElementById('stage');
+                pw_Stage.outerHTML = mw_Stage.outerHTML;
+            }
+            if (chartType === 'parent') {
+                $('#PatientHeadertexts', PRINT_WINDOW).addClass('heading');
+                $('#PatientHeadertexts', PRINT_WINDOW).html(GC.str('STR_177'));
+            }
+
+            if (chartType === 'table') {
+                PRINT_WINDOW.document.getElementById('view-table').outerHTML = GC.TableViewForPrint().join("");
+            }
+        }
+        else {
+            console.log("Print window instance didnt match.");
         }
     };
 
