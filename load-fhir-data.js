@@ -108,8 +108,8 @@ GC.get_data = function() {
             window.familyHistories = familyHistories;
 
             var fname = patient.name[0].given.join(" ");
-            var name = patient.name[0].family;
-            var lname = $.isArray(name) ? name.join(" ") : name;
+            var lname = patient.name[0].family;
+            lname = $.isArray(lname) ? lname.join(" ") : lname;
             p.demographics.name = fname + " " + lname;
             p.demographics.birthday = patient.birthDate;
             p.demographics.gender = patient.gender;
