@@ -15,10 +15,12 @@ GC.get_data = function() {
 
     function processBoneAge(boneAgeValues, arr, units) {
         boneAgeValues && boneAgeValues.forEach(function(v){
-            arr.push({
+            if (v.hasOwnProperty('valueQuantity')) {
+                arr.push({
                 date: v.effectiveDateTime,
                 boneAgeMos: units.any(v.valueQuantity)
-            })
+                })
+            }
         });
     }
 
@@ -106,7 +108,8 @@ GC.get_data = function() {
             window.familyHistories = familyHistories;
 
             var fname = patient.name[0].given.join(" ");
-            var lname = patient.name[0].family.join(" ");
+            var name = patient.name[0].family;
+            var lname = $.isArray(name) ? name.join(" ") : name;
             p.demographics.name = fname + " " + lname;
             p.demographics.birthday = patient.birthDate;
             p.demographics.gender = patient.gender;
