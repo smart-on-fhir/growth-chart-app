@@ -147,6 +147,7 @@ GC.get_data = function() {
 
             var units = smart.units;
             process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
+            process(vitalsByCode['29463-7'], units.kg, p.vitals.weightData);
             process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
             process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
             process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
@@ -193,13 +194,14 @@ GC.get_data = function() {
                     query: {
                         code: {
                             $or: [
-                                'http://loinc.org|3141-9',
-                                'http://loinc.org|8302-2',
-                                'http://loinc.org|8287-5',
-                                'http://loinc.org|39156-5',
-                                'http://loinc.org|18185-9',
-                                'http://loinc.org|37362-1',
-                                'http://loinc.org|11884-4'
+                                'http://loinc.org|29463-7', // weight
+                                'http://loinc.org|3141-9' , // weight
+                                'http://loinc.org|8302-2' , // length
+                                'http://loinc.org|8287-5' , // headC
+                                'http://loinc.org|39156-5', // BMI
+                                'http://loinc.org|18185-9', // gestAge
+                                'http://loinc.org|37362-1', // bone age
+                                'http://loinc.org|11884-4'  // gestAge
                             ]
                         }
                     }
