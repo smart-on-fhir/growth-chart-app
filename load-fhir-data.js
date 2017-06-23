@@ -3,6 +3,7 @@ window.GC = window.GC || {};
 
 GC.get_data = function() {
     var dfd = $.Deferred();
+    var SMART;
 
     function isKnownGender(gender) {
         switch (gender) {
@@ -37,8 +38,19 @@ GC.get_data = function() {
         return deferred.promise();
     }
 
-    function onError() {
-        console.log("Loading error", arguments);
+    function onError(error) {
+        if (error == "No 'state' parameter found in authorization response.") {
+            if (SMART) {
+                return dfd.reject({
+                    responseText: "Your SMART session has expired. Please launch again."
+                });
+            }
+            return dfd.reject({
+                responseText: "App launched without SMART context!"
+            });
+        }
+
+        console.log("Loading error: ", arguments);
         dfd.reject({
             responseText: "Loading error. See console for details."
         });
@@ -55,6 +67,7 @@ GC.get_data = function() {
 
     function onReady(smart){
         var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
+        SMART = smart;
 
         GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
