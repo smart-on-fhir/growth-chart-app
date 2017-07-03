@@ -14,12 +14,22 @@ GC.get_data = function() {
         return false;
     }
 
+    function isValidObservationObj(obj){
+        if (obj.hasOwnProperty('status') && obj.status &&
+            (obj.status.toLowerCase() === 'final' || obj.status.toLowerCase() === 'amended') &&
+            obj.hasOwnProperty('valueQuantity') && obj.valueQuantity.hasOwnProperty('value') &&
+            obj.valueQuantity.hasOwnProperty('code')) {
+            return true;
+        }
+        return false;
+    }
+
     function processBoneAge(boneAgeValues, arr, units) {
         boneAgeValues && boneAgeValues.forEach(function(v){
-            if (v.hasOwnProperty('valueQuantity')) {
+            if (isValidObservationObj(v)) {
                 arr.push({
-                date: v.effectiveDateTime,
-                boneAgeMos: units.any(v.valueQuantity)
+                    date: v.effectiveDateTime,
+                    boneAgeMos: units.any(v.valueQuantity)
                 })
             }
         });
@@ -107,10 +117,12 @@ GC.get_data = function() {
 
             function process(observationValues, toUnit, arr){
                 observationValues && observationValues.forEach(function(v){
-                    arr.push({
-                        agemos: months(v.effectiveDateTime, patient.birthDate),
-                        value: toUnit(v.valueQuantity)
-                    })
+                    if (isValidObservationObj(v)) {
+                        arr.push({
+                            agemos: months(v.effectiveDateTime, patient.birthDate),
+                            value: toUnit(v.valueQuantity)
+                        })
+                    }
                 });
             }
 
