@@ -8,7 +8,7 @@
     <script>
       FHIR.oauth2.authorize({
         "client_id": "growth_chart",
-        "scope":  "patient/*.read"
+        "scope":  "patient/Patient.read patient/Observation.read"
       });
     </script>
   </head>

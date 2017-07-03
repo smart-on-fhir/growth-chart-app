@@ -35,6 +35,10 @@
 
         _get_dataPoints : function()
         {
+            if (GC.App.getPrimaryChartType() === "FENTON") {
+                Chart.prototype.noDataPoints = true;
+                return Chart.prototype._get_dataPoints.call( this, Chart.prototype.noDataPoints );
+            }
             return Chart.prototype._get_dataPoints.call( this, "bmi" );
         },
 

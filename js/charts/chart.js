@@ -34,6 +34,7 @@ Chart.prototype = {
     problemDataSet : "",
     isInLastRow    : true,
     title          : "Chart",
+    noDataPoints   : false,
 
     /**
      * Initializes the chart
@@ -705,9 +706,19 @@ Chart.prototype = {
      */
     getPatientDataPoints : function()
     {
+        if (GC.App.getPrimaryChartType() === "FENTON" && this.patientDataType === "bmi") {
+            this.noDataPoints = true;
+            return null;
+        }
         if ( this.patientDataType ) {
             var patient  = GC.App.getPatient(),
-                pointSet = new PointSet( patient.data[this.patientDataType], "agemos", "value" );
+                patientData = patient.data[this.patientDataType],
+                pointSet = new PointSet( patientData, "agemos", "value" );
+
+            // Check if data is defined
+            if (patientData) {
+                this.noDataPoints = patientData.length === 0;
+            }
 
             // Get only the points within the current time range
             pointSet.clip(
@@ -1263,10 +1274,11 @@ Chart.prototype = {
         this.drawVerticalGrid();
         this.drawTitle();
 
-        if ( !this.dataSet ) {
+        if ( this.noDataPoints && !this.dataSet ) {
+            this.drawNoData(GC.str("STR_158"));
+        } else if ( !this.dataSet ) {
             this.drawNoData(GC.str("STR_6046"));
         } else {
-
             if ( GC.chartSettings.drawChartOutlines ) {
                 this.drawOutlines();
             }
@@ -1290,7 +1302,7 @@ Chart.prototype = {
                 x2 = this.x + this.width - rShWidth;
 
             if ( len < 2 ) {
-                this.drawNoData(GC.str("STR_6046"));
+                this.drawNoData(GC.str("STR_158"));
             } else {
 
                 this.drawFillChartRegion(data);
@@ -2129,34 +2141,28 @@ Chart.prototype = {
             }, settings),
             set = this.pane.paper.set();
 
-        // The point shadow
-        if (!cfg.firstMonth) {
-            set.push(
-                this.pane.paper.circle(cx, cy + 0.5, cfg.firstMonth ? 6 : 5)
-                .attr({
-                    blur : Raphael.svg ? 1 : 0,
-                    fill : "#000"
-                }).addClass("point")
-            );
-        }
-
         set.push(
 
-            // The point white outline
-            this.pane.paper.circle(cx, cy, cfg.firstMonth ? 5 : 4).attr({
-                stroke : "#FFF",
-                "stroke-opacity": cfg.firstMonth ? 0.75 : 1,
-                "stroke-width" : cfg.firstMonth ? 4 : 2
-            }).addClass("point"),
+          // The shadow
+          this.pane.paper.circle(cx, cy + 0.5, 5).attr({
+              blur : Raphael.svg ? 1 : 0,
+              fill : "#000"
+          }).addClass("point"),
 
-            // The inner point
-            this.pane.paper.circle(cx, cy, 3).attr({
-                fill   : cfg.annotation ?
-                        this.settings.pointsColor :
-                        GC.Util.brighten(this.settings.pointsColor),
-                stroke : "none"/*,
-                title  : cfg.point ? cfg.point.value : "error"*/
-            }).addClass("point")
+          // The point white outline
+          this.pane.paper.circle(cx, cy, 4).attr({
+              stroke : "#FFF",
+              "stroke-opacity": 1,
+              "stroke-width" : 2
+          }).addClass("point"),
+
+          // The inner point
+          this.pane.paper.circle(cx, cy, 3).attr({
+              fill   : cfg.annotation ?
+                this.settings.pointsColor :
+                GC.Util.brighten(this.settings.pointsColor),
+              stroke : "none"
+          }).addClass("point")
         );
 
         this._nodes.push(set);
