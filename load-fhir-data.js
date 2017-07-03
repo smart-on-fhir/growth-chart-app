@@ -159,11 +159,13 @@ GC.get_data = function() {
             }
 
             var units = smart.units;
-            process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
-            process(vitalsByCode['29463-7'], units.kg, p.vitals.weightData);
-            process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
-            process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
-            process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
+            process(vitalsByCode['3141-9' ], units.kg , p.vitals.weightData);
+            process(vitalsByCode['29463-7'], units.kg , p.vitals.weightData);
+            process(vitalsByCode['8302-2' ], units.cm , p.vitals.lengthData);
+            process(vitalsByCode['8306-3' ], units.cm , p.vitals.lengthData);
+            process(vitalsByCode['8287-5' ], units.cm , p.vitals.headCData );
+            process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData   );
+
             processBoneAge(vitalsByCode['37362-1'], p.boneAge, units);
 
             $.each(familyHistories, function(index, fh) {
@@ -209,9 +211,10 @@ GC.get_data = function() {
                             $or: [
                                 'http://loinc.org|29463-7', // weight
                                 'http://loinc.org|3141-9' , // weight
-                                'http://loinc.org|8302-2' , // length
+                                'http://loinc.org|8302-2' , // Body height
+                                'http://loinc.org|8306-3' , // Body height --lying
                                 'http://loinc.org|8287-5' , // headC
-                                'http://loinc.org|39156-5', // BMI
+                                'http://loinc.org|39156-5', // BMI 39156-5
                                 'http://loinc.org|18185-9', // gestAge
                                 'http://loinc.org|37362-1', // bone age
                                 'http://loinc.org|11884-4'  // gestAge
