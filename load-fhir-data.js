@@ -3,6 +3,7 @@ window.GC = window.GC || {};
 
 GC.get_data = function() {
     var dfd = $.Deferred();
+    var SMART;
 
     function isKnownGender(gender) {
         switch (gender) {
@@ -47,8 +48,19 @@ GC.get_data = function() {
         return deferred.promise();
     }
 
-    function onError() {
-        console.log("Loading error", arguments);
+    function onError(error) {
+        if (error == "No 'state' parameter found in authorization response.") {
+            if (SMART) {
+                return dfd.reject({
+                    responseText: "Your SMART session has expired. Please launch again."
+                });
+            }
+            return dfd.reject({
+                responseText: "App launched without SMART context!"
+            });
+        }
+
+        console.log("Loading error: ", arguments);
         dfd.reject({
             responseText: "Loading error. See console for details."
         });
@@ -65,6 +77,7 @@ GC.get_data = function() {
 
     function onReady(smart){
         var hidePatientHeader = (smart.tokenResponse.need_patient_banner === false);
+        SMART = smart;
 
         GC.Preferences.prop("hidePatientHeader", hidePatientHeader);
 
@@ -120,7 +133,8 @@ GC.get_data = function() {
             window.familyHistories = familyHistories;
 
             var fname = patient.name[0].given.join(" ");
-            var lname = patient.name[0].family.join(" ");
+            var lname = patient.name[0].family;
+            lname = $.isArray(lname) ? lname.join(" ") : lname;
             p.demographics.name = fname + " " + lname;
             p.demographics.birthday = patient.birthDate;
             p.demographics.gender = patient.gender;
@@ -157,10 +171,13 @@ GC.get_data = function() {
             }
 
             var units = smart.units;
-            process(vitalsByCode['3141-9'], units.kg, p.vitals.weightData);
-            process(vitalsByCode['8302-2'],  units.cm,  p.vitals.lengthData);
-            process(vitalsByCode['8287-5'],  units.cm,  p.vitals.headCData);
-            process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData);
+            process(vitalsByCode['3141-9' ], units.kg , p.vitals.weightData);
+            process(vitalsByCode['29463-7'], units.kg , p.vitals.weightData);
+            process(vitalsByCode['8302-2' ], units.cm , p.vitals.lengthData);
+            process(vitalsByCode['8306-3' ], units.cm , p.vitals.lengthData);
+            process(vitalsByCode['8287-5' ], units.cm , p.vitals.headCData );
+            process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData   );
+
             processBoneAge(vitalsByCode['37362-1'], p.boneAge, units);
 
             $.each(familyHistories, function(index, fh) {
@@ -204,13 +221,15 @@ GC.get_data = function() {
                     query: {
                         code: {
                             $or: [
-                                'http://loinc.org|3141-9',
-                                'http://loinc.org|8302-2',
-                                'http://loinc.org|8287-5',
-                                'http://loinc.org|39156-5',
-                                'http://loinc.org|18185-9',
-                                'http://loinc.org|37362-1',
-                                'http://loinc.org|11884-4'
+                                'http://loinc.org|29463-7', // weight
+                                'http://loinc.org|3141-9' , // weight
+                                'http://loinc.org|8302-2' , // Body height
+                                'http://loinc.org|8306-3' , // Body height --lying
+                                'http://loinc.org|8287-5' , // headC
+                                'http://loinc.org|39156-5', // BMI 39156-5
+                                'http://loinc.org|18185-9', // gestAge
+                                'http://loinc.org|37362-1', // bone age
+                                'http://loinc.org|11884-4'  // gestAge
                             ]
                         }
                     }
