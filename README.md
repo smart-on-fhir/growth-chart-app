@@ -117,12 +117,12 @@ Also, the following browser features must be enabled:
 - On Windows, Internet Explorer cannot display the pages properly if the OS zoom
   is not set to 100% (Control Panel\Appearance and Personalization\Display)
 
-Deploymemt
+Deployment
 -----------------------------------------------------------------------------
 
 From a console in the project directory, execute:
 
 ```
 npm install
-npm run serve
+npm start
 ```

@@ -24,22 +24,19 @@ window.GC = window.GC || {};
     // been stored on the server too)
     // =========================================================================
     var readOnlySettings = {
-        fileRevision : 209,
+        fileRevision : 210,
 
         // See the toString method for the rendering template
         version : {
-            major    : 0,
-            minor    : 9,
-            build    : 9,
-            revision : 0,
-            state    : "BETA", // dev|alpha|beta|rc|r
+            major : 0,
+            minor : 1,
+            build : 3,
+            state : "beta", // dev|alpha|beta|rc|r
 
             asString : function() {
-                return  this.major    + "." +
-                        this.minor    + "." +
-                        //this.build    + "." +
-                        //this.revision + "-" +
-                        this.build    + "-" +
+                return  this.major + "." +
+                        this.minor + "." +
+                        this.build + "-" +
                         this.state;
             }
         },
