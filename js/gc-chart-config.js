@@ -24,7 +24,7 @@ window.GC = window.GC || {};
     // been stored on the server too)
     // =========================================================================
     var readOnlySettings = {
-        fileRevision : 208,
+        fileRevision : 209,
 
         // See the toString method for the rendering template
         version : {
@@ -323,6 +323,8 @@ window.GC = window.GC || {};
             "fill-opacity": 0.5,
             "stroke"      : "none"
         },
+
+        enableFirstMonthStyling: true,
 
         weightChart : {
             abbr : "W",
