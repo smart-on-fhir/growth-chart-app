@@ -14,14 +14,22 @@ GC.get_data = function() {
         return false;
     }
 
-    function isValidObservationObj(obj){
-        if (obj.hasOwnProperty('status') && obj.status &&
-            (obj.status.toLowerCase() === 'final' || obj.status.toLowerCase() === 'amended') &&
-            obj.hasOwnProperty('valueQuantity') && obj.valueQuantity.hasOwnProperty('value') &&
-            obj.valueQuantity.hasOwnProperty('code')) {
-            return true;
+    function isValidObservationObj(obj) {
+        if (!obj.hasOwnProperty('valueQuantity') || !obj.valueQuantity || typeof obj.valueQuantity != "object") {
+            return false;
         }
-        return false;
+
+        if (!obj.valueQuantity.hasOwnProperty('value') || !obj.valueQuantity.hasOwnProperty('code')) {
+            return false;
+        }
+
+        if (obj.hasOwnProperty('status')) {
+            if (!obj.status || !obj.status.match(/^(final|amended|unknown)$/i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     function processBoneAge(boneAgeValues, arr, units) {
