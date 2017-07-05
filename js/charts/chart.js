@@ -34,6 +34,7 @@ Chart.prototype = {
     problemDataSet : "",
     isInLastRow    : true,
     title          : "Chart",
+    noDataPoints   : false,
 
     /**
      * Initializes the chart
@@ -705,9 +706,19 @@ Chart.prototype = {
      */
     getPatientDataPoints : function()
     {
+        if (GC.App.getPrimaryChartType() === "FENTON" && this.patientDataType === "bmi") {
+            this.noDataPoints = true;
+            return null;
+        }
         if ( this.patientDataType ) {
             var patient  = GC.App.getPatient(),
-                pointSet = new PointSet( patient.data[this.patientDataType], "agemos", "value" );
+                patientData = patient.data[this.patientDataType],
+                pointSet = new PointSet( patientData, "agemos", "value" );
+
+            // Check if data is defined
+            if (patientData) {
+                this.noDataPoints = patientData.length === 0;
+            }
 
             // Get only the points within the current time range
             pointSet.clip(
@@ -1263,10 +1274,11 @@ Chart.prototype = {
         this.drawVerticalGrid();
         this.drawTitle();
 
-        if ( !this.dataSet ) {
+        if ( this.noDataPoints && !this.dataSet ) {
+            this.drawNoData(GC.str("STR_158"));
+        } else if ( !this.dataSet ) {
             this.drawNoData(GC.str("STR_6046"));
         } else {
-
             if ( GC.chartSettings.drawChartOutlines ) {
                 this.drawOutlines();
             }
@@ -1290,7 +1302,7 @@ Chart.prototype = {
                 x2 = this.x + this.width - rShWidth;
 
             if ( len < 2 ) {
-                this.drawNoData(GC.str("STR_6046"));
+                this.drawNoData(GC.str("STR_158"));
             } else {
 
                 this.drawFillChartRegion(data);
