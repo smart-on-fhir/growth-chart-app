@@ -24,7 +24,7 @@ window.GC = window.GC || {};
     // been stored on the server too)
     // =========================================================================
     var readOnlySettings = {
-        fileRevision : 208,
+        fileRevision : 210,
 
         // See the toString method for the rendering template
         version : {
@@ -111,6 +111,8 @@ window.GC = window.GC || {};
             zeroFill  : false,
             limit     : 2
         },
+
+        sameDayDot: true,
 
         // At what point chronologically does one start forecasting adult height?
         heightEstimatesMinAge : 12, // months
