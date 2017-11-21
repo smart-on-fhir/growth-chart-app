@@ -210,6 +210,22 @@ GC.get_data = function() {
                 }
             });
 
+            // Handle father's and mother's heights using LOINC when Family History FHIR resource is not available.
+            var observations = vitalsByCode['83845-8'];
+            if (observations && observations.length > 0 && p.familyHistory.father.height === null){
+                if (isValidObservationObj(observations[0])) {
+                    p.familyHistory.father.height = units.cm(observations[0].valueQuantity);
+                    p.familyHistory.father.isBio = true;
+                }
+            }
+            observations = vitalsByCode['83846-6'];
+            if (observations && observations.length > 0 && p.familyHistory.mother.height === null){
+                if (isValidObservationObj(observations[0])) {
+                    p.familyHistory.mother.height = units.cm(observations[0].valueQuantity);
+                    p.familyHistory.mother.isBio = true;
+                }
+            }
+
             window.data = p;
             console.log("Check out the patient's growth data: window.data");
             dfd.resolve(p);
@@ -237,7 +253,9 @@ GC.get_data = function() {
                                 'http://loinc.org|39156-5', // BMI 39156-5
                                 'http://loinc.org|18185-9', // gestAge
                                 'http://loinc.org|37362-1', // bone age
-                                'http://loinc.org|11884-4'  // gestAge
+                                'http://loinc.org|11884-4',  // gestAge
+                                'http://loinc.org|83845-8', // fathers height
+                                'http://loinc.org|83846-6'  // mothers height
                             ]
                         }
                     }
