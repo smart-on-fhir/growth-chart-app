@@ -281,10 +281,11 @@
             }, function(key, meta) {
                 var lastEntry = getLastEnryHaving( meta.modelProp ), ds, pct;
                 if (lastEntry) {
+                    var dateString = lastEntry.hasOwnProperty('dateString') ? lastEntry.dateString : '';
                     ds = GC.getDataSet(src, meta.dsType, gender, 0, lastEntry.agemos);
                     out[key].value  = lastEntry[meta.modelProp];
                     out[key].agemos = lastEntry.agemos;
-                    out[key].date   = new XDate(PATIENT.DOB.getTime()).addMonths(lastEntry.agemos);
+                    out[key].date   = new XDate(dateString);
 
                     if (ds) {
                         pct = GC.findPercentileFromX(
@@ -457,11 +458,11 @@
                     "fill-opacity" : heightChild > heightTreshold ? 0.75 : 0
                 });
 
+                var dateString = lastHeight.hasOwnProperty('dateString') ? lastHeight.dateString : '';
                 this._nodes.childDateLabel.attr({
                     text : lastHeight.agemos === null ?
                         GC.str("STR_158") :
-                        ((new XDate(PATIENT.DOB.getTime())).addMonths(lastHeight.agemos)
-                            .toString(GC.chartSettings.dateFormat)),
+                        ((new XDate(dateString)).toString(GC.chartSettings.dateFormat)),
                     y : heightChild > heightTreshold ?
                         y + 10 :
                         y - 35

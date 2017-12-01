@@ -1398,6 +1398,7 @@ ChartPane.prototype = {
             html = [];
             this.forEachColumn(function( col, colIndex/*, colsLen*/ ) {
                 $.each(annotated, function(i, entry) {
+                    var dateString = entry.hasOwnProperty('dateString') ? entry.dateString : '';
                     html.push(
                         '<div class="annotation-button" style="left:',
                         inst.months2x(entry.agemos, colIndex),
@@ -1405,8 +1406,7 @@ ChartPane.prototype = {
                         '<div class="details">',
                             '<div class="header">',
                                 '<div class="title">Annotation</div>',
-                                new XDate(GC.App.getPatient().DOB)
-                                    .addMonths(entry.agemos)
+                                new XDate(dateString)
                                     .toString(GC.chartSettings.dateFormat),
                             '</div>',
                             '<div class="content">',

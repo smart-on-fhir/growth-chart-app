@@ -1412,7 +1412,8 @@
                 return;
             }
 
-            date = (new XDate(PATIENT.DOB)).addMonths(rec.agemos);
+            var dateString = rec.hasOwnProperty('dateString') ? rec.dateString : '';
+            date = new XDate(dateString);
 
             age = new GC.TimeInterval(PATIENT.DOB, date);
 

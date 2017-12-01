@@ -37,6 +37,7 @@ GC.get_data = function() {
             if (isValidObservationObj(v)) {
                 arr.push({
                     date: v.effectiveDateTime,
+                    dateString: v.effectiveDateTime,
                     boneAgeMos: units.any(v.valueQuantity)
                 })
             }
@@ -128,7 +129,8 @@ GC.get_data = function() {
                     if (isValidObservationObj(v)) {
                         arr.push({
                             agemos: months(v.effectiveDateTime, patient.birthDate),
-                            value: toUnit(v.valueQuantity)
+                            value: toUnit(v.valueQuantity),
+                            dateString: v.effectiveDateTime
                         })
                     }
                 });
