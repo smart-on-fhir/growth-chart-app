@@ -95,7 +95,7 @@ GC.get_data = function() {
                 onErrorWithWarning(GC.str('STR_Error_UnknownGender'));
             }
 
-            var vitalsByCode = smart.byCode(vitals, 'code');
+            var vitalsByCode = smart.byCodes(vitals, 'code');
 
             // Initialize an empty patient structure
             var p = {
@@ -147,10 +147,10 @@ GC.get_data = function() {
             p.demographics.birthday = patient.birthDate;
             p.demographics.gender = patient.gender;
 
-            var gestAge = vitalsByCode['18185-9'];
+            var gestAge = vitalsByCode('18185-9');
             if (gestAge === undefined) {
                 //handle an alternate mapping of Gest Age used by Cerner
-                gestAge = vitalsByCode['11884-4'];
+                gestAge = vitalsByCode('11884-4');
             }
 
             if (gestAge && gestAge.length > 0) {
@@ -179,14 +179,11 @@ GC.get_data = function() {
             }
 
             var units = smart.units;
-            process(vitalsByCode['3141-9' ], units.kg , p.vitals.weightData);
-            process(vitalsByCode['29463-7'], units.kg , p.vitals.weightData);
-            process(vitalsByCode['8302-2' ], units.cm , p.vitals.lengthData);
-            process(vitalsByCode['8306-3' ], units.cm , p.vitals.lengthData);
-            process(vitalsByCode['8287-5' ], units.cm , p.vitals.headCData );
-            process(vitalsByCode['39156-5'], units.any, p.vitals.BMIData   );
-
-            processBoneAge(vitalsByCode['37362-1'], p.boneAge, units);
+            process(vitalsByCode('3141-9','29463-7','8335-2'), units.kg, p.vitals.weightData);
+            process(vitalsByCode('8302-2','8301-4','3137-7','8306-3'),  units.cm,  p.vitals.lengthData);
+            process(vitalsByCode('8287-5'),  units.cm,  p.vitals.headCData);
+            process(vitalsByCode('39156-5'), units.any, p.vitals.BMIData);
+            processBoneAge(vitalsByCode('37362-1'), p.boneAge, units);
 
             $.each(familyHistories, function(index, fh) {
                 if (fh.resourceType === "FamilyMemberHistory") {
@@ -229,15 +226,29 @@ GC.get_data = function() {
                     query: {
                         code: {
                             $or: [
-                                'http://loinc.org|29463-7', // weight
-                                'http://loinc.org|3141-9' , // weight
-                                'http://loinc.org|8302-2' , // Body height
-                                'http://loinc.org|8306-3' , // Body height --lying
-                                'http://loinc.org|8287-5' , // headC
-                                'http://loinc.org|39156-5', // BMI 39156-5
-                                'http://loinc.org|18185-9', // gestAge
-                                'http://loinc.org|37362-1', // bone age
-                                'http://loinc.org|11884-4'  // gestAge
+                                //Weight
+                                'http://loinc.org|29463-7',
+                                'http://loinc.org|3141-9',
+                                'http://loinc.org|8335-2',
+
+                                //Height
+                                'http://loinc.org|8302-2',
+                                'http://loinc.org|8301-4',
+                                'http://loinc.org|3137-7',
+                                'http://loinc.org|8306-3',
+
+                                //Head Circumference
+                                'http://loinc.org|8287-5',
+
+                                //BMI
+                                'http://loinc.org|39156-5',
+
+                                //Bone Age
+                                'http://loinc.org|37362-1',
+
+                                //Gestsational Age
+                                'http://loinc.org|18185-9',
+                                'http://loinc.org|11884-4'
                             ]
                         }
                     }
