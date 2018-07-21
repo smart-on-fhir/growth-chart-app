@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Growth Chart SMART Application</title>
+    <script src="../node_modules/fhirclient/fhir-client.js"></script>
+    <script>
+      FHIR.oauth2.authorize({
+        client: {
+          client_id: "growth_chart",
+          scope: "patient/*.read launch/patient",
+          redirect_uri: "http://127.0.0.1:9000"
+        },
+        "server": "https://launch.smarthealthit.org/v/r3/sim/eyJrIjoiMSIsImQiOjYsImkiOiIxIiwiaiI6IjEiLCJiIjoic21hcnQtNzc3NzcwNCJ9/fhir"
+      });
+    </script>
+  </head>
+  <body>Loading...</body>
+</html>
