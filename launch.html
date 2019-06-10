@@ -4,11 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Growth Chart SMART Application</title>
-    <script src="node_modules/fhirclient/fhir-client.js"></script>
+    <!-- <script src="node_modules/fhirclient/fhir-client.js"></script> -->
+    <script src="https://combinatronics.com/smart-on-fhir/client-js/master/build/fhir-client.js"></script>
     <script>
       FHIR.oauth2.authorize({
         "client_id": "growth_chart",
-        "scope":  "patient/*.read"
+        "scope":  "patient/*.read offline_access"
       });
     </script>
   </head>

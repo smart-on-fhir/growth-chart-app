@@ -70,6 +70,7 @@ i {
 	padding: 10px 10px 10px 60px;
 	text-align: left;
 	width: 150px;
+	line-height: normal;
 }
 
 #loading-indicator h2 .msg {

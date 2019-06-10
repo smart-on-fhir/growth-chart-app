@@ -820,7 +820,7 @@
             onModelsReady();
             // Patient
             GC.get_data()
-            .done(function(data) {
+            .then(function(data) {
                 GC.currentPatient = PATIENT = new GC.Patient(
                     data.demographics,
                     data.vitals,
@@ -832,18 +832,17 @@
                 GC.translatePreemieDatasets(PATIENT);
                 done();
             })
-            .fail(function(response){
-                var msg = response.responseText;
-                console.log("Failed.");
+            .catch(function(error) {
+                console.error(error);
 
-                if (response.showMessage) {
-                    showMessage(response);
+                if (error.showMessage) {
+                    showMessage(error.message);
                 }
                 else {
-                    $("#loading-indicator h2").html(msg);
+                    $("#loading-indicator h2").html(error.message);
                 }
 
-                if (response.status === 404) {
+                if (error.status === 404) {
                     $("#loading-indicator h2").append($("<button>Make me a fake one!</button>"));
                     $("#loading-indicator button").click(function(){
                         $.get("/my/ccda/fixture").success(function(){
