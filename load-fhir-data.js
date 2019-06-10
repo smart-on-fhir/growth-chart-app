@@ -49,6 +49,7 @@ GC.get_data = function() {
     function fetchVitals(client) {
         var query = new URLSearchParams();
         query.set("patient", client.patient.id);
+        query.set("_count", 100); // Try this to fetch fewer pages
         query.set("code", [
             'http://loinc.org|29463-7', // weight
             'http://loinc.org|3141-9' , // weight
