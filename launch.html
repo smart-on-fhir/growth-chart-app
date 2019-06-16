@@ -5,11 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Growth Chart SMART Application</title>
     <!-- <script src="node_modules/fhirclient/fhir-client.js"></script> -->
-    <script src="https://combinatronics.com/smart-on-fhir/client-js/master/build/fhir-client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fhirclient@2.0.6/build/fhir-client.js"></script>
+    <!-- <script src="http://localhost:8080/build/fhir-client.js"></script> -->
     <script>
       FHIR.oauth2.authorize({
         "client_id": "growth_chart",
-        "scope":  "patient/*.read offline_access"
+        "scope":  "patient/Observation.read patient/Patient.read offline_access",
+        // "client_id": "944d96a0-4caf-4a96-813e-bc38aadb1169" // HSPC
+        // "client_id": "5570f8be-6caf-4915-ae15-69545ab38e68" // Cerner
       });
     </script>
   </head>
