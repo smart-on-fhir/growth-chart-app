@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "eslint": "^3.9.1",
-    "fhirclient": "^0.1.9"
+    "fhirclient": "^2.0.7"
   },
   "devDependencies": {
     "http-server": "^0.10.0"
