@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Growth Chart Print Preview</title>
+    <link rel="stylesheet" type="text/css" href="css/gc-pview.css" />
+    <link rel="stylesheet" type="text/css" href="css/print.css" />
+    <link rel="stylesheet" type="text/css" href="css/gc-pview-print.css" />
+</head>
+<body>
+<div id="print-toolbar">
+    <a href="javascript:window.print();" class="print-link">
+        <img src="img/print.png" alt="" />
+        <span data-translatecontent="STR_6020"></span>
+    </a>
+</div>
+<div id="container">
+    <div id="header">
+        <h1 class="patient-name" data-translatecontent="STR_6021">Patient`s name</h1>
+        <label class="gender-color" data-translatecontent="STR_155"></label> <span class="patient-gender title"></span>
+        <label class="gender-color" data-translatecontent="STR_157"></label> <span class="patient-birth title"></span>
+        <label class="gender-color" data-translatecontent="STR_156"></label> <span class="patient-age title"></span>
+        <span id="weekerID" class="weeker" style="display:none;">
+            <label class="gender-color">{</label>
+            <span id="weekerValue" class="value title" style="margin-right: 0"></span>
+            <label class="gender-color">}</label>&nbsp;&nbsp;
+        </span>
+        <span id="correctedAgeID" style="display: none;">
+            <label class="gender-color" data-translatecontent="STR_6022"></label>
+            <span id="corrected-age" class="title"></span>
+        </span>
+        <span id="today"></span>
+    </div>
+    <div class="frame">
+        <div id="timeline-top"></div>
+        <div id="stage">
+            <div id="view-table" class="tab-panel"></div>
+        </div>
+        <div id="timeline-bottom"></div>
+    </div>
+</div>
+<script>
+    /**
+     * This call to the function on the opener is for indicating that the UI is ready to accept updates from the GC main
+     * window.
+     */
+    window.opener.printFunctionalityLoaded(window);
+</script>
+</body>
+</html>

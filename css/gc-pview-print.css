@@ -1,0 +1,17 @@
+#vitals {
+    border-color: transparent;
+}
+
+#PatientHeader, #PredictedHeightHeader {
+    background-color: transparent;
+    color: #666;
+}
+
+#PaperPredictedHeight {
+    overflow: inherit;
+}
+
+#RightPaper {
+    transform-origin: left;
+    transform: scale(.8,.9);
+}

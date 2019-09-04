@@ -66,18 +66,23 @@ h1 {
     margin: 0;
 }
 
+#container {
+    display: inline-block;
+    text-align: left;
+    margin: auto;
+}
+
 .frame {
     border: 1px solid #666;
     display: inline-block;
     text-align: left;
-    width: 1000px;
+    margin:auto;
 }
 
 #header {
     background: transparent;
     padding: 0 10px 10px;
     text-align: left;
-    width: 1000px;
     margin: auto;
 }
 
@@ -110,7 +115,7 @@ svg {
 #view-parental,
 #view-table,
 .timeline {
-    display: none;
+    display: block;
 }
 
 .view-clinical #view-clinical,
