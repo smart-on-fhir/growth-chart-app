@@ -6,7 +6,7 @@
     "start": "npm run serve"
   },
   "dependencies": {
-    "eslint": "^3.9.1",
+    "eslint": "^4.18.2",
     "fhirclient": "^2.0.7"
   },
   "devDependencies": {
