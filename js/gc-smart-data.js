@@ -336,6 +336,9 @@ window.GC = window.GC || {};
 
         if (boneAgeList && boneAgeList.length) {
             $.each(boneAgeList, function(i, o) {
+                if (o.hasOwnProperty("boneAgeMos") && o.hasOwnProperty("date")) {
+                    o = new SmartBoneage(o.date, o.boneAgeMos);
+                }
                 if (o instanceof SmartBoneage) {
                     patient.boneAge.push(o.toGCBoneage(patient));
                 } else {
