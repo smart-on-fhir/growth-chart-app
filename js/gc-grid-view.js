@@ -252,29 +252,29 @@
 
 
         $.each(model, function( index, data ) {
+            var useSameDayDot = GC.Preferences._data.sameDayDot;
+
             //debugger;
             var age  = new GC.TimeInterval(patient.DOB).setMonths(data.agemos),
-                date = new XDate(patient.DOB.getTime()).addMonths(data.agemos),
-                sameDay = lastDate && lastDate.diffDays(date) < 1,
-                dateText = sameDay ?
-                    '<div style="text-align: center;font-size:20px">&bull;</div>' :
-                    date.toString(
-                        GC.chartSettings.dateFormat
-                    );//,
+                date = new XDate(patient.DOB.getTime()).addMonths(data.agemos);//,
                 // years,
                 // months,
                 // days;
 
+            var sameDay = lastDate && lastDate.diffDays(date) < 1;
+            var dateText = (useSameDayDot && sameDay) ?
+              '<div style="text-align: center;font-size:20px">&bull;</div>' :
+              date.toString(GC.chartSettings.dateFormat);
+
             // Header - Date
             $('<th/>').append(
                 $('<div class="date"/>').html(dateText)
-            )
-            .appendTo(thr1);
+            ).appendTo(thr1);
 
             // Header - Age
-            $('<th/>')
-                .append( $('<div class=""/>').html(
-                    sameDay ?
+            $('<th/>').append(
+                $('<div class=""/>').html(
+                  (useSameDayDot && sameDay) ?
                     date.toString(GC.chartSettings.timeFormat) :
                     age.toString(shortDateFormat)
                 )

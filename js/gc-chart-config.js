@@ -109,6 +109,8 @@ window.GC = window.GC || {};
             limit     : 2
         },
 
+        sameDayDot: true,
+
         // At what point chronologically does one start forecasting adult height?
         heightEstimatesMinAge : 12, // months
 
