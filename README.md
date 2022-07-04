@@ -1,6 +1,6 @@
 SMART Pediatric Growth Chart
 --------------------------------------------------------------------------------
-
+## ⚠️ This project is deprecated and is not actively maintained!
 
 The purpose of this app is to manage and display statistical data for the
 patients in a few different ways. The data is retrieved from SMART,
