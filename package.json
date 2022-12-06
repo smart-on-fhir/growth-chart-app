@@ -10,6 +10,6 @@
     "fhirclient": "^2.0.7"
   },
   "devDependencies": {
-    "http-server": "^0.10.0"
+    "http-server": "^14.1.1"
   }
 }
